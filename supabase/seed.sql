@@ -1,0 +1,2 @@
+-- Codex: replace this placeholder during Phase 2.
+-- Seed the deterministic scenarios from specs/fixtures/*.json through the final schema.

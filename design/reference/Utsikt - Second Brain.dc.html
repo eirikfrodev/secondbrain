@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/rime-labs-design-system-019dfd61-7474-7ef3-860a-cd814e9242e4/colors_and_type.css">
+<script src="_ds/rime-labs-design-system-019dfd61-7474-7ef3-860a-cd814e9242e4/_ds_bundle.js"></script>
+<style>
+body{margin:0;background:#EAE3CF;font-family:var(--font-sans)}
+:root{--ink-2:#31486A;--ink-3:#5E7089}
+.dv-card{font-synthesis-weight:none;-webkit-font-smoothing:antialiased}
+.dv-turn{padding:44px 48px 36px;scroll-margin-top:16px}
+.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 24px}
+.dv-tid{font-family:var(--font-mono);font-size:10.5px;font-weight:500;padding:3px 7px;background:var(--ink);color:var(--paper);text-decoration:none}
+.dv-tname{font-size:13px;font-weight:600;color:var(--ink)}
+.dv-opts{display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start}
+.dv-opt{flex:none;display:flex;flex-direction:column;gap:10px;scroll-margin-top:16px}
+.dv-oid{font-family:var(--font-mono);font-size:11px;font-weight:500;padding:3px 7px;background:rgba(14,42,71,.1);color:var(--ink);text-decoration:none}
+.dv-olabel{display:flex;align-items:baseline;gap:8px;font-size:13px;color:var(--ink-2)}
+.dv-card{max-width:100%;background:var(--paper);border:1px solid rgba(14,42,71,.22);box-shadow:0 1px 2px rgba(14,42,71,.05),0 10px 30px rgba(14,42,71,.07);overflow:hidden}
+.dv-cap{margin:0;max-width:640px;font-size:13px;line-height:1.55;color:var(--ink-2)}
+.dv-opt:target .dv-oid{background:var(--fjord);color:var(--paper)}
+.dv-next{margin:28px 0 0;font-size:12px;color:var(--ink-2)}
+</style>
+</helmet>
+<section class="dv-turn" id="t1">
+  <div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Utsikt — the control panel, one committed direction across all seven asks</span></div>
+
+  <div style="max-width:860px;margin:0 0 28px;background:var(--ink);color:var(--paper);padding:20px 24px;display:grid;grid-template-columns:1fr 1fr;gap:6px 40px">
+    <div style="grid-column:1/-1;display:flex;align-items:baseline;gap:12px;margin-bottom:6px"><span style="width:9px;height:9px;border-radius:999px;background:var(--saffron)"></span><span style="font-size:14px;font-weight:600;letter-spacing:-0.01em">Working name: Utsikt — "the view". Read the boards left to right, <a href="#1a" style="color:var(--sky)">1a</a>–<a href="#1g" style="color:var(--sky)">1g</a>, grammar at <a href="#1h" style="color:var(--sky)">1h</a>.</span></div>
+    <div style="font-size:12px;line-height:1.55;color:rgba(244,239,224,.75)">The metaphor is a <span style="color:var(--paper)">daily ledger typeset by a quiet operator</span> — rows on paper, not widgets. Every item, whatever the AI composed inside it, answers the same three questions in the same order: what's happening → what I'd do → what you can do. That fixed spine is what keeps unpredictable content calm.</div>
+    <div style="font-size:12px;line-height:1.55;color:rgba(244,239,224,.75)">Assumptions: desktop 1440 first, mobile 393; English copy with Norwegian names, kroner and diacritics as in your examples; saffron is reserved for "needs you", fjord for recommendations and sends, sky for work in motion. No AI branding anywhere — the operator speaks in first person, briefly.</div>
+  </div>
+
+  <div class="dv-opts">
+
+    <div class="dv-opt" id="1a">
+      <div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Today — the control panel · desktop 1440</div>
+      <div class="dv-card" style="width:1440px">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 40px;border-bottom:1px solid var(--line)">
+          <div style="display:flex;align-items:center;gap:10px"><span style="width:10px;height:10px;border-radius:999px;background:var(--saffron)"></span><span style="font-size:15px;font-weight:600;letter-spacing:-0.01em">Utsikt</span></div>
+          <div style="display:flex;align-items:center;gap:28px">
+            <div style="display:flex;gap:20px;font-size:14px;font-weight:500">
+              <span style="color:var(--ink);border-bottom:2px solid var(--ink);padding-bottom:2px">Today</span>
+              <span style="color:var(--ink-3);cursor:pointer">Week</span>
+              <span style="color:var(--ink-3);cursor:pointer">Month</span>
+            </div>
+            <span class="mono" style="font-size:11.5px;color:var(--ink-3)">synced 08:52 · next 09:40</span>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:60px;padding:32px 40px 26px">
+          <div>
+            <div class="eyebrow" style="margin-bottom:10px">Wednesday 27 August</div>
+            <div style="font-size:38px;font-weight:500;line-height:1.02;letter-spacing:-0.03em;max-width:640px">Three things need you before noon.</div>
+            <div style="font-size:15px;color:var(--ink-2);margin-top:10px;max-width:620px;line-height:1.5">Two replies are drafted and waiting. The Copenhagen hotels are in — Sanders looks right. Athens research lands by 15:00.</div>
+          </div>
+          <div style="width:300px;flex:none;padding-bottom:4px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--ink);padding-bottom:7px">
+              <span style="font-size:14px;color:var(--ink-3)">Ask for anything…</span>
+              <span class="mono" style="font-size:10.5px;color:var(--ink-3);border:1px solid var(--line);padding:1px 5px">⌘K</span>
+            </div>
+            <div class="mono" style="font-size:11px;color:var(--ink-3);margin-top:8px">6 handled since yesterday · 2 in motion</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 300px;gap:0 56px;padding:0 40px 28px">
+          <div>
+            <div style="display:flex;align-items:baseline;gap:10px;border-bottom:1px solid var(--ink);padding-bottom:7px"><span class="eyebrow" style="color:var(--ink)">Needs you</span><span class="mono" style="font-size:11.5px;color:var(--ink-3)">3</span></div>
+
+            <div style="display:grid;grid-template-columns:18px 1fr auto;gap:0 12px;padding:16px 12px 16px 10px;margin:0 -12px 0 -10px;border-bottom:1px solid var(--line);background:var(--paper-2);box-shadow:inset 2px 0 0 var(--ink)">
+              <div style="padding-top:6px"><span style="display:block;width:8px;height:8px;border-radius:999px;background:var(--saffron)"></span></div>
+              <div style="display:flex;flex-direction:column;gap:7px">
+                <div style="font-size:15px;letter-spacing:-0.01em"><span style="font-weight:600">Anders — Thursday or Friday?</span> <span style="color:var(--ink-2)">Asked whether Thursday 14:00 or Friday 10:00 works for the sync.</span></div>
+                <div style="font-size:14px"><span style="color:var(--fjord);font-weight:600">→</span> Thursday 14:00 — your afternoon is free, Friday already has two meetings. Reply is drafted.</div>
+                <div style="display:flex;gap:14px;align-items:center;margin-top:2px">
+                  <button style="font-family:var(--font-sans);font-size:13px;font-weight:600;color:var(--paper);background:var(--ink);border:none;padding:7px 14px;cursor:pointer">Reply: Thursday 14:00</button>
+                  <span class="mono" style="font-size:10.5px;color:var(--ink-3);border:1px solid var(--line);padding:1px 5px;margin-left:-8px">1</span>
+                  <button style="font-family:var(--font-sans);font-size:13px;font-weight:500;color:var(--ink-2);background:transparent;border:none;padding:7px 0;text-decoration:underline;text-underline-offset:3px;cursor:pointer">Suggest Friday</button>
+                  <button style="font-family:var(--font-sans);font-size:13px;font-weight:500;color:var(--ink-2);background:transparent;border:none;padding:7px 0;text-decoration:underline;text-underline-offset:3px;cursor:pointer">Find other times</button>
+                  <span style="font-size:13px;color:var(--ink-3);margin-left:auto;cursor:text">Ask…</span>
+                </div>
+              </div>
+              <div style="text-align:right;display:flex;flex-direction:column;gap:3px"><span class="mono" style="font-size:11.5px;color:var(--fjord)">draft ready</span><span class="mono" style="font-size:11.5px;color:var(--ink-3)">mail · 08:31</span></div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:18px 1fr auto;gap:0 12px;padding:16px 0;border-bottom:1px solid var(--line)">
+              <div style="padding-top:6px"><span style="display:block;width:8px;height:8px;border-radius:999px;background:var(--saffron)"></span></div>
+              <div style="display:flex;flex-direction:column;gap:7px">
+                <div style="font-size:15px;letter-spacing:-0.01em"><span style="font-weight:600">Copenhagen — choose a hotel.</span> <span style="color:var(--ink-2)">Three options under 5 000 kr, all near Nyhavn, 18–20 September.</span></div>
+                <div style="font-size:14px"><span style="color:var(--fjord);font-weight:600">→</span> Hotel Sanders, 4 210 kr — calmest of the three, three minutes from the harbour.</div>
+                <div style="display:flex;gap:14px;align-items:center;margin-top:2px">
+                  <button style="font-family:var(--font-sans);font-size:13px;font-weight:600;color:var(--paper);background:var(--ink);border:none;padding:7px 14px;cursor:pointer">Choose Sanders</button>
+                  <button style="font-family:var(--font-sans);font-size:13px;font-weight:500;color:var(--ink-2);background:transparent;border:none;padding:7px 0;text-decoration:underline;text-underline-offset:3px;cursor:pointer">Compare Sanders · Villa</button>
+                  <button style="font-family:var(--font-sans);font-size:13px;font-weight:500;color:var(--ink-2);background:transparent;border:none;padding:7px 0;text-decoration:underline;text-underline-offset:3px;cursor:pointer">Find cheaper</button>
+                  <span style="font-size:13px;color:var(--ink-3);margin-left:auto;cursor:text">Ask…</span>
+                </div>
+              </div>
+              <div style="text-align:right;display:flex;flex-direction:column;gap:3px"><span class="mono" style="font-size:11.5px;color:var(--fjord)">results in</span><span class="mono" style="font-size:11.5px;color:var(--ink-3)">research · 08:12</span></div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:18px 1fr auto;gap:0 12px;padding:16px 0;border-bottom:1px solid var(--line)">
+              <div style="padding-top:6px"><span style="display:block;width:8px;height:8px;border-radius:999px;background:var(--saffron)"></span></div>
+              <div style="display:flex;flex-direction:column;gap:7px">
+                <div style="font-size:15px;letter-spacing:-0.01em"><span style="font-weight:600">Cabin — the revised estimate is three days late.</span> <span style="color:var(--ink-2)">Bjørnstad promised the numbers on Tuesday.</span></div>
+                <div style="font-size:14px"><span style="color:var(--fjord);font-weight:600">→</span> A short nudge usually works with him. Follow-up is drafted.</div>
+                <div style="display:flex;gap:14px;align-items:center;margin-top:2px">
+                  <button style="font-family:var(--font-sans);font-size:13px;font-weight:600;color:var(--paper);background:var(--ink);border:none;padding:7px 14px;cursor:pointer">Send follow-up</button>
+                  <button style="font-family:var(--font-sans);font-size:13px;font-weight:500;color:var(--ink-2);background:transparent;border:none;padding:7px 0;text-decoration:underline;text-underline-offset:3px;cursor:pointer">Wait until Monday</button>
+                  <button style="font-family:var(--font-sans);font-size:13px;font-weight:500;color:var(--ink-2);background:transparent;border:none;padding:7px 0;text-decoration:underline;text-underline-offset:3px;cursor:pointer">Mark resolved</button>
+                  <span style="font-size:13px;color:var(--ink-3);margin-left:auto;cursor:text">Ask…</span>
+                </div>
+              </div>
+              <div style="text-align:right;display:flex;flex-direction:column;gap:3px"><span class="mono" style="font-size:11.5px;color:var(--danger)">3 days over</span><span class="mono" style="font-size:11.5px;color:var(--ink-3)">waiting → you</span></div>
+            </div>
+
+            <div style="display:flex;align-items:baseline;gap:10px;border-bottom:1px solid var(--ink);padding-bottom:7px;margin-top:28px"><span class="eyebrow" style="color:var(--ink)">In motion</span><span class="mono" style="font-size:11.5px;color:var(--ink-3)">3</span></div>
+            <div style="display:grid;grid-template-columns:18px 1fr auto;gap:0 12px;padding:12px 0;border-bottom:1px solid var(--line)">
+              <div style="padding-top:5px"><span style="display:block;width:8px;height:8px;border-radius:999px;background:var(--sky)"></span></div>
+              <div style="font-size:14px"><span style="font-weight:600">Athens</span> <span style="color:var(--ink-2)">— comparing 11 hotels within a kilometre of the marathon start.</span></div>
+              <div class="mono" style="font-size:11.5px;color:var(--ink-3);text-align:right">working · since 08:15</div>
+            </div>
+            <div style="display:grid;grid-template-columns:18px 1fr auto;gap:0 12px;padding:12px 0;border-bottom:1px solid var(--line)">
+              <div style="padding-top:5px"><span style="display:block;width:8px;height:8px;border-radius:999px;border:1px solid var(--sky);background:transparent"></span></div>
+              <div style="font-size:14px"><span style="font-weight:600">Insurance</span> <span style="color:var(--ink-2)">— reading both quotes against your current Gjensidige terms.</span></div>
+              <div class="mono" style="font-size:11.5px;color:var(--ink-3);text-align:right">queued · 09:40</div>
+            </div>
+            <div style="display:grid;grid-template-columns:18px 1fr auto;gap:0 12px;padding:12px 0;border-bottom:1px solid var(--line)">
+              <div style="padding-top:5px"><span style="display:block;width:8px;height:8px;border-radius:999px;border:1px solid var(--sky);background:transparent"></span></div>
+              <div style="font-size:14px"><span style="font-weight:600">Kitchen water filter</span> <span style="color:var(--ink-2)">— you asked me to reassess what you found in July.</span></div>
+              <div class="mono" style="font-size:11.5px;color:var(--ink-3);text-align:right">queued · 09:40</div>
+            </div>
+
+            <div style="display:flex;align-items:baseline;gap:10px;border-bottom:1px solid var(--ink);padding-bottom:7px;margin-top:28px"><span class="eyebrow" style="color:var(--ink)">Waiting on others</span><span class="mono" style="font-size:11.5px;color:var(--ink-3)">3</span></div>
+            <div style="display:grid;grid-template-columns:18px 1fr auto;gap:0 12px;padding:12px 0;border-bottom:1px solid var(--line)">
+              <div style="padding-top:5px"><span style="display:block;width:8px;height:8px;border-radius:999px;border:1px solid var(--ink-3);background:transparent"></span></div>
+              <div style="font-size:14px"><span style="font-weight:600">Andreas</span> <span style="color:var(--ink-2)">— signed shareholder agreement, promised Monday.</span></div>
+              <div class="mono" style="font-size:11.5px;color:var(--ink-3);text-align:right">2 days</div>
+            </div>
+            <div style="display:grid;grid-template-columns:18px 1fr auto;gap:0 12px;padding:12px 0;border-bottom:1px solid var(--line)">
+              <div style="padding-top:5px"><span style="display:block;width:8px;height:8px;border-radius:999px;border:1px solid var(--ink-3);background:transparent"></span></div>
+              <div style="font-size:14px"><span style="font-weight:600">Landlord</span> <span style="color:var(--ink-2)">— deposit confirmation. I'll nudge Friday if still quiet.</span></div>
+              <div class="mono" style="font-size:11.5px;color:var(--ink-3);text-align:right">5 days</div>
+            </div>
+            <div style="display:grid;grid-template-columns:18px 1fr auto;gap:0 12px;padding:12px 0;border-bottom:1px solid var(--line)">
+              <div style="padding-top:5px"><span style="display:block;width:8px;height:8px;border-radius:999px;border:1px solid var(--ink-3);background:transparent"></span></div>
+              <div style="font-size:14px"><span style="font-weight:600">Skatteetaten</span> <span style="color:var(--ink-2)">— case 4471-B. Twelve days in; three weeks is typical.</span></div>
+              <div class="mono" style="font-size:11.5px;color:var(--ink-3);text-align:right">12 days</div>
+            </div>
+
+            <div style="display:flex;align-items:baseline;gap:10px;border-bottom:1px solid var(--line);padding-bottom:7px;margin-top:28px"><span class="eyebrow">Handled this morning</span><span class="mono" style="font-size:11.5px;color:var(--ink-3)">3 of 6</span></div>
+            <div style="display:grid;grid-template-columns:18px 1fr auto;gap:0 12px;padding:10px 0;border-bottom:1px solid var(--line);color:var(--ink-3)">
+              <div style="font-size:12px;padding-top:1px;color:var(--success)">✓</div>
+              <div style="font-size:14px">Birthday greeting sent to Karoline. <span style="text-decoration:underline;text-underline-offset:3px;cursor:pointer">Undo</span></div>
+              <div class="mono" style="font-size:11.5px;text-align:right">08:02</div>
+            </div>
+            <div style="display:grid;grid-template-columns:18px 1fr auto;gap:0 12px;padding:10px 0;border-bottom:1px solid var(--line);color:var(--ink-3)">
+              <div style="font-size:12px;padding-top:1px;color:var(--success)">✓</div>
+              <div style="font-size:14px">Electrician's invoice paid — 8 400 kr from joint account.</div>
+              <div class="mono" style="font-size:11.5px;text-align:right">07:58</div>
+            </div>
+            <div style="display:grid;grid-template-columns:18px 1fr auto;gap:0 12px;padding:10px 0;color:var(--ink-3)">
+              <div style="font-size:12px;padding-top:1px;color:var(--success)">✓</div>
+              <div style="font-size:14px">Declined the webinar invite from Kongsberg-gruppen, politely.</div>
+              <div class="mono" style="font-size:11.5px;text-align:right">07:41</div>
+            </div>
+          </div>
+
+          <div style="border-left:1px solid var(--line);padding-left:32px">
+            <div style="display:flex;align-items:baseline;gap:10px;border-bottom:1px solid var(--ink);padding-bottom:7px"><span class="eyebrow" style="color:var(--ink)">Today</span><span class="mono" style="font-size:11.5px;color:var(--ink-3)">free from 15:00</span></div>
+            <div style="display:flex;flex-direction:column;padding-top:14px">
+              <div style="display:grid;grid-template-columns:44px 1fr;gap:10px;padding:7px 0"><span class="mono" style="font-size:11.5px;color:var(--ink-3);padding-top:2px">09:30</span><span style="font-size:14px;border-left:2px solid var(--ink);padding-left:10px">Product sync — Rune, Live</span></div>
+              <div style="display:grid;grid-template-columns:44px 1fr;gap:10px;padding:7px 0"><span class="mono" style="font-size:11.5px;color:var(--ink-3);padding-top:2px">12:00</span><span style="font-size:14px;border-left:2px solid var(--ink);padding-left:10px">Lunch with Mari — Kaffebrenneriet</span></div>
+              <div style="display:grid;grid-template-columns:44px 1fr;gap:10px;padding:7px 0"><span class="mono" style="font-size:11.5px;color:var(--ink-3);padding-top:2px">14:00</span><span style="font-size:14px;border-left:2px solid var(--ink);padding-left:10px">Dentist — Bogstadveien 54 <span class="mono" style="display:block;font-size:11px;color:var(--ink-3);margin-top:2px">leave 13:35 · bike 12 min</span></span></div>
+              <div style="display:grid;grid-template-columns:44px 1fr;gap:10px;padding:7px 0"><span class="mono" style="font-size:11.5px;color:var(--ink-3);padding-top:2px">15:00</span><span style="font-size:14px;color:var(--ink-3);border-left:2px solid var(--line);padding-left:10px">Clear — good slot for the passport form</span></div>
+              <div style="display:grid;grid-template-columns:44px 1fr;gap:10px;padding:7px 0"><span class="mono" style="font-size:11.5px;color:var(--saffron);padding-top:2px">17:00</span><span style="font-size:14px;border-left:2px solid var(--saffron);padding-left:10px">Insurance decision due today</span></div>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:10px;border-bottom:1px solid var(--line);padding-bottom:7px;margin-top:26px"><span class="eyebrow">Ahead</span></div>
+            <div style="display:flex;flex-direction:column;padding-top:12px">
+              <div style="display:grid;grid-template-columns:44px 1fr;gap:10px;padding:6px 0"><span class="mono" style="font-size:11.5px;color:var(--ink-3)">Fri</span><span style="font-size:14px">Electrician at the cabin, 08:00</span></div>
+              <div style="display:grid;grid-template-columns:44px 1fr;gap:10px;padding:6px 0"><span class="mono" style="font-size:11.5px;color:var(--ink-3)">Mon</span><span style="font-size:14px">Freelance invoice due — 31 500 kr</span></div>
+              <div style="display:grid;grid-template-columns:44px 1fr;gap:10px;padding:6px 0"><span class="mono" style="font-size:11.5px;color:var(--ink-3)">Thu 4</span><span style="font-size:14px">Marathon bib pickup closes</span></div>
+              <div style="display:grid;grid-template-columns:44px 1fr;gap:10px;padding:6px 0"><span class="mono" style="font-size:11.5px;color:var(--ink-3)">Oct 7</span><span style="font-size:14px">Passport expires in 41 days</span></div>
+            </div>
+            <div style="margin-top:26px;background:var(--paper-2);padding:14px 16px">
+              <div class="eyebrow" style="margin-bottom:8px">Drifting</div>
+              <div style="font-size:13px;line-height:1.5;color:var(--ink-2)">The garage door quote has sat untouched for five weeks. <span style="text-decoration:underline;text-underline-offset:3px;cursor:pointer;color:var(--ink)">Reassess</span> · <span style="text-decoration:underline;text-underline-offset:3px;cursor:pointer;color:var(--ink)">Drop it</span></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:center;gap:18px;padding:12px 40px;border-top:1px solid var(--line)">
+          <span class="mono" style="font-size:11px;color:var(--ink-3)">j / k move</span>
+          <span class="mono" style="font-size:11px;color:var(--ink-3)">1–3 act</span>
+          <span class="mono" style="font-size:11px;color:var(--ink-3)">a ask</span>
+          <span class="mono" style="font-size:11px;color:var(--ink-3)">e expand</span>
+          <span class="mono" style="font-size:11px;color:var(--ink-3)">z undo</span>
+        </div>
+      </div>
+      <p class="dv-cap">One spine, four attention tiers — not six widgets. "Needs you" rows carry recommendation + actions inline; everything below collapses to a single line until it needs you. The first row shows keyboard focus (ink edge, key hints). Saffron dot = needs you · sky = in motion · hollow = waiting · ✓ = receipt.</p>
+    </div>
+
+    <div class="dv-opt" id="1b">
+      <div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Expanded item — research result, in place</div>
+      <div class="dv-card" style="width:900px">
+        <div style="padding:0 32px">
+          <div style="display:grid;grid-template-columns:18px 1fr auto;gap:0 12px;padding:14px 0;border-bottom:1px solid var(--line);opacity:0.45">
+            <div style="padding-top:5px"><span style="display:block;width:8px;height:8px;border-radius:999px;background:var(--saffron)"></span></div>
+            <div style="font-size:14px"><span style="font-weight:600">Anders — Thursday or Friday?</span> <span style="color:var(--ink-2)">Reply drafted for Thursday 14:00.</span></div>
+            <div class="mono" style="font-size:11.5px;color:var(--ink-3)">draft ready</div>
+          </div>
+        </div>
+        <div style="margin:16px 20px;border:1px solid var(--ink);background:var(--paper)">
+          <div style="display:flex;align-items:baseline;gap:12px;padding:20px 24px 0">
+            <span style="width:8px;height:8px;border-radius:999px;background:var(--saffron);flex:none;position:relative;top:-2px"></span>
+            <div style="flex:1">
+              <div style="font-size:19px;font-weight:600;letter-spacing:-0.015em">Copenhagen — choose a hotel</div>
+              <div class="mono" style="font-size:11px;color:var(--ink-3);margin-top:6px">your ask · mon 14:02 — "good hotels, ideally under 5 000 kr/night" · 14 sources read · done 08:12</div>
+            </div>
+            <span class="mono" style="font-size:11.5px;color:var(--fjord)">results in</span>
+            <span class="mono" style="font-size:10.5px;color:var(--ink-3);border:1px solid var(--line);padding:1px 5px">esc</span>
+          </div>
+          <div style="padding:14px 24px 0;font-size:14px;line-height:1.55;color:var(--ink-2);max-width:640px">Two nights, 18–20 September, you and Ida. All three hold a free-cancellation rate until Friday, and all are a short walk from Nyhavn.</div>
+          <div style="margin:18px 24px 0;border-top:1px solid var(--ink)">
+            <div style="display:grid;grid-template-columns:26px 1.1fr 1.2fr 90px 1.6fr;gap:0 16px;padding:8px 0 6px;border-bottom:1px solid var(--line)">
+              <span></span><span class="mono" style="font-size:10.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:0.08em">hotel</span><span class="mono" style="font-size:10.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:0.08em">where</span><span class="mono" style="font-size:10.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:0.08em;text-align:right">night</span><span class="mono" style="font-size:10.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:0.08em">worth knowing</span>
+            </div>
+            <div style="display:grid;grid-template-columns:26px 1.1fr 1.2fr 90px 1.6fr;gap:0 16px;align-items:baseline;padding:12px 8px;margin:0 -8px;background:var(--paper-2)">
+              <span style="width:8px;height:8px;border-radius:999px;background:var(--saffron);position:relative;top:-1px"></span>
+              <span style="font-size:14.5px;font-weight:600">Hotel Sanders <span class="mono" style="font-size:10.5px;color:var(--fjord);font-weight:400;margin-left:4px">recommended</span></span>
+              <span style="font-size:14px;color:var(--ink-2)">Strandgade — 3 min to Nyhavn</span>
+              <span class="mono" style="font-size:13px;text-align:right">4 210</span>
+              <span style="font-size:13px;color:var(--ink-2)">Quietest rooms of the three; breakfast people write home about.</span>
+            </div>
+            <div style="display:grid;grid-template-columns:26px 1.1fr 1.2fr 90px 1.6fr;gap:0 16px;align-items:baseline;padding:12px 0;border-top:1px solid var(--line)">
+              <span style="width:8px;height:8px;border-radius:999px;border:1px solid var(--ink-3)"></span>
+              <span style="font-size:14.5px;font-weight:500">Villa Copenhagen</span>
+              <span style="font-size:14px;color:var(--ink-2)">Tivoli side — 14 min walk</span>
+              <span class="mono" style="font-size:13px;text-align:right">4 890</span>
+              <span style="font-size:13px;color:var(--ink-2)">Rooftop pool; bigger, busier, conference crowd on weekdays.</span>
+            </div>
+            <div style="display:grid;grid-template-columns:26px 1.1fr 1.2fr 90px 1.6fr;gap:0 16px;align-items:baseline;padding:12px 0;border-top:1px solid var(--line)">
+              <span style="width:8px;height:8px;border-radius:999px;border:1px solid var(--ink-3)"></span>
+              <span style="font-size:14.5px;font-weight:500">Manon Les Suites</span>
+              <span style="font-size:14px;color:var(--ink-2)">Ørstedsparken — 18 min</span>
+              <span class="mono" style="font-size:13px;text-align:right">3 950</span>
+              <span style="font-size:13px;color:var(--ink-2)">Jungle courtyard pool; livelier, reviews mention echoing halls.</span>
+            </div>
+          </div>
+          <div style="margin:16px 24px 0;border-left:2px solid var(--fjord);padding:10px 16px;background:var(--paper-2)">
+            <div style="font-size:14px;line-height:1.5"><span style="color:var(--fjord);font-weight:600">→</span> I'd take Sanders. It's the only one that keeps both evenings on foot, and the price difference against Villa buys dinner at Barr.</div>
+          </div>
+          <div style="display:flex;gap:14px;align-items:center;padding:16px 24px 20px">
+            <button style="font-family:var(--font-sans);font-size:13px;font-weight:600;color:var(--paper);background:var(--ink);border:none;padding:8px 16px;cursor:pointer">Choose Sanders</button>
+            <button style="font-family:var(--font-sans);font-size:13px;font-weight:500;color:var(--ink-2);background:transparent;border:none;padding:8px 0;text-decoration:underline;text-underline-offset:3px;cursor:pointer">Compare Sanders · Villa</button>
+            <button style="font-family:var(--font-sans);font-size:13px;font-weight:500;color:var(--ink-2);background:transparent;border:none;padding:8px 0;text-decoration:underline;text-underline-offset:3px;cursor:pointer">Find cheaper</button>
+            <span class="mono" style="font-size:11px;color:var(--ink-3);margin-left:auto">books nothing yet — hold placed on choice</span>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:12px;border-top:1px solid var(--line);padding:12px 24px 16px">
+            <span style="font-size:14px;color:var(--ink-3);flex:1;border-bottom:1px solid var(--line);padding-bottom:6px">Ask for something else — "closer to Noma", "add Thursday night", "what did we pay last time?"</span>
+            <span class="mono" style="font-size:10.5px;color:var(--ink-3);border:1px solid var(--line);padding:1px 5px">↵</span>
+          </div>
+        </div>
+        <div style="padding:0 32px 6px">
+          <div style="display:grid;grid-template-columns:18px 1fr auto;gap:0 12px;padding:14px 0;opacity:0.45">
+            <div style="padding-top:5px"><span style="display:block;width:8px;height:8px;border-radius:999px;background:var(--saffron)"></span></div>
+            <div style="font-size:14px"><span style="font-weight:600">Cabin — the revised estimate is three days late.</span></div>
+            <div class="mono" style="font-size:11.5px;color:var(--danger)">3 days over</div>
+          </div>
+        </div>
+      </div>
+      <p class="dv-cap">Expansion happens in place — neighbours stay visible, so context is never lost. The header keeps the item's fixed spine; the middle is free composition (here: provenance line, comparison table, reasoning callout). The mono footnote by the actions states what execution would actually do — trust lives in small print, not confirmation dialogs.</p>
+    </div>
+
+    <div class="dv-opt" id="1c">
+      <div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Week — load, deadlines, drift · desktop 1440</div>
+      <div class="dv-card" style="width:1440px">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 40px;border-bottom:1px solid var(--line)">
+          <div style="display:flex;align-items:center;gap:10px"><span style="width:10px;height:10px;border-radius:999px;background:var(--saffron)"></span><span style="font-size:15px;font-weight:600;letter-spacing:-0.01em">Utsikt</span></div>
+          <div style="display:flex;align-items:center;gap:28px">
+            <div style="display:flex;gap:20px;font-size:14px;font-weight:500">
+              <span style="color:var(--ink-3);cursor:pointer">Today</span>
+              <span style="color:var(--ink);border-bottom:2px solid var(--ink);padding-bottom:2px">Week</span>
+              <span style="color:var(--ink-3);cursor:pointer">Month</span>
+            </div>
+            <span class="mono" style="font-size:11.5px;color:var(--ink-3)">‹ week 35 · 25–31 aug ›</span>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:60px;padding:28px 40px 22px">
+          <div>
+            <div class="eyebrow" style="margin-bottom:8px">Week 35</div>
+            <div style="font-size:30px;font-weight:500;line-height:1.05;letter-spacing:-0.025em">Thursday is the heavy day. Friday afternoon is clear.</div>
+          </div>
+          <div class="mono" style="font-size:11.5px;color:var(--ink-3);padding-bottom:6px;flex:none">2 deadlines · 3 waiting · 2 drifting</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);margin:0 40px;border:1px solid var(--line);border-bottom:none">
+          <div style="padding:12px 14px 16px;opacity:0.5">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><span class="mono" style="font-size:11.5px;color:var(--ink-3)">Mon 25</span></div>
+            <div style="display:flex;gap:2px;margin:10px 0 12px"><span style="height:5px;flex:1;background:var(--ink)"></span><span style="height:5px;flex:1;background:var(--ink)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span><span style="height:5px;flex:1;background:var(--ink)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span></div>
+            <div style="font-size:13px;color:var(--ink-2);line-height:1.5">Three meetings.<br>9 items handled.</div>
+          </div>
+          <div style="padding:12px 14px 16px;border-left:1px solid var(--line);opacity:0.5">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><span class="mono" style="font-size:11.5px;color:var(--ink-3)">Tue 26</span></div>
+            <div style="display:flex;gap:2px;margin:10px 0 12px"><span style="height:5px;flex:1;background:var(--ink)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span><span style="height:5px;flex:1;background:var(--ink)"></span><span style="height:5px;flex:1;background:var(--ink)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span></div>
+            <div style="font-size:13px;color:var(--ink-2);line-height:1.5">7 handled.<br><span style="color:var(--danger)">Bjørnstad's estimate didn't come.</span></div>
+          </div>
+          <div style="padding:12px 14px 16px;border-left:1px solid var(--line);background:var(--paper-2);box-shadow:inset 0 3px 0 var(--saffron)">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><span class="mono" style="font-size:11.5px;font-weight:500;color:var(--ink)">Wed 27</span><span class="mono" style="font-size:10.5px;color:var(--ink-3)">today</span></div>
+            <div style="display:flex;gap:2px;margin:10px 0 12px"><span style="height:5px;flex:1;background:var(--ink)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span><span style="height:5px;flex:1;background:var(--ink)"></span><span style="height:5px;flex:1;background:var(--ink)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span></div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <div style="display:flex;gap:8px;font-size:13px"><span class="mono" style="font-size:11px;color:var(--ink-3);width:32px;flex:none">09:30</span><span>Product sync</span></div>
+              <div style="display:flex;gap:8px;font-size:13px"><span class="mono" style="font-size:11px;color:var(--ink-3);width:32px;flex:none">12:00</span><span>Lunch — Mari</span></div>
+              <div style="display:flex;gap:8px;font-size:13px"><span class="mono" style="font-size:11px;color:var(--ink-3);width:32px;flex:none">14:00</span><span>Dentist</span></div>
+              <div style="display:flex;gap:8px;font-size:13px;font-weight:600"><span style="color:var(--saffron);width:32px;flex:none;font-size:10.5px;padding-top:2px">▲</span><span>Insurance decision — 17:00</span></div>
+            </div>
+          </div>
+          <div style="padding:12px 14px 16px;border-left:1px solid var(--line)">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><span class="mono" style="font-size:11.5px;color:var(--ink-3)">Thu 28</span><span class="mono" style="font-size:10.5px;color:var(--danger)">6.5 h booked</span></div>
+            <div style="display:flex;gap:2px;margin:10px 0 12px"><span style="height:5px;flex:1;background:var(--ink)"></span><span style="height:5px;flex:1;background:var(--ink)"></span><span style="height:5px;flex:1;background:var(--ink)"></span><span style="height:5px;flex:1;background:var(--ink)"></span><span style="height:5px;flex:1;background:var(--ink)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span></div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <div style="display:flex;gap:8px;font-size:13px"><span class="mono" style="font-size:11px;color:var(--ink-3);width:32px;flex:none">09:00</span><span>Leadership</span></div>
+              <div style="display:flex;gap:8px;font-size:13px"><span class="mono" style="font-size:11px;color:var(--ink-3);width:32px;flex:none">14:00</span><span>Anders <span class="mono" style="font-size:10.5px;color:var(--ink-3)">pending</span></span></div>
+              <div style="display:flex;gap:8px;font-size:13px"><span class="mono" style="font-size:11px;color:var(--ink-3);width:32px;flex:none">15:30</span><span>Cabin call — Bjørnstad</span></div>
+              <div style="display:flex;gap:8px;font-size:13px;font-weight:600"><span style="color:var(--saffron);width:32px;flex:none;font-size:10.5px;padding-top:2px">▲</span><span>Board pre-read due</span></div>
+              <div style="display:flex;gap:8px;font-size:13px;font-weight:600"><span style="color:var(--saffron);width:32px;flex:none;font-size:10.5px;padding-top:2px">▲</span><span>DNB re-fixing closes</span></div>
+            </div>
+          </div>
+          <div style="padding:12px 14px 16px;border-left:1px solid var(--line)">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><span class="mono" style="font-size:11.5px;color:var(--ink-3)">Fri 29</span><span class="mono" style="font-size:10.5px;color:var(--success)">light</span></div>
+            <div style="display:flex;gap:2px;margin:10px 0 12px"><span style="height:5px;flex:1;background:var(--ink)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span></div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <div style="display:flex;gap:8px;font-size:13px"><span class="mono" style="font-size:11px;color:var(--ink-3);width:32px;flex:none">08:00</span><span>Electrician at the cabin</span></div>
+              <div style="display:flex;gap:8px;font-size:13px;color:var(--fjord)"><span class="mono" style="font-size:11px;width:32px;flex:none">09:00</span><span style="border:1px dashed var(--fjord);padding:1px 6px">cabin call, moved?</span></div>
+            </div>
+          </div>
+          <div style="padding:12px 14px 16px;border-left:1px solid var(--line)">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><span class="mono" style="font-size:11.5px;color:var(--ink-3)">Sat 30</span></div>
+            <div style="display:flex;gap:2px;margin:10px 0 12px"><span style="height:5px;flex:1;background:var(--paper-3)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span></div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <div style="display:flex;gap:8px;font-size:13px"><span class="mono" style="font-size:11px;color:var(--ink-3);width:32px;flex:none">09:00</span><span>Long run — 28 km</span></div>
+            </div>
+          </div>
+          <div style="padding:12px 14px 16px;border-left:1px solid var(--line)">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><span class="mono" style="font-size:11.5px;color:var(--ink-3)">Sun 31</span></div>
+            <div style="display:flex;gap:2px;margin:10px 0 12px"><span style="height:5px;flex:1;background:var(--paper-3)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span><span style="height:5px;flex:1;background:var(--paper-3)"></span></div>
+            <div style="font-size:13px;color:var(--ink-3);line-height:1.5">Clear.</div>
+          </div>
+        </div>
+        <div style="margin:0 40px;border:1px solid var(--line);border-top:1px solid var(--ink);background:var(--paper-2);display:flex;align-items:center;gap:16px;padding:12px 16px">
+          <span style="font-size:14px"><span style="color:var(--fjord);font-weight:600">→</span> Thursday holds 6.5 booked hours plus two deadlines. Bjørnstad is free Friday 09:00 — move the cabin call there?</span>
+          <button style="font-family:var(--font-sans);font-size:12px;font-weight:600;color:var(--paper);background:var(--ink);border:none;padding:6px 12px;cursor:pointer;margin-left:auto;flex:none">Move it</button>
+          <button style="font-family:var(--font-sans);font-size:12px;font-weight:500;color:var(--ink-2);background:transparent;border:none;padding:6px 0;text-decoration:underline;text-underline-offset:3px;cursor:pointer;flex:none">Leave Thursday</button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:56px;padding:24px 40px 28px">
+          <div>
+            <div style="display:flex;align-items:baseline;gap:10px;border-bottom:1px solid var(--line);padding-bottom:7px"><span class="eyebrow">Decisions this week</span><span class="mono" style="font-size:11.5px;color:var(--ink-3)">3</span></div>
+            <div style="display:grid;grid-template-columns:1fr auto;gap:0 12px;padding:11px 0;border-bottom:1px solid var(--line);align-items:baseline"><span style="font-size:14px"><span style="font-weight:600">Insurance</span> — switch to If, or stay. Comparison lands 09:40.</span><span class="mono" style="font-size:11.5px;color:var(--saffron)">today 17:00</span></div>
+            <div style="display:grid;grid-template-columns:1fr auto;gap:0 12px;padding:11px 0;border-bottom:1px solid var(--line);align-items:baseline"><span style="font-size:14px"><span style="font-weight:600">DNB mortgage</span> — re-fix at 5.1 % or float. I lean float; memo ready.</span><span class="mono" style="font-size:11.5px;color:var(--ink-3)">thu</span></div>
+            <div style="display:grid;grid-template-columns:1fr auto;gap:0 12px;padding:11px 0;align-items:baseline"><span style="font-size:14px"><span style="font-weight:600">Copenhagen hotel</span> — free cancellation ends Friday.</span><span class="mono" style="font-size:11.5px;color:var(--ink-3)">fri</span></div>
+          </div>
+          <div>
+            <div style="display:flex;align-items:baseline;gap:10px;border-bottom:1px solid var(--line);padding-bottom:7px"><span class="eyebrow">Drifting</span><span class="mono" style="font-size:11.5px;color:var(--ink-3)">quietly getting old</span></div>
+            <div style="display:grid;grid-template-columns:1fr auto;gap:0 12px;padding:11px 0;border-bottom:1px solid var(--line);align-items:baseline"><span style="font-size:14px"><span style="font-weight:600">Kitchen water filter</span> — researched, never decided. <span style="text-decoration:underline;text-underline-offset:3px;cursor:pointer">Reassess</span> · <span style="text-decoration:underline;text-underline-offset:3px;cursor:pointer">Drop</span></span><span class="mono" style="font-size:11.5px;color:var(--ink-3)">3 w</span></div>
+            <div style="display:grid;grid-template-columns:1fr auto;gap:0 12px;padding:11px 0;align-items:baseline"><span style="font-size:14px"><span style="font-weight:600">Garage door quote</span> — expires next month. <span style="text-decoration:underline;text-underline-offset:3px;cursor:pointer">Reassess</span> · <span style="text-decoration:underline;text-underline-offset:3px;cursor:pointer">Drop</span></span><span class="mono" style="font-size:11.5px;color:var(--ink-3)">5 w</span></div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:center;gap:18px;padding:12px 40px;border-top:1px solid var(--line)">
+          <span class="mono" style="font-size:11px;color:var(--ink-3)">▲ deadline</span>
+          <span class="mono" style="font-size:11px;color:var(--ink-3)">■ booked hour</span>
+          <span class="mono" style="font-size:11px;color:var(--ink-3)">dashed = suggested, nothing moved</span>
+        </div>
+      </div>
+      <p class="dv-cap">The week is about load and consequence, not a second calendar. Each day: a six-cell booked-hours strip, then only what matters — deadlines (▲), pending confirmations, drift. Past days collapse to receipts. The operator's one structural suggestion sits under the grid as a normal recommendation row; the dashed slot on Friday shows it's proposed, not done.</p>
+    </div>
+
+    <div class="dv-opt" id="1d">
+      <div class="dv-olabel"><a class="dv-oid" href="#1d">1d</a>Asking — instruction in, queue, receipt out</div>
+      <div class="dv-card" style="width:900px;padding:28px 32px 24px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span class="mono" style="font-size:10.5px;background:var(--ink);color:var(--paper);padding:2px 7px">1</span><span style="font-size:13px;color:var(--ink-2)">Press <span class="mono" style="font-size:11px;border:1px solid var(--line);padding:0 4px">a</span> on any row — the ask field opens under it, like a margin note</span></div>
+        <div style="border:1px solid var(--ink);background:var(--paper-2)">
+          <div style="display:grid;grid-template-columns:18px 1fr auto;gap:0 12px;padding:14px 16px 4px">
+            <div style="padding-top:6px"><span style="display:block;width:8px;height:8px;border-radius:999px;background:var(--saffron)"></span></div>
+            <div>
+              <div style="font-size:15px;letter-spacing:-0.01em"><span style="font-weight:600">Anders — Thursday or Friday?</span> <span style="color:var(--ink-2)">Reply drafted for Thursday 14:00.</span></div>
+              <div style="font-size:14px;margin-top:6px"><span style="color:var(--fjord);font-weight:600">→</span> Thursday 14:00 — your afternoon is free.</div>
+            </div>
+            <span class="mono" style="font-size:11.5px;color:var(--fjord)">draft ready</span>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:12px;margin:10px 16px 14px 46px;background:var(--paper);border:1px solid var(--line);padding:10px 14px">
+            <span style="font-size:14px;color:var(--ink)">Find another day next week instead — not Thursday, I want it clear<span style="display:inline-block;width:1.5px;height:15px;background:var(--fjord);vertical-align:-2px;margin-left:1px"></span></span>
+            <span class="mono" style="font-size:10.5px;color:var(--ink-3);margin-left:auto;flex:none">↵ queue · esc</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;margin:24px 0 12px"><span class="mono" style="font-size:10.5px;background:var(--ink);color:var(--paper);padding:2px 7px">2</span><span style="font-size:13px;color:var(--ink-2)">On return, the row carries its instruction — nothing modal, nothing to babysit</span></div>
+        <div style="display:grid;grid-template-columns:18px 1fr auto;gap:0 12px;padding:14px 16px;border:1px solid var(--line)">
+          <div style="padding-top:6px"><span style="display:block;width:8px;height:8px;border-radius:999px;border:1px solid var(--sky);background:transparent"></span></div>
+          <div>
+            <div style="font-size:15px;letter-spacing:-0.01em"><span style="font-weight:600">Anders — Thursday or Friday?</span></div>
+            <div class="mono" style="font-size:11.5px;color:var(--ink-3);margin-top:6px">↳ you: "find another day next week instead — not thursday" · will run in the 09:40 sync</div>
+          </div>
+          <div style="text-align:right;display:flex;flex-direction:column;gap:3px"><span class="mono" style="font-size:11.5px;color:var(--ink-3)">queued · 09:40</span><span style="font-size:12px;color:var(--ink-3);text-decoration:underline;text-underline-offset:3px;cursor:pointer">cancel</span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;margin:24px 0 12px"><span class="mono" style="font-size:10.5px;background:var(--ink);color:var(--paper);padding:2px 7px">3</span><span style="font-size:13px;color:var(--ink-2)">"In motion", expanded — every job shows its origin, its state, and where the result went</span></div>
+        <div style="border-top:1px solid var(--ink)">
+          <div style="display:grid;grid-template-columns:18px 1fr auto;gap:0 12px;padding:13px 0;border-bottom:1px solid var(--line)">
+            <div style="padding-top:5px"><span style="display:block;width:8px;height:8px;border-radius:999px;background:var(--sky)"></span></div>
+            <div>
+              <div style="font-size:14px"><span style="font-weight:600">Athens</span> <span style="color:var(--ink-2)">— hotels within 1 km of the marathon start, under 2 000 kr.</span></div>
+              <div class="mono" style="font-size:11px;color:var(--ink-3);margin-top:4px">↳ you, tue 21:14 · reading booking sites — 7 of 11 done</div>
+              <div style="display:flex;gap:2px;margin-top:8px;width:220px"><span style="height:3px;flex:7;background:var(--sky)"></span><span style="height:3px;flex:4;background:var(--paper-3)"></span></div>
+            </div>
+            <span class="mono" style="font-size:11.5px;color:var(--ink-3)">working · since 08:15</span>
+          </div>
+          <div style="display:grid;grid-template-columns:18px 1fr auto;gap:0 12px;padding:13px 0;border-bottom:1px solid var(--line)">
+            <div style="padding-top:5px"><span style="display:block;width:8px;height:8px;border-radius:999px;border:1px solid var(--sky);background:transparent"></span></div>
+            <div>
+              <div style="font-size:14px"><span style="font-weight:600">Anders</span> <span style="color:var(--ink-2)">— find another day next week, not Thursday.</span></div>
+              <div class="mono" style="font-size:11px;color:var(--ink-3);margin-top:4px">↳ you, just now</div>
+            </div>
+            <span class="mono" style="font-size:11.5px;color:var(--ink-3)">queued · 09:40</span>
+          </div>
+          <div style="display:grid;grid-template-columns:18px 1fr auto;gap:0 12px;padding:13px 0;border-bottom:1px solid var(--line)">
+            <div style="padding-top:5px"><span style="display:block;width:8px;height:8px;border-radius:999px;border:1px solid var(--sky);background:transparent"></span></div>
+            <div>
+              <div style="font-size:14px"><span style="font-weight:600">Weekly review</span> <span style="color:var(--ink-2)">— standing job, runs Sunday 18:00.</span></div>
+              <div class="mono" style="font-size:11px;color:var(--ink-3);margin-top:4px">↳ standing instruction, set 12 May</div>
+            </div>
+            <span class="mono" style="font-size:11.5px;color:var(--ink-3)">scheduled · sun</span>
+          </div>
+          <div style="display:grid;grid-template-columns:18px 1fr auto;gap:0 12px;padding:13px 0;border-bottom:1px solid var(--line)">
+            <div style="font-size:12px;padding-top:2px;color:var(--success)">✓</div>
+            <div>
+              <div style="font-size:14px;color:var(--ink-2)"><span style="font-weight:600;color:var(--ink)">Copenhagen hotels</span> — three options filed under <span style="text-decoration:underline;text-underline-offset:3px">Needs you</span>.</div>
+            </div>
+            <span class="mono" style="font-size:11.5px;color:var(--ink-3)">done · 08:12</span>
+          </div>
+          <div style="display:grid;grid-template-columns:18px 1fr auto;gap:0 12px;padding:13px 0">
+            <div style="padding-top:5px"><span style="display:block;width:8px;height:8px;background:var(--danger)"></span></div>
+            <div>
+              <div style="font-size:14px"><span style="font-weight:600">Insurance</span> <span style="color:var(--ink-2)">— Gjensidige's PDF is password-protected; I can't read it.</span></div>
+              <div style="display:flex;gap:14px;align-items:center;margin-top:8px">
+                <button style="font-family:var(--font-sans);font-size:12px;font-weight:600;color:var(--paper);background:var(--ink);border:none;padding:6px 12px;cursor:pointer">Ask them to resend</button>
+                <button style="font-family:var(--font-sans);font-size:12px;font-weight:500;color:var(--ink-2);background:transparent;border:none;padding:6px 0;text-decoration:underline;text-underline-offset:3px;cursor:pointer">Upload it here</button>
+                <button style="font-family:var(--font-sans);font-size:12px;font-weight:500;color:var(--ink-2);background:transparent;border:none;padding:6px 0;text-decoration:underline;text-underline-offset:3px;cursor:pointer">Skip the comparison</button>
+              </div>
+            </div>
+            <span class="mono" style="font-size:11.5px;color:var(--danger)">stuck</span>
+          </div>
+        </div>
+      </div>
+      <p class="dv-cap">Asking is annotating, not chatting: one field, one line, queued into the next sync — the echo ("↳ you: …") plus a cancel link is the whole contract. Failure is a first-class row (square marker, plain words, recovery actions), never a silent stall.</p>
+    </div>
+
+    <div class="dv-opt" id="1e">
+      <div class="dv-olabel"><a class="dv-oid" href="#1e">1e</a>Draft review — recommend, prepare, you approve</div>
+      <div class="dv-card" style="width:900px;padding:20px">
+        <div style="border:1px solid var(--ink)">
+          <div style="display:flex;align-items:baseline;gap:12px;padding:20px 24px 0">
+            <span style="width:8px;height:8px;border-radius:999px;background:var(--saffron);flex:none;position:relative;top:-2px"></span>
+            <div style="flex:1">
+              <div style="font-size:19px;font-weight:600;letter-spacing:-0.015em">Anders — Thursday or Friday?</div>
+              <div class="mono" style="font-size:11px;color:var(--ink-3);margin-top:6px">mail · anders@kollektivet.no · today 08:31</div>
+            </div>
+            <span class="mono" style="font-size:11.5px;color:var(--fjord)">draft ready — nothing sent</span>
+            <span class="mono" style="font-size:10.5px;color:var(--ink-3);border:1px solid var(--line);padding:1px 5px">esc</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1.15fr;gap:28px;padding:18px 24px 0">
+            <div>
+              <div style="background:var(--paper-2);padding:14px 16px">
+                <div class="mono" style="font-size:10.5px;color:var(--ink-3);margin-bottom:8px">his message</div>
+                <div style="font-size:14px;line-height:1.55">"Hei! Can you do Thursday 14 or Friday 10 for the sync? Ideally 45 minutes. — A"</div>
+              </div>
+              <div style="margin-top:18px">
+                <div class="mono" style="font-size:10.5px;color:var(--ink-3);margin-bottom:10px">why thursday — your two days</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+                  <div>
+                    <div class="mono" style="font-size:11px;margin-bottom:6px">Thu 28</div>
+                    <div style="display:flex;flex-direction:column;gap:3px">
+                      <div style="display:flex;gap:8px;align-items:center"><span class="mono" style="font-size:10px;color:var(--ink-3);width:22px">09</span><span style="height:10px;flex:1;background:var(--ink)"></span></div>
+                      <div style="display:flex;gap:8px;align-items:center"><span class="mono" style="font-size:10px;color:var(--ink-3);width:22px">11</span><span style="height:10px;flex:1;background:var(--ink)"></span></div>
+                      <div style="display:flex;gap:8px;align-items:center"><span class="mono" style="font-size:10px;color:var(--ink-3);width:22px">13</span><span style="height:10px;flex:1;border:1px solid var(--line)"></span></div>
+                      <div style="display:flex;gap:8px;align-items:center"><span class="mono" style="font-size:10px;color:var(--fjord);width:22px">14</span><span style="height:14px;flex:1;border:1.5px solid var(--fjord);display:flex;align-items:center;justify-content:center"><span class="mono" style="font-size:8.5px;color:var(--fjord)">here</span></span></div>
+                      <div style="display:flex;gap:8px;align-items:center"><span class="mono" style="font-size:10px;color:var(--ink-3);width:22px">16</span><span style="height:10px;flex:1;border:1px solid var(--line)"></span></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="mono" style="font-size:11px;margin-bottom:6px;color:var(--ink-3)">Fri 29</div>
+                    <div style="display:flex;flex-direction:column;gap:3px;opacity:0.8">
+                      <div style="display:flex;gap:8px;align-items:center"><span class="mono" style="font-size:10px;color:var(--ink-3);width:22px">09</span><span style="height:10px;flex:1;background:var(--ink)"></span></div>
+                      <div style="display:flex;gap:8px;align-items:center"><span class="mono" style="font-size:10px;color:var(--ink-3);width:22px">10</span><span style="height:10px;flex:1;border:1px solid var(--line)"></span></div>
+                      <div style="display:flex;gap:8px;align-items:center"><span class="mono" style="font-size:10px;color:var(--ink-3);width:22px">11</span><span style="height:10px;flex:1;background:var(--ink)"></span></div>
+                      <div style="display:flex;gap:8px;align-items:center"><span class="mono" style="font-size:10px;color:var(--ink-3);width:22px">13</span><span style="height:10px;flex:1;background:var(--ink)"></span></div>
+                      <div style="display:flex;gap:8px;align-items:center"><span class="mono" style="font-size:10px;color:var(--ink-3);width:22px">15</span><span style="height:10px;flex:1;border:1px solid var(--line)"></span></div>
+                    </div>
+                  </div>
+                </div>
+                <div style="font-size:13px;color:var(--ink-2);line-height:1.5;margin-top:10px">Thursday after 12 is clear; Friday is broken up by the leadership sync and Live's 1:1. You also said no meetings before the long run when you can help it.</div>
+              </div>
+            </div>
+            <div>
+              <div style="border:1px solid var(--line);background:var(--paper)">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding:10px 16px">
+                  <span class="mono" style="font-size:10.5px;color:var(--ink-3)">your reply — editable</span>
+                  <span style="font-size:12px;color:var(--ink-2);text-decoration:underline;text-underline-offset:3px;cursor:pointer">edit</span>
+                </div>
+                <div style="padding:16px;font-size:14.5px;line-height:1.6">Hei Anders,<br><br>Thursday at 14:00 works well — I'll take the meeting room by the kitchen, same as last time. 45 minutes is fine.<br><br>— E.</div>
+              </div>
+              <div style="display:flex;gap:14px;align-items:center;margin-top:14px">
+                <button style="font-family:var(--font-sans);font-size:13px;font-weight:600;color:var(--paper);background:var(--fjord);border:none;padding:9px 18px;cursor:pointer">Send reply — Thursday 14:00</button>
+                <button style="font-family:var(--font-sans);font-size:13px;font-weight:500;color:var(--ink-2);background:transparent;border:none;padding:8px 0;text-decoration:underline;text-underline-offset:3px;cursor:pointer">Suggest Friday</button>
+                <button style="font-family:var(--font-sans);font-size:13px;font-weight:500;color:var(--ink-2);background:transparent;border:none;padding:8px 0;text-decoration:underline;text-underline-offset:3px;cursor:pointer">Write it myself</button>
+              </div>
+              <div class="mono" style="font-size:11px;color:var(--ink-3);margin-top:10px">sends from your Gmail · calendar hold placed on Thu 14:00 · undo for 30 s</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;border-top:1px solid var(--line);margin-top:20px;padding:11px 24px">
+            <span class="mono" style="font-size:11px;color:var(--ink-3)">I recommend and prepare</span>
+            <span style="color:var(--ink-3)">→</span>
+            <span class="mono" style="font-size:11px;color:var(--ink)">you approve</span>
+            <span style="color:var(--ink-3)">→</span>
+            <span class="mono" style="font-size:11px;color:var(--ink-3)">Gmail and Calendar execute</span>
+          </div>
+        </div>
+      </div>
+      <p class="dv-cap">The response workflow in one card: his words, my reasoning (two tiny day columns — evidence, not decoration), your draft. Fjord solid = the one button that touches the outside world; ink solids stay internal. The footer states the division of labour outright.</p>
+    </div>
+
+    <div class="dv-opt" id="1f">
+      <div class="dv-olabel"><a class="dv-oid" href="#1f">1f</a>A workflow nobody designed — same grammar</div>
+      <div class="dv-card" style="width:900px;padding:20px">
+        <div style="border:1px solid var(--ink)">
+          <div style="display:flex;align-items:baseline;gap:12px;padding:20px 24px 0">
+            <span style="width:8px;height:8px;border-radius:999px;background:var(--saffron);flex:none;position:relative;top:-2px"></span>
+            <div style="flex:1">
+              <div style="font-size:19px;font-weight:600;letter-spacing:-0.015em">Passport — expires in 41 days</div>
+              <div class="mono" style="font-size:11px;color:var(--ink-3);margin-top:6px">surfaced by me — Athens flights in November need 3 months' validity · nobody asked</div>
+            </div>
+            <span class="mono" style="font-size:11.5px;color:var(--saffron)">one step needs you</span>
+            <span class="mono" style="font-size:10.5px;color:var(--ink-3);border:1px solid var(--line);padding:1px 5px">esc</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:0;padding:22px 24px 0">
+            <div style="flex:1">
+              <div style="display:flex;align-items:center;gap:8px"><span style="width:12px;height:12px;border-radius:999px;background:var(--ink);flex:none;display:grid;place-items:center;color:var(--paper);font-size:8px">✓</span><span style="height:1px;flex:1;background:var(--ink)"></span></div>
+              <div style="font-size:13px;font-weight:600;margin-top:8px">Form</div>
+              <div class="mono" style="font-size:10.5px;color:var(--ink-3);margin-top:3px">prefilled from Folkeregisteret</div>
+            </div>
+            <div style="flex:1">
+              <div style="display:flex;align-items:center;gap:8px"><span style="width:12px;height:12px;border-radius:999px;background:var(--ink);flex:none;display:grid;place-items:center;color:var(--paper);font-size:8px">✓</span><span style="height:1px;flex:1;background:var(--line)"></span></div>
+              <div style="font-size:13px;font-weight:600;margin-top:8px">Photo</div>
+              <div class="mono" style="font-size:10.5px;color:var(--ink-3);margin-top:3px">taken at the station — no step</div>
+            </div>
+            <div style="flex:1">
+              <div style="display:flex;align-items:center;gap:8px"><span style="width:12px;height:12px;border-radius:999px;border:2px solid var(--saffron);background:var(--paper);flex:none"></span><span style="height:1px;flex:1;background:var(--line)"></span></div>
+              <div style="font-size:13px;font-weight:600;margin-top:8px;color:var(--ink)">Appointment</div>
+              <div class="mono" style="font-size:10.5px;color:var(--saffron);margin-top:3px">choose a slot below</div>
+            </div>
+            <div style="flex:0 0 120px">
+              <div style="display:flex;align-items:center;gap:8px"><span style="width:12px;height:12px;border-radius:999px;border:1px solid var(--ink-3);flex:none"></span></div>
+              <div style="font-size:13px;font-weight:500;margin-top:8px;color:var(--ink-3)">Pickup</div>
+              <div class="mono" style="font-size:10.5px;color:var(--ink-3);margin-top:3px">~10 days later</div>
+            </div>
+          </div>
+          <div style="margin:20px 24px 0;border-left:2px solid var(--fjord);padding:10px 16px;background:var(--paper-2)">
+            <div style="font-size:14px;line-height:1.5"><span style="color:var(--fjord);font-weight:600">→</span> Grønland police station has openings this week. Thursday 15:40 sits neatly behind the Anders meeting — you'd be done by 16:10.</div>
+          </div>
+          <div style="padding:16px 24px 0">
+            <div class="mono" style="font-size:10.5px;color:var(--ink-3);margin-bottom:10px">open slots — grønland, this week and next</div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <span style="font-size:13px;font-weight:600;color:var(--paper);background:var(--ink);padding:8px 14px;cursor:pointer">Thu 15:40</span>
+              <span style="font-size:13px;font-weight:500;color:var(--ink);border:1px solid var(--ink);padding:7px 13px;cursor:pointer">Fri 09:10</span>
+              <span style="font-size:13px;font-weight:500;color:var(--ink);border:1px solid var(--ink);padding:7px 13px;cursor:pointer">Mon 11:30</span>
+              <span style="font-size:13px;font-weight:500;color:var(--ink);border:1px solid var(--ink);padding:7px 13px;cursor:pointer">Tue 08:20</span>
+              <span style="font-size:13px;color:var(--ink-2);padding:7px 4px;text-decoration:underline;text-underline-offset:3px;cursor:pointer">other weeks</span>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin:18px 24px 0;border-top:1px solid var(--line);padding-top:14px">
+            <div style="font-size:13px;color:var(--ink-2);line-height:1.5"><span style="color:var(--success)">✓</span> Form prefilled — <span style="text-decoration:underline;text-underline-offset:3px;cursor:pointer;color:var(--ink)">review two fields</span></div>
+            <div style="font-size:13px;color:var(--ink-2);line-height:1.5"><span style="color:var(--success)">✓</span> Old passport — desk drawer, per your March note</div>
+            <div style="font-size:13px;color:var(--ink-2);line-height:1.5"><span style="color:var(--success)">✓</span> 690 kr — card on file</div>
+          </div>
+          <div style="display:flex;gap:14px;align-items:center;padding:18px 24px 20px">
+            <button style="font-family:var(--font-sans);font-size:13px;font-weight:600;color:var(--paper);background:var(--fjord);border:none;padding:9px 18px;cursor:pointer">Book Thursday 15:40</button>
+            <button style="font-family:var(--font-sans);font-size:13px;font-weight:500;color:var(--ink-2);background:transparent;border:none;padding:8px 0;text-decoration:underline;text-underline-offset:3px;cursor:pointer">Different week</button>
+            <button style="font-family:var(--font-sans);font-size:13px;font-weight:500;color:var(--ink-2);background:transparent;border:none;padding:8px 0;text-decoration:underline;text-underline-offset:3px;cursor:pointer">I'll handle it myself</button>
+            <span class="mono" style="font-size:11px;color:var(--ink-3);margin-left:auto">books at politiet.no · calendar entry with travel time</span>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:12px;border-top:1px solid var(--line);padding:12px 24px 16px">
+            <span style="font-size:14px;color:var(--ink-3);flex:1;border-bottom:1px solid var(--line);padding-bottom:6px">Ask — "does Ida's passport expire too?", "any station with Saturday slots?"</span>
+            <span class="mono" style="font-size:10.5px;color:var(--ink-3);border:1px solid var(--line);padding:1px 5px">↵</span>
+          </div>
+        </div>
+      </div>
+      <p class="dv-cap">A workflow no one designed a card for — the operator noticed the expiry itself (see the provenance line: "nobody asked"). It composed the item from stock blocks: steps, callout, slot chips, checklist, actions, ask. Same spine as an email reply; completely different anatomy inside.</p>
+    </div>
+
+    <div class="dv-opt" id="1g">
+      <div class="dv-olabel"><a class="dv-oid" href="#1g">1g</a>Mobile — approve, defer, ask · 393</div>
+      <div class="dv-card" style="padding:32px;background:var(--paper-2)">
+        <div style="display:flex;gap:40px;align-items:flex-start">
+          <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+            <div style="min-height:100%;background:#F4EFE0;color:#0E2A47;font-family:'Familjen Grotesk',sans-serif;display:flex;flex-direction:column;padding:64px 20px 42px;box-sizing:border-box">
+              <div style="display:flex;align-items:center;gap:8px"><span style="width:9px;height:9px;border-radius:999px;background:#FFB000"></span><span style="font-size:14px;font-weight:600">Utsikt</span><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E7089;margin-left:auto">synced 09:41</span></div>
+              <div style="font-size:11.5px;text-transform:uppercase;letter-spacing:0.18em;color:#5E7089;font-weight:500;margin-top:22px">Wednesday 27 August</div>
+              <div style="font-size:26px;font-weight:500;letter-spacing:-0.025em;line-height:1.05;margin-top:8px">Three things need you.</div>
+              <div style="border-bottom:1px solid #0E2A47;padding-bottom:6px;margin-top:22px;font-size:11.5px;text-transform:uppercase;letter-spacing:0.18em;color:#0E2A47;font-weight:500">Needs you</div>
+              <div style="padding:14px 0;border-bottom:1px solid #C9BDA0">
+                <div style="font-size:15px;font-weight:600;letter-spacing:-0.01em">Anders — Thursday or Friday?</div>
+                <div style="font-size:14px;margin-top:4px;color:#0E2A47"><span style="color:#005090;font-weight:600">→</span> Thursday 14:00. Reply is drafted.</div>
+                <div style="display:flex;gap:10px;margin-top:10px">
+                  <span style="flex:1;display:grid;place-items:center;height:44px;background:#0E2A47;color:#F4EFE0;font-size:14px;font-weight:600;cursor:pointer">Reply: Thursday 14:00</span>
+                  <span style="width:44px;height:44px;display:grid;place-items:center;border:1px solid #0E2A47;font-size:16px;letter-spacing:1px;cursor:pointer">···</span>
+                </div>
+              </div>
+              <div style="padding:14px 0;border-bottom:1px solid #C9BDA0">
+                <div style="font-size:15px;font-weight:600;letter-spacing:-0.01em">Copenhagen — choose a hotel</div>
+                <div style="font-size:14px;margin-top:4px"><span style="color:#005090;font-weight:600">→</span> Sanders, 4 210 kr a night.</div>
+                <div style="display:flex;gap:10px;margin-top:10px">
+                  <span style="flex:1;display:grid;place-items:center;height:44px;background:#0E2A47;color:#F4EFE0;font-size:14px;font-weight:600;cursor:pointer">Choose Sanders</span>
+                  <span style="width:44px;height:44px;display:grid;place-items:center;border:1px solid #0E2A47;font-size:16px;letter-spacing:1px;cursor:pointer">···</span>
+                </div>
+              </div>
+              <div style="padding:14px 0;border-bottom:1px solid #C9BDA0">
+                <div style="font-size:15px;font-weight:600;letter-spacing:-0.01em">Cabin — estimate 3 days late</div>
+                <div style="font-size:14px;margin-top:4px"><span style="color:#005090;font-weight:600">→</span> Send the drafted nudge.</div>
+                <div style="display:flex;gap:10px;margin-top:10px">
+                  <span style="flex:1;display:grid;place-items:center;height:44px;background:#0E2A47;color:#F4EFE0;font-size:14px;font-weight:600;cursor:pointer">Send follow-up</span>
+                  <span style="width:44px;height:44px;display:grid;place-items:center;border:1px solid #0E2A47;font-size:16px;letter-spacing:1px;cursor:pointer">···</span>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;padding:13px 0;border-bottom:1px solid #C9BDA0"><span style="width:7px;height:7px;border-radius:999px;background:#50B0D0;flex:none"></span><span style="font-size:13px;color:#31486A">Athens hotels — working, 7 of 11</span><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E7089;margin-left:auto">08:15</span></div>
+              <div style="display:flex;align-items:center;gap:8px;padding:13px 0"><span style="width:7px;height:7px;border-radius:999px;border:1px solid #5E7089;flex:none"></span><span style="font-size:13px;color:#31486A">Waiting on 3 people — all quiet</span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#5E7089;margin-left:auto">›</span></div>
+              <div style="margin-top:auto;display:flex;align-items:baseline;gap:10px;border-top:1px solid #C9BDA0;padding-top:14px">
+                <span style="flex:1;font-size:14px;color:#5E7089;border-bottom:1px solid #C9BDA0;padding-bottom:6px">Ask for anything…</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E7089;border:1px solid #C9BDA0;padding:1px 5px">↵</span>
+              </div>
+            </div>
+          </x-import>
+          <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+            <div style="min-height:100%;background:#F4EFE0;color:#0E2A47;font-family:'Familjen Grotesk',sans-serif;display:flex;flex-direction:column;padding:64px 20px 42px;box-sizing:border-box">
+              <div style="display:flex;align-items:center;gap:8px"><span style="font-size:14px;color:#31486A">‹ Today</span><span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#005090;margin-left:auto">draft ready — nothing sent</span></div>
+              <div style="font-size:22px;font-weight:600;letter-spacing:-0.02em;line-height:1.1;margin-top:20px">Anders — Thursday or Friday?</div>
+              <div style="background:#ECE6D4;padding:12px 14px;margin-top:14px">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#5E7089;margin-bottom:6px">his message · 08:31</div>
+                <div style="font-size:14px;line-height:1.5">"Hei! Can you do Thursday 14 or Friday 10 for the sync? Ideally 45 minutes."</div>
+              </div>
+              <div style="font-size:14px;margin-top:14px;line-height:1.5"><span style="color:#005090;font-weight:600">→</span> Thursday 14:00 — your afternoon is clear, Friday is broken up.</div>
+              <div style="border:1px solid #C9BDA0;margin-top:14px">
+                <div style="display:flex;justify-content:space-between;border-bottom:1px solid #C9BDA0;padding:8px 14px"><span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#5E7089">your reply</span><span style="font-size:12px;color:#31486A;text-decoration:underline;text-underline-offset:3px">edit</span></div>
+                <div style="padding:12px 14px;font-size:14px;line-height:1.55">Hei Anders,<br>Thursday at 14:00 works well — same room as last time. 45 minutes is fine.<br>— E.</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:10px;margin-top:18px">
+                <span style="display:grid;place-items:center;height:50px;background:#005090;color:#F4EFE0;font-size:14.5px;font-weight:600;cursor:pointer">Send reply — Thursday 14:00</span>
+                <span style="display:grid;place-items:center;height:46px;border:1px solid #0E2A47;font-size:14px;font-weight:500;cursor:pointer">Suggest Friday 10:00</span>
+                <span style="display:grid;place-items:center;height:40px;font-size:14px;color:#31486A;text-decoration:underline;text-underline-offset:3px;cursor:pointer">Find other times</span>
+              </div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#5E7089;text-align:center;margin-top:6px">sends from your Gmail · undo for 30 s</div>
+              <div style="margin-top:auto;display:flex;align-items:baseline;gap:10px;border-top:1px solid #C9BDA0;padding-top:14px">
+                <span style="flex:1;font-size:14px;color:#5E7089;border-bottom:1px solid #C9BDA0;padding-bottom:6px">Ask — "push it a week"…</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5E7089;border:1px solid #C9BDA0;padding:1px 5px">↵</span>
+              </div>
+            </div>
+          </x-import>
+        </div>
+      </div>
+      <p class="dv-cap">Mobile is triage, not a shrunken desk: recommendation + one thumb-height primary per item, alternatives behind "···", the ask bar always within reach. Right — the approve flow: read his words, read my draft, one blue press. 44 px minimum targets throughout.</p>
+    </div>
+
+    <div class="dv-opt" id="1h">
+      <div class="dv-olabel"><a class="dv-oid" href="#1h">1h</a>The grammar — what an agent needs to build any item</div>
+      <div class="dv-card" style="width:1240px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding:22px 28px;border-bottom:1px solid var(--ink)">
+          <div style="font-size:20px;font-weight:600;letter-spacing:-0.015em">Every item, whatever it is: <span style="color:var(--ink-2);font-weight:400">what's happening → what I'd do → what you can do</span></div>
+          <span class="mono" style="font-size:11px;color:var(--ink-3)">the contract an agent builds against</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1.25fr 1fr 1fr">
+          <div style="padding:20px 24px;border-right:1px solid var(--line)">
+            <div class="eyebrow" style="margin-bottom:14px">1 · The spine — fixed, always</div>
+            <div style="border:1px dashed var(--ink-3);padding:14px 16px">
+              <div style="display:grid;grid-template-columns:18px 1fr auto;gap:0 12px">
+                <div style="padding-top:5px"><span style="display:block;width:8px;height:8px;border-radius:999px;background:var(--saffron)"></span></div>
+                <div style="display:flex;flex-direction:column;gap:7px">
+                  <div style="font-size:14px"><span style="font-weight:600">Title —</span> <span style="color:var(--ink-2)">situation in one plain sentence.</span> <span class="mono" style="font-size:10px;color:var(--fjord)">‹ what's happening</span></div>
+                  <div style="font-size:14px"><span style="color:var(--fjord);font-weight:600">→</span> Recommendation, first person, with the reason. <span class="mono" style="font-size:10px;color:var(--fjord)">‹ what I'd do</span></div>
+                  <div style="display:flex;gap:12px;align-items:center"><span style="font-size:12px;font-weight:600;color:var(--paper);background:var(--ink);padding:5px 10px">Primary</span><span style="font-size:12px;color:var(--ink-2);text-decoration:underline;text-underline-offset:3px">Alt one</span><span style="font-size:12px;color:var(--ink-2);text-decoration:underline;text-underline-offset:3px">Alt two</span><span style="font-size:12px;color:var(--ink-3);margin-left:auto">Ask…</span></div>
+                </div>
+                <div style="text-align:right"><span class="mono" style="font-size:10.5px;color:var(--ink-3)">state · time</span></div>
+              </div>
+            </div>
+            <div style="font-size:13px;color:var(--ink-2);line-height:1.55;margin-top:12px">Collapsed = spine only. Expanded = spine + any stack of blocks (2) between recommendation and actions. The spine never moves, so a hotel comparison and a tax letter scan read identically.</div>
+            <div class="eyebrow" style="margin:20px 0 12px">3 · Actions — the only hierarchy</div>
+            <div style="display:flex;flex-direction:column;gap:9px">
+              <div style="display:flex;align-items:center;gap:12px"><span style="font-size:12px;font-weight:600;color:var(--paper);background:var(--ink);padding:6px 12px;flex:none">Solid ink</span><span style="font-size:13px;color:var(--ink-2)">recommended; resolves inside Utsikt</span></div>
+              <div style="display:flex;align-items:center;gap:12px"><span style="font-size:12px;font-weight:600;color:var(--paper);background:var(--fjord);padding:6px 12px;flex:none">Solid fjord</span><span style="font-size:13px;color:var(--ink-2)">touches the outside world — mail, calendar, money</span></div>
+              <div style="display:flex;align-items:center;gap:12px"><span style="font-size:12px;font-weight:500;color:var(--ink);border:1px solid var(--ink);padding:5px 11px;flex:none">Outline</span><span style="font-size:13px;color:var(--ink-2)">a real alternative, equally final</span></div>
+              <div style="display:flex;align-items:center;gap:12px"><span style="font-size:12px;font-weight:500;color:var(--ink-2);text-decoration:underline;text-underline-offset:3px;flex:none;padding:5px 0">Underline</span><span style="font-size:13px;color:var(--ink-2)">sends me back to work instead</span></div>
+              <div class="mono" style="font-size:11px;color:var(--ink-3);margin-top:4px">max 4 · one solid · verbs with their object · consequence in small print · undo &gt; confirm</div>
+            </div>
+          </div>
+          <div style="padding:20px 24px;border-right:1px solid var(--line)">
+            <div class="eyebrow" style="margin-bottom:14px">2 · Blocks — free middle, stock parts</div>
+            <div style="display:flex;flex-direction:column">
+              <div style="display:grid;grid-template-columns:86px 1fr;gap:14px;padding:8px 0;border-bottom:1px solid var(--line);align-items:center"><span style="font-size:12px;line-height:1.35;color:var(--ink-2)">Plain text, one short paragraph</span><span class="mono" style="font-size:11px">text</span></div>
+              <div style="display:grid;grid-template-columns:86px 1fr;gap:14px;padding:8px 0;border-bottom:1px solid var(--line);align-items:center"><span style="background:var(--paper-2);font-size:10.5px;padding:4px 6px;color:var(--ink-2)">"their words"</span><span class="mono" style="font-size:11px">quote — source material</span></div>
+              <div style="display:grid;grid-template-columns:86px 1fr;gap:14px;padding:8px 0;border-bottom:1px solid var(--line);align-items:center"><span style="border-left:2px solid var(--fjord);background:var(--paper-2);font-size:10.5px;padding:4px 6px">→ take it</span><span class="mono" style="font-size:11px">callout — the recommendation</span></div>
+              <div style="display:grid;grid-template-columns:86px 1fr;gap:14px;padding:8px 0;border-bottom:1px solid var(--line);align-items:center"><span style="display:flex;flex-direction:column;gap:2px"><span style="height:6px;background:var(--paper-2);border-bottom:1px solid var(--line)"></span><span style="height:6px;background:var(--paper-2);border-bottom:1px solid var(--line)"></span><span style="height:6px;background:var(--paper-2)"></span></span><span class="mono" style="font-size:11px">table — compare, ≤5 rows</span></div>
+              <div style="display:grid;grid-template-columns:86px 1fr;gap:14px;padding:8px 0;border-bottom:1px solid var(--line);align-items:center"><span style="display:flex;gap:3px"><span style="font-size:9px;background:var(--ink);color:var(--paper);padding:2px 5px">15:40</span><span style="font-size:9px;border:1px solid var(--ink);padding:1px 4px">09:10</span></span><span class="mono" style="font-size:11px">slots — pickable times</span></div>
+              <div style="display:grid;grid-template-columns:86px 1fr;gap:14px;padding:8px 0;border-bottom:1px solid var(--line);align-items:center"><span style="display:flex;align-items:center;gap:3px"><span style="width:8px;height:8px;border-radius:99px;background:var(--ink)"></span><span style="height:1px;flex:1;background:var(--line)"></span><span style="width:8px;height:8px;border-radius:99px;border:1.5px solid var(--saffron)"></span><span style="height:1px;flex:1;background:var(--line)"></span><span style="width:8px;height:8px;border-radius:99px;border:1px solid var(--ink-3)"></span></span><span class="mono" style="font-size:11px">steps — multi-stage work</span></div>
+              <div style="display:grid;grid-template-columns:86px 1fr;gap:14px;padding:8px 0;border-bottom:1px solid var(--line);align-items:center"><span style="font-size:10.5px;color:var(--ink-2)"><span style="color:var(--success)">✓</span> done · <span style="color:var(--success)">✓</span> done</span><span class="mono" style="font-size:11px">checklist — prerequisites</span></div>
+              <div style="display:grid;grid-template-columns:86px 1fr;gap:14px;padding:8px 0;border-bottom:1px solid var(--line);align-items:center"><span style="display:flex;gap:2px"><span style="height:3px;flex:7;background:var(--sky);align-self:center"></span><span style="height:3px;flex:3;background:var(--paper-3);align-self:center"></span></span><span class="mono" style="font-size:11px">progress — work in motion</span></div>
+              <div style="display:grid;grid-template-columns:86px 1fr;gap:14px;padding:8px 0;border-bottom:1px solid var(--line);align-items:center"><span style="border:1px solid var(--line);font-size:9px;padding:3px 6px;color:var(--ink-2)">Hei Anders, …</span><span class="mono" style="font-size:11px">draft — outbound, editable</span></div>
+              <div style="display:grid;grid-template-columns:86px 1fr;gap:14px;padding:8px 0;border-bottom:1px solid var(--line);align-items:center"><span style="display:flex;flex-direction:column;gap:2px"><span style="display:flex;gap:4px;align-items:center"><span class="mono" style="font-size:8px;color:var(--ink-3)">09</span><span style="height:7px;flex:1;background:var(--ink)"></span></span><span style="display:flex;gap:4px;align-items:center"><span class="mono" style="font-size:8px;color:var(--fjord)">14</span><span style="height:7px;flex:1;border:1px solid var(--fjord)"></span></span></span><span class="mono" style="font-size:11px">day strip — calendar evidence</span></div>
+              <div style="display:grid;grid-template-columns:86px 1fr;gap:14px;padding:8px 0;border-bottom:1px solid var(--line);align-items:center"><span style="font-size:10.5px;color:var(--ink-2)">night <span class="mono" style="float:right">4 210</span></span><span class="mono" style="font-size:11px">key–value — facts, mono numbers</span></div>
+              <div style="display:grid;grid-template-columns:86px 1fr;gap:14px;padding:8px 0;align-items:center"><span style="border-bottom:1px solid var(--line);font-size:10.5px;color:var(--ink-3);padding-bottom:2px">Ask…</span><span class="mono" style="font-size:11px">ask — always last, always there</span></div>
+            </div>
+            <div class="mono" style="font-size:10.5px;color:var(--ink-3);line-height:1.6;margin-top:12px">item = spine + block[] (json) · unknown block type renders as text — degrade, never break · images only from real sources</div>
+          </div>
+          <div style="padding:20px 24px">
+            <div class="eyebrow" style="margin-bottom:14px">4 · State — one word, one place</div>
+            <div style="display:flex;flex-direction:column">
+              <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line)"><span style="width:8px;height:8px;border-radius:999px;background:var(--saffron);flex:none"></span><span class="mono" style="font-size:11.5px;width:110px;flex:none">needs you</span><span style="font-size:12px;color:var(--ink-3)">only tier that asks for time</span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line)"><span class="mono" style="font-size:11.5px;color:var(--fjord);width:126px;flex:none;padding-left:18px">draft ready</span><span style="font-size:12px;color:var(--ink-3)">prepared, nothing sent</span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line)"><span style="width:8px;height:8px;border-radius:999px;border:1px solid var(--sky);flex:none"></span><span class="mono" style="font-size:11.5px;width:110px;flex:none">queued · 09:40</span><span style="font-size:12px;color:var(--ink-3)">will run at next sync</span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line)"><span style="width:8px;height:8px;border-radius:999px;background:var(--sky);flex:none"></span><span class="mono" style="font-size:11.5px;width:110px;flex:none">working</span><span style="font-size:12px;color:var(--ink-3)">in motion now, progress shown</span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line)"><span style="width:8px;height:8px;border-radius:999px;border:1px solid var(--ink-3);flex:none"></span><span class="mono" style="font-size:11.5px;width:110px;flex:none">waiting · 3 d</span><span style="font-size:12px;color:var(--ink-3)">ball in someone else's court</span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line)"><span style="color:var(--success);font-size:11.5px;flex:none;width:8px">✓</span><span class="mono" style="font-size:11.5px;width:110px;flex:none">done · 08:12</span><span style="font-size:12px;color:var(--ink-3)">receipt + undo where safe</span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:7px 0"><span style="width:8px;height:8px;background:var(--danger);flex:none"></span><span class="mono" style="font-size:11.5px;width:110px;flex:none">stuck</span><span style="font-size:12px;color:var(--ink-3)">says why + recovery actions</span></div>
+            </div>
+            <div class="eyebrow" style="margin:20px 0 12px">5 · Colour & type — the whole budget</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:center;gap:10px"><span style="width:12px;height:12px;border-radius:999px;background:var(--saffron);flex:none"></span><span style="font-size:13px;color:var(--ink-2)">saffron — needs you, deadlines. The sun; ration it.</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span style="width:12px;height:12px;border-radius:999px;background:var(--fjord);flex:none"></span><span style="font-size:13px;color:var(--ink-2)">fjord — recommendations, outbound sends</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span style="width:12px;height:12px;border-radius:999px;background:var(--sky);flex:none"></span><span style="font-size:13px;color:var(--ink-2)">sky — my work in motion</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span style="width:12px;height:12px;border-radius:999px;background:var(--ink);flex:none"></span><span style="font-size:13px;color:var(--ink-2)">ink on paper — everything else</span></div>
+              <div class="mono" style="font-size:11px;color:var(--ink-3);line-height:1.7;margin-top:6px">grotesk 19/15/14/13.5/12.5 · mono 11/10.5 for state, time, provenance, keys · hairlines separate, ink rules open sections · radius 0 · shadows never</div>
+            </div>
+            <div class="eyebrow" style="margin:20px 0 12px">6 · Voice</div>
+            <div style="font-size:13px;line-height:1.6;color:var(--ink-2)"><span style="color:var(--success)">✓</span> "Thursday works — your afternoon is free."<br><span style="color:var(--success)">✓</span> "I couldn't read the PDF. Ask them to resend?"<br><span style="color:var(--danger)">✗</span> "✨ Your AI copilot has optimized your day!"</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <p class="dv-next">Try next: "make <a class="dv-oid" href="#1a">1a</a> denser" · "show the month view" · "turn this into a clickable prototype" · "darker, inkier masthead"</p>
+</section>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,141 @@
+{
+  "item": {
+    "id": "11111111-1111-4111-8111-111111111111",
+    "workspaceId": "00000000-0000-4000-8000-000000000001",
+    "stableKey": "gmail:personal:thread:anders-2026-09-03",
+    "version": 1,
+    "state": "draft_ready",
+    "tier": "needs_you",
+    "priority": 80,
+    "attentionRank": 10,
+    "titleLead": "Anders",
+    "situation": "asks whether Thursday 14:00 or Friday 10:00 works.",
+    "recommendation": "I would choose Thursday at 14:00: your calendar is open and Friday is already relatively busy.",
+    "requiresUserAttention": true,
+    "dueAt": null,
+    "reviewAt": null,
+    "waitingSince": null,
+    "projectId": null,
+    "currentRevisionId": "11111111-1111-4111-8111-111111111112",
+    "createdAt": "2026-08-29T06:00:00+02:00",
+    "updatedAt": "2026-08-29T08:52:00+02:00",
+    "archivedAt": null
+  },
+  "document": {
+    "schemaVersion": 1,
+    "spine": {
+      "titleLead": "Anders",
+      "situation": "asks whether Thursday 14:00 or Friday 10:00 works.",
+      "recommendation": "I would choose Thursday at 14:00: your calendar is open and Friday is already relatively busy.",
+      "stateLabel": "draft ready",
+      "sourceLabel": "Gmail",
+      "sourceTime": "08:41",
+      "provenance": {
+        "kind": "email",
+        "label": "Gmail thread with Anders",
+        "quote": "Thursday at 14 or Friday at 10?",
+        "sourcesRead": 3,
+        "confidence": "explicit"
+      }
+    },
+    "blocks": [
+      {
+        "id": "source",
+        "type": "quote",
+        "schemaVersion": 1,
+        "fallbackText": "Anders asks about Thursday 14:00 or Friday 10:00.",
+        "label": "Anders",
+        "quote": "Thursday at 14 or Friday at 10?"
+      },
+      {
+        "id": "draft",
+        "type": "draft",
+        "schemaVersion": 1,
+        "fallbackText": "Prepared reply: Thursday at 14 works well for me.",
+        "channel": "email",
+        "recipientLabel": "Anders",
+        "body": "Thursday at 14:00 works well for me.",
+        "editable": true,
+        "providerState": "dashboard_only"
+      }
+    ],
+    "actionIds": [
+      "11111111-1111-4111-8111-111111111121",
+      "11111111-1111-4111-8111-111111111122",
+      "11111111-1111-4111-8111-111111111123"
+    ],
+    "ask": {
+      "enabled": true,
+      "placeholder": "Ask for different times or another response…"
+    }
+  },
+  "actions": [
+    {
+      "id": "11111111-1111-4111-8111-111111111121",
+      "itemId": "11111111-1111-4111-8111-111111111111",
+      "itemRevisionId": "11111111-1111-4111-8111-111111111112",
+      "kind": "hybrid",
+      "capability": "workflow.reply_and_calendar",
+      "label": "Reply: Thursday 14:00",
+      "recommended": true,
+      "visualTone": "fjord",
+      "consequence": "Will send after a 30-second grace period and add the meeting to Google Calendar.",
+      "effectPlan": {},
+      "payload": {
+        "sourceRefId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+        "draftBody": "Thursday at 14:00 works well for me.",
+        "calendar": {
+          "title": "Meeting with Anders",
+          "start": "2026-09-03T14:00:00+02:00",
+          "end": "2026-09-03T14:30:00+02:00"
+        }
+      },
+      "riskLevel": "external_irreversible",
+      "status": "proposed",
+      "allowStaleExecution": false,
+      "executeAfter": null,
+      "expiresAt": null
+    },
+    {
+      "id": "11111111-1111-4111-8111-111111111122",
+      "itemId": "11111111-1111-4111-8111-111111111111",
+      "itemRevisionId": "11111111-1111-4111-8111-111111111112",
+      "kind": "external",
+      "capability": "gmail.ensure_reply_draft",
+      "label": "Suggest Friday 10:00",
+      "recommended": false,
+      "visualTone": "outline",
+      "consequence": "Will prepare a Gmail reply draft; nothing will be sent.",
+      "effectPlan": {},
+      "payload": {
+        "sourceRefId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+        "draftBody": "Friday at 10:00 works better for me — does that suit you?"
+      },
+      "riskLevel": "external_reversible",
+      "status": "proposed",
+      "allowStaleExecution": false,
+      "executeAfter": null,
+      "expiresAt": null
+    },
+    {
+      "id": "11111111-1111-4111-8111-111111111123",
+      "itemId": "11111111-1111-4111-8111-111111111111",
+      "itemRevisionId": "11111111-1111-4111-8111-111111111112",
+      "kind": "ai",
+      "capability": "ai.enqueue",
+      "label": "Find other times",
+      "recommended": false,
+      "visualTone": "link",
+      "consequence": "Will queue a calendar review for the next operator sync.",
+      "effectPlan": {},
+      "payload": {
+        "instruction": "Find three good alternatives next week, preferring lighter days."
+      },
+      "riskLevel": "internal",
+      "status": "proposed",
+      "allowStaleExecution": false,
+      "executeAfter": null,
+      "expiresAt": null
+    }
+  ]
+}

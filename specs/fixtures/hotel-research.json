@@ -1,0 +1,177 @@
+{
+  "item": {
+    "id": "22222222-2222-4222-8222-222222222221",
+    "workspaceId": "00000000-0000-4000-8000-000000000001",
+    "stableKey": "project:copenhagen-trip:hotel-decision",
+    "version": 1,
+    "state": "needs_you",
+    "tier": "needs_you",
+    "priority": 80,
+    "attentionRank": 10,
+    "titleLead": "Copenhagen hotel",
+    "situation": "three strong options are ready for review.",
+    "recommendation": "I would choose Hotel Sanders for the strongest location and overall fit.",
+    "requiresUserAttention": true,
+    "dueAt": null,
+    "reviewAt": null,
+    "waitingSince": null,
+    "projectId": null,
+    "currentRevisionId": "22222222-2222-4222-8222-222222222222",
+    "createdAt": "2026-08-29T06:00:00+02:00",
+    "updatedAt": "2026-08-29T08:52:00+02:00",
+    "archivedAt": null
+  },
+  "document": {
+    "schemaVersion": 1,
+    "spine": {
+      "titleLead": "Copenhagen hotel",
+      "situation": "three strong options are ready for review.",
+      "recommendation": "I would choose Hotel Sanders for the strongest location and overall fit.",
+      "stateLabel": "ready",
+      "sourceLabel": "operator research",
+      "sourceTime": "08:35",
+      "provenance": {
+        "kind": "operator",
+        "label": "Reviewed 9 hotel sources",
+        "sourcesRead": 9,
+        "confidence": "strong"
+      }
+    },
+    "blocks": [
+      {
+        "id": "table",
+        "type": "comparison_table",
+        "schemaVersion": 1,
+        "fallbackText": "Hotel Sanders is recommended ahead of Villa Copenhagen and Manon Les Suites.",
+        "columns": [
+          {
+            "key": "hotel",
+            "label": "Hotel"
+          },
+          {
+            "key": "price",
+            "label": "NOK/night",
+            "align": "right"
+          },
+          {
+            "key": "location",
+            "label": "Location"
+          },
+          {
+            "key": "gym",
+            "label": "Gym"
+          }
+        ],
+        "rows": [
+          {
+            "id": "sanders",
+            "cells": {
+              "hotel": "Hotel Sanders",
+              "price": 4300,
+              "location": "Excellent",
+              "gym": "Good"
+            }
+          },
+          {
+            "id": "villa",
+            "cells": {
+              "hotel": "Villa Copenhagen",
+              "price": 3900,
+              "location": "Very good",
+              "gym": "Excellent"
+            }
+          },
+          {
+            "id": "manon",
+            "cells": {
+              "hotel": "Manon Les Suites",
+              "price": 4600,
+              "location": "Good",
+              "gym": "Good"
+            }
+          }
+        ],
+        "recommendedRowId": "sanders"
+      },
+      {
+        "id": "why",
+        "type": "callout",
+        "schemaVersion": 1,
+        "fallbackText": "Sanders is recommended for location and fit.",
+        "text": "Sanders best matches the requested central location and understated atmosphere. Villa Copenhagen is better value if the gym matters most.",
+        "tone": "reasoning"
+      }
+    ],
+    "actionIds": [
+      "22222222-2222-4222-8222-222222222231",
+      "22222222-2222-4222-8222-222222222232",
+      "22222222-2222-4222-8222-222222222233"
+    ],
+    "ask": {
+      "enabled": true,
+      "placeholder": "Change budget, criteria or ask for more options…"
+    }
+  },
+  "actions": [
+    {
+      "id": "22222222-2222-4222-8222-222222222231",
+      "itemId": "22222222-2222-4222-8222-222222222221",
+      "itemRevisionId": "22222222-2222-4222-8222-222222222222",
+      "kind": "internal",
+      "capability": "item.complete",
+      "label": "Choose Hotel Sanders",
+      "recommended": true,
+      "visualTone": "ink",
+      "consequence": "Marks Sanders as the current choice; no booking will be made.",
+      "effectPlan": {},
+      "payload": {
+        "choiceId": "sanders"
+      },
+      "riskLevel": "internal",
+      "status": "proposed",
+      "allowStaleExecution": false,
+      "executeAfter": null,
+      "expiresAt": null
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222232",
+      "itemId": "22222222-2222-4222-8222-222222222221",
+      "itemRevisionId": "22222222-2222-4222-8222-222222222222",
+      "kind": "ai",
+      "capability": "ai.enqueue",
+      "label": "Compare Sanders and Villa Copenhagen",
+      "recommended": false,
+      "visualTone": "outline",
+      "consequence": "Queues a focused comparison for the next operator sync.",
+      "effectPlan": {},
+      "payload": {
+        "instruction": "Compare Hotel Sanders with Villa Copenhagen on location, room quality, gym and value."
+      },
+      "riskLevel": "internal",
+      "status": "proposed",
+      "allowStaleExecution": false,
+      "executeAfter": null,
+      "expiresAt": null
+    },
+    {
+      "id": "22222222-2222-4222-8222-222222222233",
+      "itemId": "22222222-2222-4222-8222-222222222221",
+      "itemRevisionId": "22222222-2222-4222-8222-222222222222",
+      "kind": "ai",
+      "capability": "ai.enqueue",
+      "label": "Find cheaper alternatives",
+      "recommended": false,
+      "visualTone": "link",
+      "consequence": "Queues new research under NOK 4,000 per night.",
+      "effectPlan": {},
+      "payload": {
+        "instruction": "Find three equally good alternatives below NOK 4,000 per night."
+      },
+      "riskLevel": "internal",
+      "status": "proposed",
+      "allowStaleExecution": false,
+      "executeAfter": null,
+      "expiresAt": null
+    }
+  ]
+}

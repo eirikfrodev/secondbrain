@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://utsikt.local/schemas/action-v1.schema.json",
+  "title": "Utsikt Action v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "itemId",
+    "itemRevisionId",
+    "kind",
+    "capability",
+    "label",
+    "recommended",
+    "visualTone",
+    "riskLevel",
+    "status",
+    "payload"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "itemId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "itemRevisionId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "kind": {
+      "enum": [
+        "internal",
+        "ai",
+        "external",
+        "hybrid"
+      ]
+    },
+    "capability": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*\\.[a-z][a-z0-9_]*$"
+    },
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "recommended": {
+      "type": "boolean"
+    },
+    "visualTone": {
+      "enum": [
+        "ink",
+        "fjord",
+        "outline",
+        "link"
+      ]
+    },
+    "consequence": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 300
+    },
+    "effectPlan": {
+      "type": "object"
+    },
+    "payload": {
+      "type": "object"
+    },
+    "riskLevel": {
+      "enum": [
+        "internal",
+        "external_reversible",
+        "external_irreversible",
+        "prohibited"
+      ]
+    },
+    "status": {
+      "enum": [
+        "proposed",
+        "approved",
+        "prepared",
+        "scheduled",
+        "executing",
+        "succeeded",
+        "failed",
+        "cancelled",
+        "expired"
+      ]
+    },
+    "allowStaleExecution": {
+      "type": "boolean"
+    },
+    "executeAfter": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "expiresAt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    }
+  }
+}

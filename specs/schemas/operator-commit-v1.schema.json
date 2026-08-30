@@ -1,0 +1,237 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://utsikt.local/schemas/operator-commit-v1.schema.json",
+  "title": "Utsikt Operator Commit v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "runId",
+    "expectedSnapshotVersion",
+    "mutations",
+    "jobResolutions",
+    "summary"
+  ],
+  "properties": {
+    "runId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "expectedSnapshotVersion": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "mutations": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "type",
+              "stableKey",
+              "envelope",
+              "document",
+              "actions",
+              "sourceRefs"
+            ],
+            "properties": {
+              "type": {
+                "const": "upsert_item"
+              },
+              "stableKey": {
+                "type": "string"
+              },
+              "expectedItemVersion": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "envelope": {
+                "type": "object"
+              },
+              "document": {
+                "$ref": "item-document-v1.schema.json"
+              },
+              "actions": {
+                "type": "array",
+                "maxItems": 4,
+                "items": {
+                  "$ref": "action-v1.schema.json"
+                }
+              },
+              "sourceRefs": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "type",
+              "itemId"
+            ],
+            "properties": {
+              "type": {
+                "const": "archive_item"
+              },
+              "itemId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "expectedItemVersion": {
+                "type": "integer"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "type",
+              "stableKey",
+              "name",
+              "status",
+              "summary"
+            ],
+            "properties": {
+              "type": {
+                "const": "update_project"
+              },
+              "stableKey": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "active",
+                  "waiting",
+                  "decided",
+                  "dropped",
+                  "completed"
+                ]
+              },
+              "summary": {
+                "type": "string"
+              },
+              "reviewAt": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date-time"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "type",
+              "projectStableKey",
+              "summary",
+              "confidence"
+            ],
+            "properties": {
+              "type": {
+                "const": "add_project_note"
+              },
+              "projectStableKey": {
+                "type": "string"
+              },
+              "summary": {
+                "type": "string"
+              },
+              "confidence": {
+                "enum": [
+                  "explicit",
+                  "strong",
+                  "inferred"
+                ]
+              },
+              "sourceRefId": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "uuid"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "jobResolutions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "jobId",
+          "status",
+          "summary"
+        ],
+        "properties": {
+          "jobId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "enum": [
+              "completed",
+              "stuck",
+              "cancelled"
+            ]
+          },
+          "summary": {
+            "type": "string"
+          },
+          "resultPayload": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "needsAttentionCount",
+        "updatedItemCount",
+        "createdItemCount",
+        "handledItemCount",
+        "notes"
+      ],
+      "properties": {
+        "needsAttentionCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "updatedItemCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "createdItemCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "handledItemCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

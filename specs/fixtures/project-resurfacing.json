@@ -1,0 +1,132 @@
+{
+  "item": {
+    "id": "77777777-7777-4777-8777-777777777771",
+    "workspaceId": "00000000-0000-4000-8000-000000000001",
+    "stableKey": "project:kitchen-water-filter:decision",
+    "version": 1,
+    "state": "needs_you",
+    "tier": "needs_you",
+    "priority": 80,
+    "attentionRank": 10,
+    "titleLead": "Kitchen water filter",
+    "situation": "was researched three weeks ago but no decision was made.",
+    "recommendation": "I would either close it now or do one final decision-oriented review; it should not remain an indefinite open loop.",
+    "requiresUserAttention": true,
+    "dueAt": null,
+    "reviewAt": "2026-08-29T09:00:00+02:00",
+    "waitingSince": null,
+    "projectId": null,
+    "currentRevisionId": "77777777-7777-4777-8777-777777777772",
+    "createdAt": "2026-08-29T06:00:00+02:00",
+    "updatedAt": "2026-08-29T08:52:00+02:00",
+    "archivedAt": null
+  },
+  "document": {
+    "schemaVersion": 1,
+    "spine": {
+      "titleLead": "Kitchen water filter",
+      "situation": "was researched three weeks ago but no decision was made.",
+      "recommendation": "I would either close it now or do one final decision-oriented review; it should not remain an indefinite open loop.",
+      "stateLabel": "drifting",
+      "sourceLabel": "ChatGPT open loop",
+      "sourceTime": "3 weeks ago",
+      "provenance": {
+        "kind": "chat",
+        "label": "Saved summary of earlier water-filter discussion",
+        "confidence": "strong"
+      }
+    },
+    "blocks": [
+      {
+        "id": "kv",
+        "type": "key_value",
+        "schemaVersion": 1,
+        "fallbackText": "Last reviewed three weeks ago; no decision recorded.",
+        "entries": [
+          {
+            "label": "Last activity",
+            "value": "3 weeks ago"
+          },
+          {
+            "label": "Status",
+            "value": "Undecided",
+            "emphasis": true
+          },
+          {
+            "label": "Open question",
+            "value": "Enough health or practical benefit to justify installation?"
+          }
+        ]
+      }
+    ],
+    "actionIds": [
+      "77777777-7777-4777-8777-777777777781",
+      "77777777-7777-4777-8777-777777777782",
+      "77777777-7777-4777-8777-777777777783"
+    ],
+    "ask": {
+      "enabled": true,
+      "placeholder": "Add a criterion or tell me to close this…"
+    }
+  },
+  "actions": [
+    {
+      "id": "77777777-7777-4777-8777-777777777781",
+      "itemId": "77777777-7777-4777-8777-777777777771",
+      "itemRevisionId": "77777777-7777-4777-8777-777777777772",
+      "kind": "ai",
+      "capability": "ai.enqueue",
+      "label": "Reassess now",
+      "recommended": true,
+      "visualTone": "ink",
+      "consequence": "Queues a fresh assessment using the earlier criteria.",
+      "effectPlan": {},
+      "payload": {
+        "instruction": "Reassess whether installing a kitchen water filter in Oslo is worthwhile using current evidence and the previous discussion."
+      },
+      "riskLevel": "internal",
+      "status": "proposed",
+      "allowStaleExecution": false,
+      "executeAfter": null,
+      "expiresAt": null
+    },
+    {
+      "id": "77777777-7777-4777-8777-777777777782",
+      "itemId": "77777777-7777-4777-8777-777777777771",
+      "itemRevisionId": "77777777-7777-4777-8777-777777777772",
+      "kind": "ai",
+      "capability": "ai.enqueue",
+      "label": "Find the best system",
+      "recommended": false,
+      "visualTone": "outline",
+      "consequence": "Queues product and installation research.",
+      "effectPlan": {},
+      "payload": {
+        "instruction": "Find the best low-maintenance kitchen water filtration system suitable for Oslo water."
+      },
+      "riskLevel": "internal",
+      "status": "proposed",
+      "allowStaleExecution": false,
+      "executeAfter": null,
+      "expiresAt": null
+    },
+    {
+      "id": "77777777-7777-4777-8777-777777777783",
+      "itemId": "77777777-7777-4777-8777-777777777771",
+      "itemRevisionId": "77777777-7777-4777-8777-777777777772",
+      "kind": "internal",
+      "capability": "project.drop",
+      "label": "Drop project",
+      "recommended": false,
+      "visualTone": "link",
+      "consequence": "Closes the open loop without deleting its history.",
+      "effectPlan": {},
+      "payload": {},
+      "riskLevel": "internal",
+      "status": "proposed",
+      "allowStaleExecution": false,
+      "executeAfter": null,
+      "expiresAt": null
+    }
+  ]
+}

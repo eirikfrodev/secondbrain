@@ -1,0 +1,172 @@
+{
+  "item": {
+    "id": "44444444-4444-4444-8444-444444444441",
+    "workspaceId": "00000000-0000-4000-8000-000000000001",
+    "stableKey": "project:travel-admin:passport-renewal",
+    "version": 1,
+    "state": "needs_you",
+    "tier": "needs_you",
+    "priority": 80,
+    "attentionRank": 10,
+    "titleLead": "Passport renewal",
+    "situation": "the passport expires before the next planned trip.",
+    "recommendation": "Book the Tuesday 10:20 appointment and prepare the required documents this weekend.",
+    "requiresUserAttention": true,
+    "dueAt": "2026-09-15T17:00:00+02:00",
+    "reviewAt": null,
+    "waitingSince": null,
+    "projectId": null,
+    "currentRevisionId": "44444444-4444-4444-8444-444444444442",
+    "createdAt": "2026-08-29T06:00:00+02:00",
+    "updatedAt": "2026-08-29T08:52:00+02:00",
+    "archivedAt": null
+  },
+  "document": {
+    "schemaVersion": 1,
+    "spine": {
+      "titleLead": "Passport renewal",
+      "situation": "the passport expires before the next planned trip.",
+      "recommendation": "Book the Tuesday 10:20 appointment and prepare the required documents this weekend.",
+      "stateLabel": "needs you",
+      "sourceLabel": "project",
+      "sourceTime": "today",
+      "provenance": {
+        "kind": "project",
+        "label": "Travel administration open loop",
+        "confidence": "explicit"
+      }
+    },
+    "blocks": [
+      {
+        "id": "steps",
+        "type": "steps",
+        "schemaVersion": 1,
+        "fallbackText": "Choose an appointment, prepare documents and attend.",
+        "steps": [
+          {
+            "id": "s1",
+            "label": "Choose appointment",
+            "state": "current"
+          },
+          {
+            "id": "s2",
+            "label": "Prepare documents",
+            "state": "pending"
+          },
+          {
+            "id": "s3",
+            "label": "Attend appointment",
+            "state": "pending"
+          }
+        ]
+      },
+      {
+        "id": "warning",
+        "type": "callout",
+        "schemaVersion": 1,
+        "fallbackText": "The current passport may expire too early for the planned trip.",
+        "text": "The planned trip may require validity beyond the return date. Renewing now avoids a time-critical application later.",
+        "tone": "warning"
+      },
+      {
+        "id": "slots",
+        "type": "slots",
+        "schemaVersion": 1,
+        "fallbackText": "Tuesday 10:20 is the recommended appointment.",
+        "options": [
+          {
+            "id": "tue1020",
+            "label": "Tue 8 Sep · 10:20",
+            "start": "2026-09-08T10:20:00+02:00",
+            "end": "2026-09-08T10:40:00+02:00",
+            "detail": "Recommended"
+          },
+          {
+            "id": "wed1340",
+            "label": "Wed 9 Sep · 13:40",
+            "start": "2026-09-09T13:40:00+02:00",
+            "end": "2026-09-09T14:00:00+02:00"
+          }
+        ],
+        "recommendedOptionId": "tue1020",
+        "overflowLabel": "Find more"
+      },
+      {
+        "id": "checklist",
+        "type": "checklist",
+        "schemaVersion": 1,
+        "fallbackText": "Bring existing passport, photo if required and payment card.",
+        "items": [
+          {
+            "id": "p1",
+            "label": "Existing passport",
+            "state": "pending"
+          },
+          {
+            "id": "p2",
+            "label": "Check photo requirements",
+            "state": "pending",
+            "linkLabel": "Open requirements"
+          },
+          {
+            "id": "p3",
+            "label": "Payment card",
+            "state": "pending"
+          }
+        ]
+      }
+    ],
+    "actionIds": [
+      "44444444-4444-4444-8444-444444444451",
+      "44444444-4444-4444-8444-444444444452"
+    ],
+    "ask": {
+      "enabled": true,
+      "placeholder": "Ask for other times or requirements…"
+    }
+  },
+  "actions": [
+    {
+      "id": "44444444-4444-4444-8444-444444444451",
+      "itemId": "44444444-4444-4444-8444-444444444441",
+      "itemRevisionId": "44444444-4444-4444-8444-444444444442",
+      "kind": "external",
+      "capability": "calendar.create_event",
+      "label": "Book appointment: Tuesday 10:20",
+      "recommended": true,
+      "visualTone": "fjord",
+      "consequence": "Will create the selected appointment after a 30-second grace period.",
+      "effectPlan": {},
+      "payload": {
+        "title": "Passport renewal appointment",
+        "start": "2026-09-08T10:20:00+02:00",
+        "end": "2026-09-08T10:40:00+02:00"
+      },
+      "riskLevel": "external_irreversible",
+      "status": "proposed",
+      "allowStaleExecution": false,
+      "executeAfter": null,
+      "expiresAt": null
+    },
+    {
+      "id": "44444444-4444-4444-8444-444444444452",
+      "itemId": "44444444-4444-4444-8444-444444444441",
+      "itemRevisionId": "44444444-4444-4444-8444-444444444442",
+      "kind": "ai",
+      "capability": "ai.enqueue",
+      "label": "Find later appointments",
+      "recommended": false,
+      "visualTone": "link",
+      "consequence": "Queues a search for later available slots.",
+      "effectPlan": {},
+      "payload": {
+        "instruction": "Find passport renewal appointments after 15:00 in the next two weeks."
+      },
+      "riskLevel": "internal",
+      "status": "proposed",
+      "allowStaleExecution": false,
+      "executeAfter": null,
+      "expiresAt": null
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "item": {
+    "id": "66666666-6666-4666-8666-666666666661",
+    "workspaceId": "00000000-0000-4000-8000-000000000001",
+    "stableKey": "gmail:personal:attachment:insurance-protected-pdf",
+    "version": 1,
+    "state": "stuck",
+    "tier": "needs_you",
+    "priority": 80,
+    "attentionRank": 10,
+    "titleLead": "Insurance document",
+    "situation": "could not be analysed because the attached PDF is password protected.",
+    "recommendation": "Open the source email and provide the PDF password, then retry.",
+    "requiresUserAttention": true,
+    "dueAt": null,
+    "reviewAt": null,
+    "waitingSince": null,
+    "projectId": null,
+    "currentRevisionId": "66666666-6666-4666-8666-666666666662",
+    "createdAt": "2026-08-29T06:00:00+02:00",
+    "updatedAt": "2026-08-29T08:52:00+02:00",
+    "archivedAt": null
+  },
+  "document": {
+    "schemaVersion": 1,
+    "spine": {
+      "titleLead": "Insurance document",
+      "situation": "could not be analysed because the attached PDF is password protected.",
+      "recommendation": "Open the source email and provide the PDF password, then retry.",
+      "stateLabel": "stuck",
+      "sourceLabel": "Gmail attachment",
+      "sourceTime": "08:28",
+      "provenance": {
+        "kind": "email",
+        "label": "Insurance email attachment",
+        "confidence": "explicit"
+      }
+    },
+    "blocks": [
+      {
+        "id": "error",
+        "type": "callout",
+        "schemaVersion": 1,
+        "fallbackText": "The PDF is password protected and could not be read.",
+        "text": "The attachment opened successfully but its contents are encrypted. No conclusions were generated from it.",
+        "tone": "warning"
+      }
+    ],
+    "actionIds": [
+      "66666666-6666-4666-8666-666666666671",
+      "66666666-6666-4666-8666-666666666672"
+    ],
+    "ask": {
+      "enabled": true,
+      "placeholder": "Provide the password or another instruction…"
+    }
+  },
+  "actions": [
+    {
+      "id": "66666666-6666-4666-8666-666666666671",
+      "itemId": "66666666-6666-4666-8666-666666666661",
+      "itemRevisionId": "66666666-6666-4666-8666-666666666662",
+      "kind": "ai",
+      "capability": "ai.enqueue",
+      "label": "Retry with password",
+      "recommended": true,
+      "visualTone": "ink",
+      "consequence": "Queues a retry after the password is provided.",
+      "effectPlan": {},
+      "payload": {
+        "instruction": "Retry reading the insurance PDF using the password I provide in Ask."
+      },
+      "riskLevel": "internal",
+      "status": "proposed",
+      "allowStaleExecution": false,
+      "executeAfter": null,
+      "expiresAt": null
+    },
+    {
+      "id": "66666666-6666-4666-8666-666666666672",
+      "itemId": "66666666-6666-4666-8666-666666666661",
+      "itemRevisionId": "66666666-6666-4666-8666-666666666662",
+      "kind": "external",
+      "capability": "url.open",
+      "label": "Open source email",
+      "recommended": false,
+      "visualTone": "outline",
+      "consequence": null,
+      "effectPlan": {},
+      "payload": {
+        "sourceRefId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa6"
+      },
+      "riskLevel": "internal",
+      "status": "proposed",
+      "allowStaleExecution": false,
+      "executeAfter": null,
+      "expiresAt": null
+    }
+  ]
+}

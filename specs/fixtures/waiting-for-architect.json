@@ -1,0 +1,123 @@
+{
+  "item": {
+    "id": "33333333-3333-4333-8333-333333333331",
+    "workspaceId": "00000000-0000-4000-8000-000000000001",
+    "stableKey": "gmail:personal:thread:cabin-architect-estimate",
+    "version": 1,
+    "state": "waiting",
+    "tier": "waiting",
+    "priority": 80,
+    "attentionRank": 10,
+    "titleLead": "Cabin architect",
+    "situation": "has not delivered the revised cost estimate promised Tuesday.",
+    "recommendation": "I would send a short follow-up today; it is now three days overdue.",
+    "requiresUserAttention": false,
+    "dueAt": null,
+    "reviewAt": "2026-08-29T09:00:00+02:00",
+    "waitingSince": "2026-08-25T17:00:00+02:00",
+    "projectId": null,
+    "currentRevisionId": "33333333-3333-4333-8333-333333333332",
+    "createdAt": "2026-08-29T06:00:00+02:00",
+    "updatedAt": "2026-08-29T08:52:00+02:00",
+    "archivedAt": null
+  },
+  "document": {
+    "schemaVersion": 1,
+    "spine": {
+      "titleLead": "Cabin architect",
+      "situation": "has not delivered the revised cost estimate promised Tuesday.",
+      "recommendation": "I would send a short follow-up today; it is now three days overdue.",
+      "stateLabel": "waiting · 3 d",
+      "sourceLabel": "email promise",
+      "sourceTime": "Tuesday",
+      "provenance": {
+        "kind": "email",
+        "label": "Architect email thread",
+        "quote": "I’ll send the revised estimate on Tuesday.",
+        "confidence": "explicit"
+      }
+    },
+    "blocks": [
+      {
+        "id": "draft",
+        "type": "draft",
+        "schemaVersion": 1,
+        "fallbackText": "Prepared follow-up asking when the estimate will be ready.",
+        "channel": "email",
+        "recipientLabel": "Cabin architect",
+        "body": "Hi — just following up on the revised cost estimate you expected to send on Tuesday. When do you think it will be ready?",
+        "editable": true,
+        "providerState": "dashboard_only"
+      }
+    ],
+    "actionIds": [
+      "33333333-3333-4333-8333-333333333341",
+      "33333333-3333-4333-8333-333333333342",
+      "33333333-3333-4333-8333-333333333343"
+    ],
+    "ask": {
+      "enabled": true,
+      "placeholder": "Change the follow-up or waiting period…"
+    }
+  },
+  "actions": [
+    {
+      "id": "33333333-3333-4333-8333-333333333341",
+      "itemId": "33333333-3333-4333-8333-333333333331",
+      "itemRevisionId": "33333333-3333-4333-8333-333333333332",
+      "kind": "external",
+      "capability": "gmail.ensure_reply_draft",
+      "label": "Draft follow-up",
+      "recommended": true,
+      "visualTone": "fjord",
+      "consequence": "Will prepare a Gmail draft; nothing will be sent.",
+      "effectPlan": {},
+      "payload": {
+        "draftBody": "Hi — just following up on the revised cost estimate you expected to send on Tuesday. When do you think it will be ready?"
+      },
+      "riskLevel": "external_reversible",
+      "status": "proposed",
+      "allowStaleExecution": false,
+      "executeAfter": null,
+      "expiresAt": null
+    },
+    {
+      "id": "33333333-3333-4333-8333-333333333342",
+      "itemId": "33333333-3333-4333-8333-333333333331",
+      "itemRevisionId": "33333333-3333-4333-8333-333333333332",
+      "kind": "internal",
+      "capability": "item.snooze",
+      "label": "Wait until Monday",
+      "recommended": false,
+      "visualTone": "outline",
+      "consequence": null,
+      "effectPlan": {},
+      "payload": {
+        "reviewAt": "2026-08-31T09:00:00+02:00"
+      },
+      "riskLevel": "internal",
+      "status": "proposed",
+      "allowStaleExecution": false,
+      "executeAfter": null,
+      "expiresAt": null
+    },
+    {
+      "id": "33333333-3333-4333-8333-333333333343",
+      "itemId": "33333333-3333-4333-8333-333333333331",
+      "itemRevisionId": "33333333-3333-4333-8333-333333333332",
+      "kind": "internal",
+      "capability": "item.complete",
+      "label": "Mark resolved",
+      "recommended": false,
+      "visualTone": "link",
+      "consequence": null,
+      "effectPlan": {},
+      "payload": {},
+      "riskLevel": "internal",
+      "status": "proposed",
+      "allowStaleExecution": false,
+      "executeAfter": null,
+      "expiresAt": null
+    }
+  ]
+}

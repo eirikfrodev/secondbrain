@@ -1,0 +1,15 @@
+{
+  "name": "@utsikt/worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node src/phase-placeholder.mjs",
+    "start": "node src/phase-placeholder.mjs",
+    "install-launchd": "node src/phase-placeholder.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0"
+  }
+}

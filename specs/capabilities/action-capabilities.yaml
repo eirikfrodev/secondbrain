@@ -1,0 +1,84 @@
+version: 1
+capabilities:
+  - id: item.complete
+    kind: internal
+    risk: internal
+    approval: direct
+    grace_period_seconds: 0
+  - id: item.reopen
+    kind: internal
+    risk: internal
+    approval: direct
+    grace_period_seconds: 0
+  - id: item.snooze
+    kind: internal
+    risk: internal
+    approval: direct
+    grace_period_seconds: 0
+  - id: item.dismiss
+    kind: internal
+    risk: internal
+    approval: direct
+    grace_period_seconds: 0
+  - id: item.archive
+    kind: internal
+    risk: internal
+    approval: direct
+    grace_period_seconds: 0
+  - id: ai.enqueue
+    kind: ai
+    risk: internal
+    approval: direct
+    grace_period_seconds: 0
+  - id: gmail.ensure_reply_draft
+    kind: external
+    risk: external_reversible
+    approval: explicit
+    grace_period_seconds: 0
+  - id: gmail.update_reply_draft
+    kind: external
+    risk: external_reversible
+    approval: explicit
+    grace_period_seconds: 0
+  - id: gmail.schedule_send_draft
+    kind: external
+    risk: external_irreversible
+    approval: explicit
+    grace_period_seconds: 30
+  - id: gmail.cancel_scheduled_send
+    kind: external
+    risk: external_reversible
+    approval: direct
+    grace_period_seconds: 0
+  - id: calendar.create_private_hold
+    kind: external
+    risk: external_reversible
+    approval: explicit
+    grace_period_seconds: 0
+  - id: calendar.create_event
+    kind: external
+    risk: external_irreversible
+    approval: explicit
+    grace_period_seconds: 30
+  - id: calendar.delete_event
+    kind: external
+    risk: external_reversible
+    approval: explicit
+    grace_period_seconds: 0
+  - id: workflow.reply_and_calendar
+    kind: hybrid
+    risk: external_irreversible
+    approval: explicit
+    grace_period_seconds: 30
+  - id: url.open
+    kind: external
+    risk: internal
+    approval: direct
+    grace_period_seconds: 0
+prohibited_classes:
+  - purchase
+  - financial_transaction
+  - binding_contract
+  - identity_verification_submission
+  - secret_disclosure
+  - irreversible_deletion

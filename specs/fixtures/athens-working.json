@@ -1,0 +1,58 @@
+{
+  "item": {
+    "id": "55555555-5555-4555-8555-555555555551",
+    "workspaceId": "00000000-0000-4000-8000-000000000001",
+    "stableKey": "project:athens-marathon:hotel-research",
+    "version": 1,
+    "state": "working",
+    "tier": "in_motion",
+    "priority": 80,
+    "attentionRank": 10,
+    "titleLead": "Athens trip",
+    "situation": "hotel research near the marathon start is in progress.",
+    "recommendation": null,
+    "requiresUserAttention": false,
+    "dueAt": null,
+    "reviewAt": null,
+    "waitingSince": null,
+    "projectId": null,
+    "currentRevisionId": "55555555-5555-4555-8555-555555555552",
+    "createdAt": "2026-08-29T06:00:00+02:00",
+    "updatedAt": "2026-08-29T08:52:00+02:00",
+    "archivedAt": null
+  },
+  "document": {
+    "schemaVersion": 1,
+    "spine": {
+      "titleLead": "Athens trip",
+      "situation": "hotel research near the marathon start is in progress.",
+      "recommendation": null,
+      "stateLabel": "working",
+      "sourceLabel": "AI job",
+      "sourceTime": "started 08:44",
+      "provenance": {
+        "kind": "user_request",
+        "label": "Find hotel alternatives near the marathon start",
+        "confidence": "explicit"
+      }
+    },
+    "blocks": [
+      {
+        "id": "progress",
+        "type": "progress",
+        "schemaVersion": 1,
+        "fallbackText": "Hotel research is in progress.",
+        "value": 6,
+        "max": 10,
+        "label": "6 of 10 sources reviewed",
+        "detail": "Comparing walkability, room quality and total trip cost."
+      }
+    ],
+    "actionIds": [],
+    "ask": {
+      "enabled": true,
+      "placeholder": "Add criteria while research continues…"
+    }
+  },
+  "actions": []
+}

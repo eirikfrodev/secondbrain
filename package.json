@@ -1,0 +1,48 @@
+{
+  "name": "utsikt",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.0.4",
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "unrs-resolver"
+    ]
+  },
+  "scripts": {
+    "dev": "pnpm --filter @utsikt/web dev",
+    "build": "pnpm --filter @utsikt/web build",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "test": "vitest run --config vitest.config.ts",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:e2e": "PLAYWRIGHT_BROWSERS_PATH=.playwright-browsers playwright test --grep-invert @visual",
+    "test:visual": "PLAYWRIGHT_BROWSERS_PATH=.playwright-browsers playwright test --grep @visual",
+    "db:reset": "node scripts/phase-placeholder.mjs db:reset 2",
+    "db:seed": "node scripts/phase-placeholder.mjs db:seed 2",
+    "mcp:dev": "node scripts/phase-placeholder.mjs mcp:dev 3",
+    "worker:dev": "pnpm --filter @utsikt/worker dev",
+    "worker:start": "pnpm --filter @utsikt/worker start",
+    "worker:install-launchd": "pnpm --filter @utsikt/worker install-launchd"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.0",
+    "@eslint/js": "^9.0.0",
+    "@playwright/test": "^1.55.0",
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "^16.0.0",
+    "jsdom": "^26.0.0",
+    "postcss": "^8.0.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.9.0",
+    "typescript-eslint": "^8.0.0",
+    "vitest": "^3.2.0"
+  }
+}
