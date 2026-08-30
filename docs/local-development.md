@@ -7,6 +7,7 @@ Utsikt currently runs entirely in deterministic mock mode. No Supabase, Google, 
 - Node.js 20.9 or newer.
 - pnpm 11.0.4 (the version declared by `packageManager`).
 - Network access during the first install and clean production build. Next.js downloads Familjen Grotesk and JetBrains Mono through `next/font/google`.
+- For Phase 2 database work only: Supabase CLI 2.95.4 and a running Docker-compatible daemon.
 
 ## Install and run
 
@@ -34,6 +35,17 @@ pnpm test:visual
 pnpm build
 ```
 
+With the local Supabase prerequisites available, verify migrations and RLS separately:
+
+```bash
+pnpm db:start
+pnpm db:reset
+pnpm db:lint
+pnpm db:test
+```
+
+`db:start` launches only the disposable local Postgres stack, and `db:reset` applies migrations plus the currently empty seed file. Both commands are local-only. Do not add `--linked`; that would target external state. GitHub CI is configured to run the same database migration and pgTAP checks in disposable containers without project credentials; its first run remains pending.
+
 Playwright uses the workspace-local `.playwright-browsers` directory. On a new machine, install Chromium once:
 
 ```bash
@@ -52,6 +64,6 @@ PLAYWRIGHT_BROWSERS_PATH=.playwright-browsers pnpm exec playwright install chrom
 - `/item/unknown` — safe unknown-block fallback demonstration.
 - `/activity` — Ask and operator-state demonstration.
 
-## Phase placeholders
+## Remaining phase placeholders
 
-`pnpm db:reset`, `pnpm db:seed`, `pnpm mcp:dev`, and the real worker commands intentionally report their owning future phase rather than simulating a working service. They will become operational in Phases 2–4.
+`pnpm mcp:dev` and the real worker commands intentionally report their owning future phase rather than simulating a working service. They become operational in Phases 3–4.

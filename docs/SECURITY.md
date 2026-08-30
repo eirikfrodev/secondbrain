@@ -11,4 +11,4 @@ The full security model is in `docs/security/SECURITY_MODEL.md` and `HANDOFF.md`
 - Mock mode is the default and performs no provider calls.
 - Production deployment is not authorised by ordinary implementation work.
 
-Threat-model and RLS details will be updated before Phase 2 migrations and again before Phase 4 credentials/execution.
+The Phase 2 baseline now enforces deny-by-default grants, workspace RLS, append-only history, requester-scoped cancellation, and capability/document constraints in the database. Revisit this model before Phase 4 credentials and external execution.

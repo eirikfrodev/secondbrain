@@ -1,7 +1,40 @@
 import { z } from "zod";
 
+import { capabilityPolicies, capabilityValues } from "./capabilities";
+
 const UuidSchema = z.string().uuid();
 const DateTimeSchema = z.string().datetime({ offset: true });
+
+export const AskInstructionSchema = z.string().trim().min(1).max(2000);
+
+export const AiJobOriginSchema = z.enum([
+  "inline_ask",
+  "global_ask",
+  "operator",
+  "capture",
+  "system"
+]);
+
+export const AiJobStatusSchema = z.enum([
+  "queued",
+  "working",
+  "completed",
+  "stuck",
+  "cancelled"
+]);
+
+export const SourceHealthStatusSchema = z.enum([
+  "healthy",
+  "disconnected",
+  "permission_expired",
+  "sync_delayed",
+  "partial_sync",
+  "unavailable",
+  "stale",
+  "offline",
+  "error",
+  "not_configured"
+]);
 
 export const ItemStateSchema = z.enum([
   "needs_you",
@@ -243,25 +276,65 @@ export const ItemDocumentV1Schema = ItemDocumentEnvelopeSchema.transform((docume
   blocks: document.blocks.map(parseItemBlock)
 }));
 
-export const CapabilitySchema = z.enum([
-  "item.complete",
-  "item.reopen",
-  "item.snooze",
-  "item.dismiss",
-  "item.archive",
-  "project.reassess",
-  "project.drop",
-  "ai.enqueue",
-  "gmail.ensure_reply_draft",
-  "gmail.update_reply_draft",
-  "gmail.schedule_send_draft",
-  "gmail.cancel_scheduled_send",
-  "calendar.create_event",
-  "calendar.create_private_hold",
-  "calendar.delete_event",
-  "workflow.reply_and_calendar",
-  "url.open"
-]);
+export const QueueItemAskInputSchema = z.strictObject({
+  itemId: UuidSchema,
+  instruction: AskInstructionSchema
+});
+
+export const QueueGlobalAskInputSchema = z.strictObject({
+  workspaceId: UuidSchema,
+  instruction: AskInstructionSchema
+});
+
+export const CancelAiJobInputSchema = z.strictObject({
+  jobId: UuidSchema
+});
+
+export const AppendItemRevisionInputSchema = z.strictObject({
+  itemId: UuidSchema,
+  expectedVersion: z.number().int().positive(),
+  expectedRevisionId: UuidSchema,
+  document: ItemDocumentV1Schema,
+  sourceRefIds: z.array(UuidSchema).max(32).default([])
+});
+
+export const ItemRevisionReceiptSchema = z.strictObject({
+  revisionId: UuidSchema,
+  newVersion: z.number().int().positive()
+});
+
+export const AiJobSchema = z.strictObject({
+  id: UuidSchema,
+  workspaceId: UuidSchema,
+  itemId: UuidSchema.nullable(),
+  requestedByUserId: UuidSchema.nullable(),
+  instruction: AskInstructionSchema,
+  origin: AiJobOriginSchema,
+  priority: z.number().int().min(0).max(100),
+  status: AiJobStatusSchema,
+  queuedFor: DateTimeSchema,
+  resultSummary: z.string().max(2000).nullable(),
+  resultPayload: z.record(z.string(), z.unknown()),
+  attemptCount: z.number().int().nonnegative(),
+  createdAt: DateTimeSchema,
+  startedAt: DateTimeSchema.nullable(),
+  completedAt: DateTimeSchema.nullable()
+});
+
+export const SourceHealthSchema = z.strictObject({
+  id: UuidSchema,
+  workspaceId: UuidSchema,
+  sourceKey: z.string().min(1).max(120),
+  label: z.string().min(1).max(160),
+  status: SourceHealthStatusSchema,
+  message: z.string().max(500).nullable(),
+  lastSuccessAt: DateTimeSchema.nullable(),
+  lastCheckedAt: DateTimeSchema,
+  nextExpectedAt: DateTimeSchema.nullable(),
+  metadata: z.record(z.string(), z.unknown())
+});
+
+export const CapabilitySchema = z.enum(capabilityValues);
 
 export const ActionSchema = z.strictObject({
   id: UuidSchema,
@@ -295,6 +368,24 @@ export const ActionSchema = z.strictObject({
   allowStaleExecution: z.boolean().optional().default(false),
   executeAfter: DateTimeSchema.nullable().optional(),
   expiresAt: DateTimeSchema.nullable().optional()
+}).superRefine((action, context) => {
+  const policy = capabilityPolicies[action.capability];
+
+  if (action.kind !== policy.kind) {
+    context.addIssue({
+      code: "custom",
+      message: `Capability ${action.capability} must use action kind ${policy.kind}`,
+      path: ["kind"]
+    });
+  }
+
+  if (action.riskLevel !== policy.risk) {
+    context.addIssue({
+      code: "custom",
+      message: `Capability ${action.capability} must use risk level ${policy.risk}`,
+      path: ["riskLevel"]
+    });
+  }
 });
 
 export const ItemFixtureSchema = z.strictObject({
@@ -391,6 +482,16 @@ export function parseItemBlock(value: unknown): z.infer<typeof ItemBlockSchema> 
 export type ItemState = z.infer<typeof ItemStateSchema>;
 export type AttentionTier = z.infer<typeof AttentionTierSchema>;
 export type ItemEnvelope = z.infer<typeof ItemEnvelopeSchema>;
+export type AiJobOrigin = z.infer<typeof AiJobOriginSchema>;
+export type AiJobStatus = z.infer<typeof AiJobStatusSchema>;
+export type AiJob = z.infer<typeof AiJobSchema>;
+export type SourceHealthStatus = z.infer<typeof SourceHealthStatusSchema>;
+export type SourceHealth = z.infer<typeof SourceHealthSchema>;
+export type QueueItemAskInput = z.infer<typeof QueueItemAskInputSchema>;
+export type QueueGlobalAskInput = z.infer<typeof QueueGlobalAskInputSchema>;
+export type CancelAiJobInput = z.infer<typeof CancelAiJobInputSchema>;
+export type AppendItemRevisionInput = z.infer<typeof AppendItemRevisionInputSchema>;
+export type ItemRevisionReceipt = z.infer<typeof ItemRevisionReceiptSchema>;
 export type KnownItemBlock = z.infer<typeof KnownItemBlockSchema>;
 export type ItemBlock = z.infer<typeof ItemBlockSchema>;
 export type ItemDocumentV1 = z.infer<typeof ItemDocumentV1Schema>;

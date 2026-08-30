@@ -53,12 +53,18 @@ Exit criteria:
 
 ## Phase 2 — Persistence and interaction
 
-Status: ready; Phase 1 is verified. Explain the schema, RLS, and migration design before implementation.
+Status: in progress as of 2026-08-30. The schema, RLS, and migration design was explained before implementation.
 
-- Explain the schema/RLS/migration plan before changing migrations, as required by repository policy.
-- Add Supabase Auth, workspace membership, fixed envelopes, append-only revisions, actions, AI jobs, projects, audit events, source health, and Realtime.
-- Replace browser-memory mutations with authenticated APIs and transactional services while preserving mock mode.
-- Prove workspace isolation, stale revisions, queue cancellation, and append-only history in integration tests.
+1. Add a reproducible imperative migration baseline with explicit grants, RLS, membership helpers, append-only revision/audit guards, core indexes, and Realtime publication membership.
+2. Add pgTAP tests for schema shape, anonymous denial, workspace isolation, immutable history, and stale-write rejection. Keep database tests separate from credential-free TypeScript tests.
+3. Turn `packages/db` into the typed boundary for database rows, repositories, transaction results, and generated Supabase types.
+4. Add Supabase Auth/session plumbing and server-side clients without exposing the service-role key to browser code.
+5. Implement authenticated dashboard/item reads plus transactional inline/global Ask queue and cancellation APIs. Preserve `CONNECTOR_MODE=mock` as the no-credential fallback.
+6. Implement safe internal actions and optimistic concurrency, then replace browser-memory state with persisted state and Realtime subscriptions.
+7. Add project/activity/source-health reads and visible recovery states.
+8. Prove the complete lifecycle, workspace isolation, stale revisions, cancellation, and append-only history in integration and browser tests.
+
+Current slice: steps 1–3. No remote Supabase project is linked and no migration will be applied outside the local development stack.
 
 ## Phase 3 — Operator MCP and plugin
 

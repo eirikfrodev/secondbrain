@@ -1,9 +1,15 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  ActionSchema,
+  AiJobSchema,
+  AppendItemRevisionInputSchema,
+  AskInstructionSchema,
+  CancelAiJobInputSchema,
   ItemDocumentV1Schema,
   ItemFixtureSchema,
   KnownItemBlockSchema,
+  SourceHealthSchema,
   parseItemBlock
 } from "./schemas";
 import athensWorking from "../../../specs/fixtures/athens-working.json";
@@ -87,5 +93,80 @@ describe("degrade, never break", () => {
       reason: "malformed",
       fallbackText: "Research is still in progress."
     });
+  });
+});
+
+describe("persistence boundaries", () => {
+  it("rejects action authority that contradicts the capability registry", () => {
+    const action = meetingEmail.actions[0];
+
+    expect(ActionSchema.safeParse({
+      ...action,
+      kind: "internal",
+      riskLevel: "internal"
+    }).success).toBe(false);
+  });
+
+  it("normalizes an Ask instruction and rejects empty input", () => {
+    expect(AskInstructionSchema.parse("  find another day  ")).toBe("find another day");
+    expect(AskInstructionSchema.safeParse("   ").success).toBe(false);
+  });
+
+  it("rejects malformed cancellation IDs and oversized evidence lists", () => {
+    expect(CancelAiJobInputSchema.safeParse({ jobId: "not-a-uuid" }).success).toBe(false);
+    expect(AppendItemRevisionInputSchema.safeParse({
+      itemId: meetingEmail.item.id,
+      expectedVersion: meetingEmail.item.version,
+      expectedRevisionId: meetingEmail.item.currentRevisionId,
+      document: meetingEmail.document,
+      sourceRefIds: Array.from({ length: 33 }, () => meetingEmail.item.id)
+    }).success).toBe(false);
+  });
+
+  it("binds a revision write to both the expected version and revision", () => {
+    const input = AppendItemRevisionInputSchema.parse({
+      itemId: meetingEmail.item.id,
+      expectedVersion: meetingEmail.item.version,
+      expectedRevisionId: meetingEmail.item.currentRevisionId,
+      document: meetingEmail.document
+    });
+
+    expect(input.expectedVersion).toBe(meetingEmail.item.version);
+    expect(input.expectedRevisionId).toBe(meetingEmail.item.currentRevisionId);
+    expect(input.sourceRefIds).toEqual([]);
+  });
+
+  it("validates persisted AI-job receipts and source health", () => {
+    const now = "2026-08-30T21:00:00.000Z";
+    expect(AiJobSchema.parse({
+      id: "10101010-1010-4010-8010-101010101010",
+      workspaceId: meetingEmail.item.workspaceId,
+      itemId: meetingEmail.item.id,
+      requestedByUserId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      instruction: "Find another day next week",
+      origin: "inline_ask",
+      priority: 50,
+      status: "queued",
+      queuedFor: "2026-08-30T22:00:00.000Z",
+      resultSummary: null,
+      resultPayload: {},
+      attemptCount: 0,
+      createdAt: now,
+      startedAt: null,
+      completedAt: null
+    }).status).toBe("queued");
+
+    expect(SourceHealthSchema.parse({
+      id: "20202020-2020-4020-8020-202020202020",
+      workspaceId: meetingEmail.item.workspaceId,
+      sourceKey: "utsikt_operator",
+      label: "Utsikt operator",
+      status: "healthy",
+      message: null,
+      lastSuccessAt: now,
+      lastCheckedAt: now,
+      nextExpectedAt: "2026-08-30T22:00:00.000Z",
+      metadata: {}
+    }).status).toBe("healthy");
   });
 });

@@ -82,6 +82,36 @@ Why: in the managed local environment, Turbopack's PostCSS evaluator attempts to
 
 Consequences: local development and verification do not exercise Turbopack. This may be revisited when the managed runtime supports the CSS evaluator or the project no longer needs the fallback.
 
+## ADR-009 — Imperative Supabase migrations with deny-by-default browser access
+
+Status: accepted, 2026-08-30.
+
+Decision: keep one ordered SQL migration history under `supabase/migrations` and make each public table's grants, RLS enablement, and policies part of the same migration as the table. Revoke all `anon` access. Grant `authenticated` only the reads the browser needs; mutations that must update multiple records or enforce concurrency go through narrow transactional functions rather than broad table grants.
+
+Why: Supabase combines PostgreSQL grants and RLS, so a policy alone is not the complete permission boundary. An imperative baseline is reviewable, reproducible with `supabase db reset`, and avoids maintaining a second declarative representation. Transaction functions give Ask, revision, and action state changes one atomic validation/audit boundary.
+
+Consequences: every new exposed table requires explicit allow/deny pgTAP coverage. The service role remains server/worker-only and is not the ordinary browser mutation path. Remote `db push` is not authorised by this decision; schema work is verified locally first and committed separately.
+
+## ADR-010 — Explicit workspace membership and append-only history enforcement
+
+Status: accepted, 2026-08-30.
+
+Decision: add `workspace_memberships` even though the abbreviated handoff table list names only `workspaces`. RLS calls a private, security-definer membership predicate; users can read only their own membership rows. Item revisions and audit events reject updates and deletes with database triggers, and the current item version/revision is protected by a deferred composite foreign key. Revision source arrays are mirrored into a private normalized join table with foreign keys so evidence cannot be concurrently deleted out from under an in-flight revision.
+
+Why: the handoff requires authenticated workspace membership and future personal/work separation; ownership alone cannot represent a work workspace. Relying only on application code for immutable history or matching current revision/version would leave the core concurrency contract unenforced.
+
+Consequences: membership changes are privileged server operations in v0.1. Historical rows cannot be edited by normal application roles. Account deletion and retention will need an explicit, audited administrative procedure rather than cascading ordinary deletes.
+
+## ADR-011 — Capability authority and persisted document contracts are enforced twice
+
+Status: accepted, 2026-08-30.
+
+Decision: keep the capability registry as the TypeScript source of truth for action kind, risk, approval, grace period, and compensation. `ActionSchema` rejects records whose claimed kind or risk contradicts that registry, and the database mirrors the capability/kind/risk combinations with a check constraint. Persisted revision documents are checked with `pg_jsonschema` against the strict version-1 envelope before insertion; individual block payloads remain forward-compatible and degrade through the renderer fallback.
+
+Why: model-composed labels and payloads must never be able to understate execution authority. The authenticated revision function is also an external boundary, so validating only in a future API adapter would allow direct RPC callers to persist documents the shared domain parser rejects.
+
+Consequences: capability additions require one reviewed domain-policy change and a matching migration change. The pgTAP suite tests both mismatched action authority and invalid document envelopes. Unknown or malformed blocks remain display-only content; they never become executable authority.
+
 ## Deviations
 
 - Accessibility correction, 2026-08-30: `--ink-3` is implemented as `#52657E` rather than the board value `#5E7089`. The board value measures below WCAG AA on both paper tones (approximately 4.39:1 on paper and 4.05:1 on paper-2). The corrected value is approximately 5.19:1 and 4.78:1 respectively while preserving the intended tertiary-blue hierarchy.
