@@ -53,7 +53,7 @@ Exit criteria:
 
 ## Phase 2 — Persistence and interaction
 
-Status: in progress as of 2026-08-30. The schema, RLS, and migration design was explained before implementation.
+Status: in progress as of 2026-08-31. The schema, RLS, and migration design was explained before implementation.
 
 1. Add a reproducible imperative migration baseline with explicit grants, RLS, membership helpers, append-only revision/audit guards, core indexes, and Realtime publication membership.
 2. Add pgTAP tests for schema shape, anonymous denial, workspace isolation, immutable history, and stale-write rejection. Keep database tests separate from credential-free TypeScript tests.
@@ -64,7 +64,15 @@ Status: in progress as of 2026-08-30. The schema, RLS, and migration design was 
 7. Add project/activity/source-health reads and visible recovery states.
 8. Prove the complete lifecycle, workspace isolation, stale revisions, cancellation, and append-only history in integration and browser tests.
 
-Current slice: steps 1–3. No remote Supabase project is linked and no migration will be applied outside the local development stack.
+Current slice: complete and locally verified on 2026-08-31. It covers step 4 and the repository-adapter boundary needed by step 5.
+
+1. Validate connector mode and browser-safe Supabase configuration without requiring credentials in the default mock mode.
+2. Add request-scoped browser/server Supabase clients, Next.js 16 cookie refresh through `proxy.ts`, and a verified-session data-access helper. Proxy refresh is not an authorization boundary; authenticated repository calls and RLS remain authoritative.
+3. Implement a Zod-validated Supabase `PersistenceRepository` adapter for the existing transactional functions and source-health read, with stable domain error mapping.
+4. Add an explicit in-memory mock repository behind the same interface so credential-free development cannot accidentally construct a Supabase client or perform a remote effect.
+5. Cover configuration, session, adapter, response validation, cancellation, and error behavior with unit tests; update architecture, security, and local-development notes.
+
+This slice does not choose a user-facing sign-in method, add browser APIs, replace dashboard state, subscribe to Realtime, change the schema/RLS/migration, link a remote Supabase project, or deploy anything. Those remain separate reviewed steps. The next isolated task is to choose the sign-in method and design workspace provisioning/selection before creating users or wiring authenticated browser APIs.
 
 ## Phase 3 — Operator MCP and plugin
 

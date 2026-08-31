@@ -10,7 +10,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@utsikt/domain": "workspace:*"
+    "@supabase/supabase-js": "^2.112.4",
+    "@utsikt/domain": "workspace:*",
+    "zod": "^4.0.0"
   },
   "devDependencies": {
     "typescript": "^5.9.0"

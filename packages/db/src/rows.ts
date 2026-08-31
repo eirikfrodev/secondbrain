@@ -1,52 +1,65 @@
+import { z } from "zod";
+
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
-export type AiJobRow = {
-  id: string;
-  workspace_id: string;
-  item_id: string | null;
-  requested_by_user_id: string | null;
-  instruction: string;
-  origin: "inline_ask" | "global_ask" | "operator" | "capture" | "system";
-  priority: number;
-  status: "queued" | "working" | "completed" | "stuck" | "cancelled";
-  queued_for: string;
-  result_summary: string | null;
-  result_payload: Record<string, unknown>;
-  attempt_count: number;
-  created_at: string;
-  started_at: string | null;
-  completed_at: string | null;
-};
+export const AiJobRowSchema = z.strictObject({
+  id: z.string().uuid(),
+  workspace_id: z.string().uuid(),
+  item_id: z.string().uuid().nullable(),
+  requested_by_user_id: z.string().uuid().nullable(),
+  instruction: z.string(),
+  origin: z.enum(["inline_ask", "global_ask", "operator", "capture", "system"]),
+  priority: z.number().int(),
+  status: z.enum(["queued", "working", "completed", "stuck", "cancelled"]),
+  queued_for: z.string(),
+  result_summary: z.string().nullable(),
+  result_payload: z.record(z.string(), z.unknown()),
+  attempt_count: z.number().int(),
+  created_at: z.string(),
+  started_at: z.string().nullable(),
+  completed_at: z.string().nullable()
+});
 
-export type SourceHealthRow = {
-  id: string;
-  workspace_id: string;
-  source_key: string;
-  label: string;
-  status:
-    | "healthy"
-    | "disconnected"
-    | "permission_expired"
-    | "sync_delayed"
-    | "partial_sync"
-    | "unavailable"
-    | "stale"
-    | "offline"
-    | "error"
-    | "not_configured";
-  message: string | null;
-  last_success_at: string | null;
-  last_checked_at: string;
-  next_expected_at: string | null;
-  metadata: Record<string, unknown>;
-  created_at: string;
-  updated_at: string;
-};
+export const SourceHealthRowSchema = z.strictObject({
+  id: z.string().uuid(),
+  workspace_id: z.string().uuid(),
+  source_key: z.string(),
+  label: z.string(),
+  status: z.enum([
+    "healthy",
+    "disconnected",
+    "permission_expired",
+    "sync_delayed",
+    "partial_sync",
+    "unavailable",
+    "stale",
+    "offline",
+    "error",
+    "not_configured"
+  ]),
+  message: z.string().nullable(),
+  last_success_at: z.string().nullable(),
+  last_checked_at: z.string(),
+  next_expected_at: z.string().nullable(),
+  metadata: z.record(z.string(), z.unknown()),
+  created_at: z.string(),
+  updated_at: z.string()
+});
 
-export type ItemRevisionReceiptRow = {
-  revision_id: string;
-  new_version: number;
-};
+export const SourceHealthProjectionSchema = SourceHealthRowSchema.omit({
+  created_at: true,
+  updated_at: true
+});
+
+export const ItemRevisionReceiptRowSchema = z.strictObject({
+  revision_id: z.string().uuid(),
+  new_version: z.number().int()
+});
+
+export type AiJobRow = z.infer<typeof AiJobRowSchema>;
+export type SourceHealthRow = z.infer<typeof SourceHealthRowSchema>;
+export type SourceHealthProjection = z.infer<typeof SourceHealthProjectionSchema>;
+export type ItemRevisionReceiptRow = z.infer<typeof ItemRevisionReceiptRowSchema>;
 
 export type CoreDatabase = {
   public: {
@@ -78,15 +91,15 @@ export type CoreDatabase = {
       };
       queue_item_ask: {
         Args: { target_item_id: string; job_instruction: string };
-        Returns: AiJobRow;
+        Returns: AiJobRow[];
       };
       queue_global_ask: {
         Args: { target_workspace_id: string; job_instruction: string };
-        Returns: AiJobRow;
+        Returns: AiJobRow[];
       };
       cancel_ai_job: {
         Args: { target_job_id: string };
-        Returns: AiJobRow;
+        Returns: AiJobRow[];
       };
     };
     Enums: Record<string, never>;

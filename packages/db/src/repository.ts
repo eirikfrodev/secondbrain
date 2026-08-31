@@ -13,7 +13,11 @@ import type {
   SourceHealth
 } from "@utsikt/domain";
 
-import type { AiJobRow, ItemRevisionReceiptRow, SourceHealthRow } from "./rows";
+import {
+  AiJobRowSchema,
+  ItemRevisionReceiptRowSchema,
+  SourceHealthProjectionSchema
+} from "./rows";
 
 export type PersistenceErrorCode =
   | "not_authenticated"
@@ -28,9 +32,9 @@ export class PersistenceError extends Error {
   constructor(
     readonly code: PersistenceErrorCode,
     message: string,
-    readonly cause?: unknown
+    cause?: unknown
   ) {
-    super(message);
+    super(message, cause === undefined ? undefined : { cause });
     this.name = "PersistenceError";
   }
 }
@@ -43,44 +47,50 @@ export interface PersistenceRepository {
   listSourceHealth(workspaceId: string): Promise<readonly SourceHealth[]>;
 }
 
-export function mapAiJobRow(row: AiJobRow): AiJob {
+export function mapAiJobRow(row: unknown): AiJob {
+  const parsedRow = AiJobRowSchema.parse(row);
+
   return AiJobSchema.parse({
-    id: row.id,
-    workspaceId: row.workspace_id,
-    itemId: row.item_id,
-    requestedByUserId: row.requested_by_user_id,
-    instruction: row.instruction,
-    origin: row.origin,
-    priority: row.priority,
-    status: row.status,
-    queuedFor: row.queued_for,
-    resultSummary: row.result_summary,
-    resultPayload: row.result_payload,
-    attemptCount: row.attempt_count,
-    createdAt: row.created_at,
-    startedAt: row.started_at,
-    completedAt: row.completed_at
+    id: parsedRow.id,
+    workspaceId: parsedRow.workspace_id,
+    itemId: parsedRow.item_id,
+    requestedByUserId: parsedRow.requested_by_user_id,
+    instruction: parsedRow.instruction,
+    origin: parsedRow.origin,
+    priority: parsedRow.priority,
+    status: parsedRow.status,
+    queuedFor: parsedRow.queued_for,
+    resultSummary: parsedRow.result_summary,
+    resultPayload: parsedRow.result_payload,
+    attemptCount: parsedRow.attempt_count,
+    createdAt: parsedRow.created_at,
+    startedAt: parsedRow.started_at,
+    completedAt: parsedRow.completed_at
   });
 }
 
-export function mapSourceHealthRow(row: SourceHealthRow): SourceHealth {
+export function mapSourceHealthRow(row: unknown): SourceHealth {
+  const parsedRow = SourceHealthProjectionSchema.parse(row);
+
   return SourceHealthSchema.parse({
-    id: row.id,
-    workspaceId: row.workspace_id,
-    sourceKey: row.source_key,
-    label: row.label,
-    status: row.status,
-    message: row.message,
-    lastSuccessAt: row.last_success_at,
-    lastCheckedAt: row.last_checked_at,
-    nextExpectedAt: row.next_expected_at,
-    metadata: row.metadata
+    id: parsedRow.id,
+    workspaceId: parsedRow.workspace_id,
+    sourceKey: parsedRow.source_key,
+    label: parsedRow.label,
+    status: parsedRow.status,
+    message: parsedRow.message,
+    lastSuccessAt: parsedRow.last_success_at,
+    lastCheckedAt: parsedRow.last_checked_at,
+    nextExpectedAt: parsedRow.next_expected_at,
+    metadata: parsedRow.metadata
   });
 }
 
-export function mapItemRevisionReceiptRow(row: ItemRevisionReceiptRow): ItemRevisionReceipt {
+export function mapItemRevisionReceiptRow(row: unknown): ItemRevisionReceipt {
+  const parsedRow = ItemRevisionReceiptRowSchema.parse(row);
+
   return ItemRevisionReceiptSchema.parse({
-    revisionId: row.revision_id,
-    newVersion: row.new_version
+    revisionId: parsedRow.revision_id,
+    newVersion: parsedRow.new_version
   });
 }

@@ -295,7 +295,10 @@ export const AppendItemRevisionInputSchema = z.strictObject({
   expectedVersion: z.number().int().positive(),
   expectedRevisionId: UuidSchema,
   document: ItemDocumentV1Schema,
-  sourceRefIds: z.array(UuidSchema).max(32).default([])
+  sourceRefIds: z.array(UuidSchema).max(32).refine(
+    (sourceRefIds) => new Set(sourceRefIds).size === sourceRefIds.length,
+    { message: "Source reference IDs must be unique" }
+  ).default([])
 });
 
 export const ItemRevisionReceiptSchema = z.strictObject({

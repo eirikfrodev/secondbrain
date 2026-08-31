@@ -1,6 +1,6 @@
 # Utsikt implementation status
 
-Last updated: 2026-08-30.
+Last updated: 2026-08-31.
 
 `HANDOFF.md` remains canonical. This document records implemented and verified behavior, not future intent.
 
@@ -8,7 +8,7 @@ Last updated: 2026-08-30.
 
 Phase 0 (Foundation) and Phase 1 (Pixel-faithful dynamic UI) are complete. Phase 2 (Persistence and interaction) is in progress.
 
-The repository now contains a strict pnpm/TypeScript workspace, a Next.js 16 App Router application, shared Zod domain contracts, a generic stock-block renderer, deterministic mock scenarios, reviewed desktop/mobile screens, and automated unit, integration, end-to-end, accessibility, and visual-regression coverage.
+The repository now contains a strict pnpm/TypeScript workspace, a Next.js 16 App Router application, shared Zod domain contracts, a generic stock-block renderer, deterministic mock scenarios, reviewed desktop/mobile screens, Supabase SSR/session plumbing, live and mock persistence adapters, and automated unit, integration, end-to-end, accessibility, and visual-regression coverage.
 
 ## Delivered
 
@@ -34,7 +34,7 @@ The repository now contains a strict pnpm/TypeScript workspace, a Next.js 16 App
 - Browser-memory mock behavior for Ask queue/cancel, internal completion, alternatives, draft editing, explicit external review, and a cancellable 30-second staging presentation. No provider effect is performed.
 - Dedicated 393px Today triage and mobile approval layouts.
 
-### Phase 2 persistence foundation — in progress
+### Phase 2 persistence and session foundation — in progress
 
 - Added the first imperative Supabase migration for workspaces/memberships, source evidence, projects, fixed item envelopes, append-only revisions, actions, AI jobs, append-only audit events, and source health.
 - Added explicit table grants and membership RLS: anonymous callers have no table access; authenticated callers receive workspace-filtered reads and only narrow transactional mutation functions.
@@ -44,16 +44,21 @@ The repository now contains a strict pnpm/TypeScript workspace, a Next.js 16 App
 - Added 71 passing pgTAP assertions covering schema/RLS shape, isolation, immutable history, stale writes, trusted queue receipts, cancellation, and cross-workspace evidence.
 - Added the typed `@utsikt/db` boundary and shared Zod contracts for AI jobs, source health, Ask input, and revision receipts.
 - Added a read-only/no-secrets GitHub Actions workflow to run TypeScript/build checks and the disposable local Supabase database suite.
+- Kept mock mode as the credential-free default and added fail-closed live-mode configuration. Live mode requires matching server/browser connector flags, a valid Supabase URL, and an `sb_publishable_` key; secret, service-role, and legacy JWT-shaped keys are rejected before browser compilation.
+- Added request-scoped browser and read-only server Supabase clients plus a Next.js 16 proxy that refreshes cookies, preserves Supabase private/no-cache response headers, and is not treated as an authorization boundary.
+- Added verified-session parsing for issuer, audience, role, authentication assurance, session ID, expiry, and UUID user ID before constructing live persistence.
+- Added a Zod-validated Supabase repository for revision append, inline/global Ask queue, queued-job cancellation, and source-health reads. Inputs, database rows, and domain outputs are validated; database failures map to stable non-leaking domain errors while retaining HTTP status for classification.
+- Added an explicit process-local mock repository behind the same contract. It constructs no remote client and models workspace isolation, stale revisions, trusted queue receipts, durable cancellation state, and source-health reads.
 
 ## Verification
 
-Verified locally and in GitHub Actions on 2026-08-31:
+Verified locally on 2026-08-31. The listed GitHub run covers the previously published persistence/database baseline; the session-and-adapter slice will be followed through CI when pushed.
 
 | Command | Result |
 |---|---|
 | `pnpm lint` | pass, zero warnings |
 | `pnpm typecheck` | pass across all typed workspace projects |
-| `pnpm test` | pass, 25 unit tests |
+| `pnpm test` | pass, 80 unit tests |
 | `pnpm test:integration` | pass, 3 integration tests |
 | `pnpm test:e2e` | pass, 7 functional/accessibility tests |
 | `pnpm test:visual` | pass, 7 reviewed Chromium baselines |
@@ -69,14 +74,15 @@ Axe reports no serious or critical violations on Today or the external-action ap
 - The tertiary ink color is slightly darker than the board token to meet WCAG 2.2 AA; see the Deviation section in `docs/architecture-decisions.md`.
 - Local Next.js commands use the supported Webpack path because the managed sandbox blocks Turbopack's PostCSS worker transport.
 - A clean production build needs network access for the two `next/font/google` assets.
-- Git is initialized on `main`, tracks `origin/main`, and the Phase 2 persistence foundation plus CI correction are published through commit `f77e457`.
+- Git is initialized on `main` and tracks `origin/main` in `eirikfrodev/secondbrain`.
 - The local machine has Supabase CLI 2.95.4 but no Docker daemon. GitHub Actions successfully applied the migration to a disposable local database, ran strict database lint, and passed all 71 pgTAP assertions. Nothing has been applied to a hosted Supabase project.
+- Both the default mock production build and a synthetic, public-key-only live-configuration build pass locally. No hosted Supabase connection or deployment was attempted.
 
 ## Not yet implemented
 
-- Phase 2 Auth/session plumbing, live repository adapters, authenticated APIs, browser Realtime subscriptions, persisted UI state, and full browser lifecycle verification.
+- A chosen sign-in method, response-aware auth mutation client, workspace provisioning/selection, authenticated browser APIs, live dashboard reads, browser Realtime subscriptions, persisted UI state, and full browser lifecycle verification.
 - Remote operator MCP and plugin packaging (Phase 3).
 - Google OAuth, real Gmail/Calendar execution, idempotent worker/saga behavior, and launchd setup (Phase 4).
 - Scheduled operator setup, deployment, production observability, and final security/manual acceptance (Phase 5).
 
-The next isolated Phase 2 slice is Auth/session plumbing plus a Supabase repository adapter while retaining the credential-free mock adapter.
+The next isolated Phase 2 task is to choose the user-facing sign-in method and design workspace provisioning/selection before creating users or wiring authenticated browser APIs.

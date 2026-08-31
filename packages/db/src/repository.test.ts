@@ -45,9 +45,7 @@ describe("database boundary mappings", () => {
       last_success_at: now,
       last_checked_at: now,
       next_expected_at: "2026-08-30T22:00:00.000Z",
-      metadata: {},
-      created_at: now,
-      updated_at: now
+      metadata: {}
     });
     const revision = mapItemRevisionReceiptRow({
       revision_id: "55555555-5555-4555-8555-555555555555",

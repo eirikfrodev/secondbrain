@@ -112,6 +112,18 @@ Why: model-composed labels and payloads must never be able to understate executi
 
 Consequences: capability additions require one reviewed domain-policy change and a matching migration change. The pgTAP suite tests both mismatched action authority and invalid document envelopes. Unknown or malformed blocks remain display-only content; they never become executable authority.
 
+## ADR-012 — Cookie SSR refresh is separate from data authorization
+
+Status: accepted, 2026-08-31.
+
+Decision: use `@supabase/ssr` with the public project URL and an `sb_publishable_` key for browser and request-scoped server clients. Next config validates live credentials before browser compilation and rejects secret, service-role, and legacy JWT-shaped keys. A Next.js 16 `proxy.ts` is the only current cookie-writing client: it refreshes sessions with `getClaims()` and preserves Supabase's private/no-cache response headers. The server data client is explicitly read-only. The proxy does not redirect or authorize data. Live repository construction verifies the authenticated audience, role, issuer, session ID, and user ID next to the data boundary, and PostgreSQL grants plus RLS remain the workspace authority. No ordinary browser request uses the service-role key.
+
+`CONNECTOR_MODE=mock` and `NEXT_PUBLIC_CONNECTOR_MODE=mock` remain the explicit default. Live mode requires both modes to agree and both public Supabase values to validate; invalid live configuration fails closed. The same `PersistenceRepository` contract has a request-scoped Supabase adapter and a process-local in-memory mock implementation.
+
+Why: proxy checks are optimistic and can be bypassed by direct route or Server Action calls. Keeping verified identity, runtime row parsing, and RLS near persistence avoids turning a refreshed cookie into authorization. A discriminated configuration prevents missing credentials from silently changing a live request into a successful-looking mock operation.
+
+Consequences: mock persistence is deliberately ephemeral and performs no remote effect. A response-aware auth mutation client must be introduced with the future sign-in flow; the read-only server data helper must not be repurposed for cookie mutations. A user-facing sign-in method, workspace provisioning/selection, ordinary browser APIs, Realtime, and UI state replacement remain separate reviewed work. Live mode is not yet a complete product flow, and new Auth users cannot be onboarded until workspace provisioning is designed. The current Supabase client also raises the project runtime floor to Node.js 22.
+
 ## Deviations
 
 - Accessibility correction, 2026-08-30: `--ink-3` is implemented as `#52657E` rather than the board value `#5E7089`. The board value measures below WCAG AA on both paper tones (approximately 4.39:1 on paper and 4.05:1 on paper-2). The corrected value is approximately 5.19:1 and 4.78:1 respectively while preserving the intended tertiary-blue hierarchy.

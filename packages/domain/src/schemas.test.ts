@@ -121,6 +121,13 @@ describe("persistence boundaries", () => {
       document: meetingEmail.document,
       sourceRefIds: Array.from({ length: 33 }, () => meetingEmail.item.id)
     }).success).toBe(false);
+    expect(AppendItemRevisionInputSchema.safeParse({
+      itemId: meetingEmail.item.id,
+      expectedVersion: meetingEmail.item.version,
+      expectedRevisionId: meetingEmail.item.currentRevisionId,
+      document: meetingEmail.document,
+      sourceRefIds: [meetingEmail.item.id, meetingEmail.item.id]
+    }).success).toBe(false);
   });
 
   it("binds a revision write to both the expected version and revision", () => {
