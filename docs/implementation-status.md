@@ -52,7 +52,7 @@ The repository now contains a strict pnpm/TypeScript workspace, a Next.js 16 App
 
 ## Verification
 
-Verified locally on 2026-08-31. The listed GitHub run covers the previously published persistence/database baseline; the session-and-adapter slice will be followed through CI when pushed.
+Verified locally and in GitHub Actions on 2026-08-31:
 
 | Command | Result |
 |---|---|
@@ -63,7 +63,7 @@ Verified locally on 2026-08-31. The listed GitHub run covers the previously publ
 | `pnpm test:e2e` | pass, 7 functional/accessibility tests |
 | `pnpm test:visual` | pass, 7 reviewed Chromium baselines |
 | `pnpm build` | pass, production routes compiled and prerendered |
-| GitHub CI `33359760799` | pass, TypeScript/web and disposable Supabase jobs |
+| GitHub CI `33362243462` | pass, TypeScript/web and disposable Supabase jobs for `c53e272` |
 
 Axe reports no serious or critical violations on Today or the external-action approval flow. Visual baselines cover Today, expanded item, Week, Month, draft review, Mobile Today, and Mobile approval at the specified viewports.
 
@@ -74,7 +74,7 @@ Axe reports no serious or critical violations on Today or the external-action ap
 - The tertiary ink color is slightly darker than the board token to meet WCAG 2.2 AA; see the Deviation section in `docs/architecture-decisions.md`.
 - Local Next.js commands use the supported Webpack path because the managed sandbox blocks Turbopack's PostCSS worker transport.
 - A clean production build needs network access for the two `next/font/google` assets.
-- Git is initialized on `main` and tracks `origin/main` in `eirikfrodev/secondbrain`.
+- Git is initialized on `main`, tracks `origin/main` in `eirikfrodev/secondbrain`, and the session-and-adapter slice is published through commit `c53e272`.
 - The local machine has Supabase CLI 2.95.4 but no Docker daemon. GitHub Actions successfully applied the migration to a disposable local database, ran strict database lint, and passed all 71 pgTAP assertions. Nothing has been applied to a hosted Supabase project.
 - Both the default mock production build and a synthetic, public-key-only live-configuration build pass locally. No hosted Supabase connection or deployment was attempted.
 

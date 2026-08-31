@@ -64,7 +64,7 @@ Status: in progress as of 2026-08-31. The schema, RLS, and migration design was 
 7. Add project/activity/source-health reads and visible recovery states.
 8. Prove the complete lifecycle, workspace isolation, stale revisions, cancellation, and append-only history in integration and browser tests.
 
-Current slice: complete and locally verified on 2026-08-31. It covers step 4 and the repository-adapter boundary needed by step 5.
+Current slice: complete and verified locally and in GitHub Actions on 2026-08-31. It covers step 4 and the repository-adapter boundary needed by step 5.
 
 1. Validate connector mode and browser-safe Supabase configuration without requiring credentials in the default mock mode.
 2. Add request-scoped browser/server Supabase clients, Next.js 16 cookie refresh through `proxy.ts`, and a verified-session data-access helper. Proxy refresh is not an authorization boundary; authenticated repository calls and RLS remain authoritative.
