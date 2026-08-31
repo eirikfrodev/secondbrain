@@ -41,13 +41,13 @@ The repository now contains a strict pnpm/TypeScript workspace, a Next.js 16 App
 - Bound the current item revision and version through a deferred composite foreign key; bound action and job lineage through composite workspace/item/revision keys; normalized revision/source edges privately so evidence deletion remains safe under concurrency.
 - Added transactional functions for revision append, inline/global Ask queue, and idempotent requester-scoped queued-job cancellation. Ask origin, priority, requester, and next-sync time are trusted database values rather than caller inputs.
 - Added database JSON Schema validation for the strict item-document envelope and mirrored capability/kind/risk constraints so persisted action authority cannot contradict the domain registry.
-- Added pgTAP specifications covering schema/RLS shape, isolation, immutable history, stale writes, trusted queue receipts, cancellation, and cross-workspace evidence.
+- Added 71 passing pgTAP assertions covering schema/RLS shape, isolation, immutable history, stale writes, trusted queue receipts, cancellation, and cross-workspace evidence.
 - Added the typed `@utsikt/db` boundary and shared Zod contracts for AI jobs, source health, Ask input, and revision receipts.
 - Added a read-only/no-secrets GitHub Actions workflow to run TypeScript/build checks and the disposable local Supabase database suite.
 
 ## Verification
 
-Verified on 2026-08-30:
+Verified locally and in GitHub Actions on 2026-08-31:
 
 | Command | Result |
 |---|---|
@@ -58,6 +58,7 @@ Verified on 2026-08-30:
 | `pnpm test:e2e` | pass, 7 functional/accessibility tests |
 | `pnpm test:visual` | pass, 7 reviewed Chromium baselines |
 | `pnpm build` | pass, production routes compiled and prerendered |
+| GitHub CI `33359760799` | pass, TypeScript/web and disposable Supabase jobs |
 
 Axe reports no serious or critical violations on Today or the external-action approval flow. Visual baselines cover Today, expanded item, Week, Month, draft review, Mobile Today, and Mobile approval at the specified viewports.
 
@@ -68,8 +69,8 @@ Axe reports no serious or critical violations on Today or the external-action ap
 - The tertiary ink color is slightly darker than the board token to meet WCAG 2.2 AA; see the Deviation section in `docs/architecture-decisions.md`.
 - Local Next.js commands use the supported Webpack path because the managed sandbox blocks Turbopack's PostCSS worker transport.
 - A clean production build needs network access for the two `next/font/google` assets.
-- Git is initialized on `main`, tracks `origin/main`, and the verified Phase 0–1 baseline is published at commit `5799296`.
-- The local machine has Supabase CLI 2.95.4 but no Docker daemon. A disposable GitHub Actions database job is configured to run the Phase 2 migration/pgTAP suite, but its first successful run is still pending. Nothing has been applied to a hosted Supabase project.
+- Git is initialized on `main`, tracks `origin/main`, and the Phase 2 persistence foundation plus CI correction are published through commit `f77e457`.
+- The local machine has Supabase CLI 2.95.4 but no Docker daemon. GitHub Actions successfully applied the migration to a disposable local database, ran strict database lint, and passed all 71 pgTAP assertions. Nothing has been applied to a hosted Supabase project.
 
 ## Not yet implemented
 
