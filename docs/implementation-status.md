@@ -64,7 +64,7 @@ The repository now contains a strict pnpm/TypeScript workspace, a Next.js 16 App
 
 ## Verification
 
-Verified locally on 2026-09-01; GitHub Actions verification for this slice is pending the first push:
+Verified locally and in GitHub Actions on 2026-09-01:
 
 | Command | Result |
 |---|---|
@@ -75,7 +75,8 @@ Verified locally on 2026-09-01; GitHub Actions verification for this slice is pe
 | `pnpm test:e2e` | pass, 10 mock/synthetic-live functional and accessibility tests |
 | `pnpm test:visual` | pass, 9 reviewed Chromium baselines |
 | `pnpm build` | pass in default mock and synthetic Supabase modes |
-| Database suite | 117 pgTAP assertions authored; disposable execution pending GitHub CI because local Docker is unavailable |
+| Database suite | pass, all 117 pgTAP assertions in disposable Supabase |
+| GitHub CI `33487197362` | pass, TypeScript/web and disposable Supabase jobs for `acbade3` |
 
 Axe reports no serious or critical violations on Today, the external-action approval flow, or desktop/mobile sign-in. Visual baselines cover Today, expanded item, Week, Month, draft review, Mobile Today, Mobile approval, and live sign-in at 1440px and 393px.
 
@@ -86,8 +87,8 @@ Axe reports no serious or critical violations on Today, the external-action appr
 - The tertiary ink color is slightly darker than the board token to meet WCAG 2.2 AA; see the Deviation section in `docs/architecture-decisions.md`.
 - Local Next.js commands use the supported Webpack path because the managed sandbox blocks Turbopack's PostCSS worker transport.
 - A clean production build needs network access for the two `next/font/google` assets.
-- Git is initialized on `main`, tracks `origin/main` in `eirikfrodev/secondbrain`, and the previous session-and-adapter slice is published through commit `c53e272`. The Google-auth slice is locally complete and not yet pushed.
-- The local machine has Supabase CLI 2.95.4 but no Docker daemon. GitHub Actions successfully applied the migration to a disposable local database, ran strict database lint, and passed all 71 pgTAP assertions. Nothing has been applied to a hosted Supabase project.
+- Git is initialized on `main`, tracks `origin/main` in `eirikfrodev/secondbrain`, and the Google-auth slice is published through commit `acbade3`.
+- The local machine has Supabase CLI 2.95.4 but no Docker daemon. GitHub Actions successfully applied both migrations to a disposable local database, ran strict database lint, and passed all 117 pgTAP assertions. Nothing has been applied to a hosted Supabase project.
 - Both the default mock production build and a synthetic, public-key-only live-configuration build pass locally. The synthetic browser suite targets an unreachable loopback Supabase origin and performs no remote Auth/database action. No hosted Supabase connection or deployment was attempted.
 
 ## Not yet implemented
