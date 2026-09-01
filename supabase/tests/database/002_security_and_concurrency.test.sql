@@ -4,7 +4,7 @@ create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 set constraints items_current_revision_fk deferred;
 
-select plan(43);
+select plan(50);
 
 -- This rollback-only test uses synthetic JWT subjects to exercise multi-user
 -- RLS. The pgTAP role does not own Supabase's auth.users table, so remove the
@@ -227,27 +227,59 @@ select results_eq(
   'outsider sees only outsider jobs'
 );
 
+reset role;
+insert into public.workspace_memberships (workspace_id, user_id, role)
+values ('22222222-2222-4222-8222-222222222222', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'member');
+
 select set_config('request.jwt.claims', '{"sub":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","role":"authenticated"}', true);
 select set_config('request.jwt.claim.sub', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', true);
+set local role authenticated;
 select lives_ok(
-  $$ select public.queue_item_ask('33333333-3333-4333-8333-333333333333', 'Keep this attached to the item') $$,
+  $$
+    select public.queue_item_ask(
+      '11111111-1111-4111-8111-111111111111',
+      '33333333-3333-4333-8333-333333333333',
+      'Keep this attached to the item'
+    )
+  $$,
   'owner can queue an inline Ask through the narrow function'
 );
 select is(
-  (select count(*)::integer from public.ai_jobs where origin = 'inline_ask' and status = 'queued'),
+  (
+    select count(*)::integer
+    from public.ai_jobs
+    where workspace_id = '11111111-1111-4111-8111-111111111111'
+      and origin = 'inline_ask'
+      and status = 'queued'
+  ),
   1,
   'Ask creates one queued user job'
 );
 select is(
-  (select queued_for from public.ai_jobs where origin = 'inline_ask'),
-  (select next_expected_at from public.source_health where source_key = 'utsikt_operator'),
+  (
+    select queued_for
+    from public.ai_jobs
+    where workspace_id = '11111111-1111-4111-8111-111111111111'
+      and origin = 'inline_ask'
+  ),
+  (
+    select next_expected_at
+    from public.source_health
+    where workspace_id = '11111111-1111-4111-8111-111111111111'
+      and source_key = 'utsikt_operator'
+  ),
   'queued receipt uses the trusted next operator sync'
 );
 
 select set_config('request.jwt.claims', '{"sub":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb","role":"authenticated"}', true);
 select set_config('request.jwt.claim.sub', 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', true);
 select throws_ok(
-  $$ select public.cancel_ai_job((select id from public.ai_jobs where origin = 'inline_ask')) $$,
+  $$
+    select public.cancel_ai_job(
+      '11111111-1111-4111-8111-111111111111',
+      (select id from public.ai_jobs where origin = 'inline_ask')
+    )
+  $$,
   '42501',
   'AI job cannot be cancelled by this user',
   'a member cannot cancel another member request'
@@ -256,23 +288,110 @@ select throws_ok(
 select set_config('request.jwt.claims', '{"sub":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","role":"authenticated"}', true);
 select set_config('request.jwt.claim.sub', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', true);
 select throws_ok(
-  $$ select public.cancel_ai_job('77777777-7777-4777-8777-777777777771') $$,
+  $$
+    select public.cancel_ai_job(
+      '11111111-1111-4111-8111-111111111111',
+      '77777777-7777-4777-8777-777777777771'
+    )
+  $$,
   '42501',
   'AI job cannot be cancelled by this user',
   'user cancellation cannot stop a trusted operator job'
 );
 select lives_ok(
-  $$ select public.cancel_ai_job((select id from public.ai_jobs where origin = 'inline_ask')) $$,
+  $$
+    select public.cancel_ai_job(
+      '11111111-1111-4111-8111-111111111111',
+      (select id from public.ai_jobs where origin = 'inline_ask')
+    )
+  $$,
   'queued Ask can be cancelled'
 );
 select lives_ok(
-  $$ select public.cancel_ai_job((select id from public.ai_jobs where origin = 'inline_ask')) $$,
+  $$
+    select public.cancel_ai_job(
+      '11111111-1111-4111-8111-111111111111',
+      (select id from public.ai_jobs where origin = 'inline_ask')
+    )
+  $$,
   'repeated cancellation is idempotent'
 );
 select is(
   (select count(*)::integer from public.audit_events where event_type = 'ai_job.cancelled'),
   1,
   'idempotent cancellation emits one audit event'
+);
+
+select is(
+  (select count(*)::integer from public.workspaces),
+  2,
+  'the personal-workspace owner can access both member workspaces'
+);
+select lives_ok(
+  $$
+    select public.queue_item_ask(
+      '22222222-2222-4222-8222-222222222222',
+      '33333333-3333-4333-8333-333333333334',
+      'Keep this job in the second workspace'
+    )
+  $$,
+  'a multi-workspace member can queue within the expected workspace'
+);
+select throws_ok(
+  $$
+    select public.queue_item_ask(
+      '11111111-1111-4111-8111-111111111111',
+      '33333333-3333-4333-8333-333333333334',
+      'Bind this job to the wrong workspace'
+    )
+  $$,
+  'P0002',
+  'item not found',
+  'inline Ask rejects an item outside the expected workspace'
+);
+select is(
+  (
+    select count(*)::integer
+    from public.ai_jobs
+    where instruction = 'Bind this job to the wrong workspace'
+  ),
+  0,
+  'a mismatched expected workspace inserts no AI job'
+);
+select throws_ok(
+  $$
+    select public.cancel_ai_job(
+      '11111111-1111-4111-8111-111111111111',
+      (
+        select id
+        from public.ai_jobs
+        where instruction = 'Keep this job in the second workspace'
+      )
+    )
+  $$,
+  'P0002',
+  'AI job not found',
+  'cancellation rejects a job outside the expected workspace'
+);
+select is(
+  (
+    select status
+    from public.ai_jobs
+    where instruction = 'Keep this job in the second workspace'
+  ),
+  'queued',
+  'a mismatched expected workspace leaves the AI job queued'
+);
+select is(
+  (
+    select count(*)::integer
+    from public.audit_events event
+    join public.ai_jobs job on job.id = event.entity_id
+    where event.event_type = 'ai_job.cancelled'
+      and job.instruction = 'Keep this job in the second workspace'
+  ),
+  0,
+  'a rejected cross-workspace cancellation emits no audit event'
 );
 
 select lives_ok(
@@ -350,7 +469,13 @@ select throws_ok(
 select set_config('request.jwt.claims', '{"sub":"cccccccc-cccc-4ccc-8ccc-cccccccccccc","role":"authenticated"}', true);
 select set_config('request.jwt.claim.sub', 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', true);
 select throws_ok(
-  $$ select public.queue_item_ask('33333333-3333-4333-8333-333333333333', 'Cross the workspace boundary') $$,
+  $$
+    select public.queue_item_ask(
+      '11111111-1111-4111-8111-111111111111',
+      '33333333-3333-4333-8333-333333333333',
+      'Cross the workspace boundary'
+    )
+  $$,
   '42501',
   'workspace access denied',
   'outsider cannot queue work against another workspace item'

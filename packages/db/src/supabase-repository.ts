@@ -193,6 +193,7 @@ export function createPersistenceRepositoryFromGateway(
 
       return execute(
         () => gateway.queueItemAsk({
+          target_workspace_id: parsed.workspaceId,
           target_item_id: parsed.itemId,
           job_instruction: parsed.instruction
         }),
@@ -216,7 +217,10 @@ export function createPersistenceRepositoryFromGateway(
       const parsed = parseInput(CancelAiJobInputSchema, input);
 
       return execute(
-        () => gateway.cancelAiJob({ target_job_id: parsed.jobId }),
+        () => gateway.cancelAiJob({
+          target_workspace_id: parsed.workspaceId,
+          target_job_id: parsed.jobId
+        }),
         mapAiJobRow
       );
     },

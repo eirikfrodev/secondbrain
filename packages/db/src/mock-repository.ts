@@ -159,6 +159,10 @@ export function createMockPersistenceRepository(
     async queueItemAsk(input) {
       const parsed = parseInput(QueueItemAskInputSchema, input);
 
+      if (parsed.workspaceId !== workspaceId) {
+        throw new PersistenceError("forbidden", "This workspace operation is not allowed.");
+      }
+
       if (!revisions.has(parsed.itemId)) {
         throw new PersistenceError("not_found", "The requested record was not found.");
       }
@@ -186,6 +190,11 @@ export function createMockPersistenceRepository(
 
     async cancelAiJob(input) {
       const parsed = parseInput(CancelAiJobInputSchema, input);
+
+      if (parsed.workspaceId !== workspaceId) {
+        throw new PersistenceError("forbidden", "This workspace operation is not allowed.");
+      }
+
       const current = jobs.get(parsed.jobId);
 
       if (current === undefined) {

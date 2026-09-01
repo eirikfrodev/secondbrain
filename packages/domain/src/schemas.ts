@@ -277,6 +277,7 @@ export const ItemDocumentV1Schema = ItemDocumentEnvelopeSchema.transform((docume
 }));
 
 export const QueueItemAskInputSchema = z.strictObject({
+  workspaceId: UuidSchema,
   itemId: UuidSchema,
   instruction: AskInstructionSchema
 });
@@ -287,6 +288,7 @@ export const QueueGlobalAskInputSchema = z.strictObject({
 });
 
 export const CancelAiJobInputSchema = z.strictObject({
+  workspaceId: UuidSchema,
   jobId: UuidSchema
 });
 

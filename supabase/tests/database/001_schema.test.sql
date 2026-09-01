@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(47);
+select plan(51);
 
 select has_extension('pg_jsonschema', 'database JSON Schema validation is enabled');
 
@@ -88,12 +88,28 @@ select ok(
   'authenticated callers cannot mutate item tables directly'
 );
 select ok(
-  not has_function_privilege('anon', 'public.queue_item_ask(uuid,text)', 'execute'),
+  to_regprocedure('public.queue_item_ask(uuid,text)') is null,
+  'the unscoped inline Ask overload has been removed'
+);
+select ok(
+  to_regprocedure('public.cancel_ai_job(uuid)') is null,
+  'the unscoped cancellation overload has been removed'
+);
+select ok(
+  not has_function_privilege('anon', 'public.queue_item_ask(uuid,uuid,text)', 'execute'),
   'anonymous callers cannot queue Ask jobs'
 );
 select ok(
-  has_function_privilege('authenticated', 'public.queue_item_ask(uuid,text)', 'execute'),
+  has_function_privilege('authenticated', 'public.queue_item_ask(uuid,uuid,text)', 'execute'),
   'authenticated callers can use the narrow inline Ask function'
+);
+select ok(
+  not has_function_privilege('anon', 'public.cancel_ai_job(uuid,uuid)', 'execute'),
+  'anonymous callers cannot cancel Ask jobs'
+);
+select ok(
+  has_function_privilege('authenticated', 'public.cancel_ai_job(uuid,uuid)', 'execute'),
+  'authenticated callers can use workspace-scoped cancellation'
 );
 select ok(
   not has_table_privilege('anon', 'private.auth_owner_identity', 'select'),

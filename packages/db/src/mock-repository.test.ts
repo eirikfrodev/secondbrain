@@ -57,6 +57,7 @@ describe("mock persistence repository", () => {
   it("returns trusted queue fields and cancels by durable job ID", async () => {
     const repository = createRepository(firstGeneratedId);
     const queued = await repository.queueItemAsk({
+      workspaceId,
       itemId,
       instruction: "  Move this to next week  "
     });
@@ -72,13 +73,39 @@ describe("mock persistence repository", () => {
       queuedFor: "2026-08-31T09:00:00.000Z"
     });
 
-    const cancelled = await repository.cancelAiJob({ jobId: queued.id });
+    const cancelled = await repository.cancelAiJob({ workspaceId, jobId: queued.id });
     expect(cancelled).toMatchObject({
       id: queued.id,
       status: "cancelled",
       completedAt: now.toISOString()
     });
-    await expect(repository.cancelAiJob({ jobId: queued.id })).resolves.toEqual(cancelled);
+    await expect(repository.cancelAiJob({ workspaceId, jobId: queued.id })).resolves.toEqual(cancelled);
+  });
+
+  it("rejects mismatched workspaces before queue or cancellation mutation", async () => {
+    const repository = createRepository(firstGeneratedId);
+
+    await expect(repository.queueItemAsk({
+      workspaceId: otherWorkspaceId,
+      itemId,
+      instruction: "Move this"
+    })).rejects.toMatchObject({ code: "forbidden" });
+
+    const queued = await repository.queueItemAsk({
+      workspaceId,
+      itemId,
+      instruction: "Move this"
+    });
+    expect(queued.id).toBe(firstGeneratedId);
+
+    await expect(repository.cancelAiJob({
+      workspaceId: otherWorkspaceId,
+      jobId: queued.id
+    })).rejects.toMatchObject({ code: "forbidden" });
+    await expect(repository.cancelAiJob({
+      workspaceId,
+      jobId: queued.id
+    })).resolves.toMatchObject({ status: "cancelled" });
   });
 
   it("keeps global Ask operations inside the repository workspace", async () => {
@@ -155,6 +182,7 @@ describe("mock persistence repository", () => {
     };
 
     await expect(repository.queueItemAsk({
+      workspaceId,
       itemId: unknownItemId,
       instruction: "Move this"
     })).rejects.toMatchObject({ code: "not_found" });
@@ -190,11 +218,12 @@ describe("mock persistence repository", () => {
       }]
     });
     const queued = await repository.queueItemAsk({
+      workspaceId,
       itemId,
       instruction: "Keep this bounded"
     });
 
-    await repository.cancelAiJob({ jobId: queued.id });
+    await repository.cancelAiJob({ workspaceId, jobId: queued.id });
     await expect(repository.queueGlobalAsk({
       workspaceId,
       instruction: "Do not retain another job"

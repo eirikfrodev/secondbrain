@@ -62,11 +62,13 @@ describe("Supabase persistence repository", () => {
     const repository = createPersistenceRepositoryFromGateway(createGateway({ queueItemAsk }));
 
     const job = await repository.queueItemAsk({
+      workspaceId,
       itemId,
       instruction: "  Move this to next week  "
     });
 
     expect(queueItemAsk).toHaveBeenCalledWith({
+      target_workspace_id: workspaceId,
       target_item_id: itemId,
       job_instruction: "Move this to next week"
     });
@@ -82,6 +84,7 @@ describe("Supabase persistence repository", () => {
     const queueItemAsk = vi.fn(emptyResult);
     const repository = createPersistenceRepositoryFromGateway(createGateway({ queueItemAsk }));
     const invalidInput = {
+      workspaceId,
       itemId: "not-a-uuid",
       instruction: "Do something"
     } as unknown as QueueItemAskInput;
@@ -101,6 +104,7 @@ describe("Supabase persistence repository", () => {
     }));
 
     await expect(repository.queueItemAsk({
+      workspaceId,
       itemId,
       instruction: "Move this"
     })).rejects.toMatchObject({ code: "unavailable" });
@@ -189,14 +193,18 @@ describe("Supabase persistence repository", () => {
   });
 
   it("does not expose raw backend details in its stable error message", async () => {
+    const cancelAiJob = vi.fn(async () => ({
+      data: null,
+      error: { code: "55000", message: "sensitive raw detail" }
+    }));
     const repository = createPersistenceRepositoryFromGateway(createGateway({
-      cancelAiJob: async () => ({
-        data: null,
-        error: { code: "55000", message: "sensitive raw detail" }
-      })
+      cancelAiJob
     }));
 
-    const error = await repository.cancelAiJob({ jobId }).catch((cause: unknown) => cause);
+    const error = await repository.cancelAiJob({
+      workspaceId,
+      jobId
+    }).catch((cause: unknown) => cause);
 
     expect(error).toBeInstanceOf(PersistenceError);
     expect((error as PersistenceError).message).toBe(
@@ -204,6 +212,10 @@ describe("Supabase persistence repository", () => {
     );
     expect((error as PersistenceError).message).not.toContain("sensitive");
     expect(JSON.stringify(error)).not.toContain("sensitive");
+    expect(cancelAiJob).toHaveBeenCalledWith({
+      target_workspace_id: workspaceId,
+      target_job_id: jobId
+    });
   });
 
   it("normalizes transport failures to unavailable", async () => {
@@ -226,14 +238,24 @@ describe("Supabase persistence repository", () => {
     const gateway = createSupabasePersistenceGateway(client);
 
     await expect(gateway.queueItemAsk({
+      target_workspace_id: workspaceId,
       target_item_id: itemId,
       job_instruction: "Move this"
     })).resolves.toEqual({ data: jobRow, error: null, status: 200 });
+    await expect(gateway.cancelAiJob({
+      target_workspace_id: workspaceId,
+      target_job_id: jobId
+    })).resolves.toEqual({ data: jobRow, error: null, status: 200 });
     expect(rpc).toHaveBeenCalledWith("queue_item_ask", {
+      target_workspace_id: workspaceId,
       target_item_id: itemId,
       job_instruction: "Move this"
     });
-    expect(single).toHaveBeenCalledOnce();
+    expect(rpc).toHaveBeenCalledWith("cancel_ai_job", {
+      target_workspace_id: workspaceId,
+      target_job_id: jobId
+    });
+    expect(single).toHaveBeenCalledTimes(2);
   });
 
   it("selects only the source-health presentation fields in stable order", async () => {
@@ -270,6 +292,7 @@ describe("Supabase persistence repository", () => {
     const repository = createSupabasePersistenceRepository(client);
 
     await expect(repository.queueItemAsk({
+      workspaceId,
       itemId,
       instruction: "Move this"
     })).rejects.toMatchObject({ code: "not_authenticated" });

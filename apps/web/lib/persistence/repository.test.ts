@@ -102,6 +102,7 @@ describe("request persistence context", () => {
 
     const jobs = await Promise.all(
       fixtureItems.map((fixture) => first.repository.queueItemAsk({
+        workspaceId: first.workspaceId,
         itemId: fixture.item.id,
         instruction: `Review ${fixture.item.id}`
       }))
@@ -111,7 +112,10 @@ describe("request persistence context", () => {
     expect(jobs).toHaveLength(fixtureItems.length);
     expect(jobs.every((job) => job.requestedByUserId === mockUserId)).toBe(true);
     expect(firstJob).toBeDefined();
-    await expect(repository.cancelAiJob({ jobId: firstJob?.id ?? "" })).resolves.toMatchObject({
+    await expect(repository.cancelAiJob({
+      workspaceId: first.workspaceId,
+      jobId: firstJob?.id ?? ""
+    })).resolves.toMatchObject({
       id: firstJob?.id,
       status: "cancelled"
     });

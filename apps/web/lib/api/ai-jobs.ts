@@ -241,6 +241,7 @@ export async function handleItemAsk(
   try {
     const context = await dependencies.getContext();
     const result = await context.repository.queueItemAsk({
+      workspaceId: context.workspaceId,
       itemId: itemId.data,
       instruction: body.instruction
     });
@@ -289,7 +290,10 @@ export async function handleCancelAiJob(
 
   try {
     const context = await dependencies.getContext();
-    const result = await context.repository.cancelAiJob({ jobId: jobId.data });
+    const result = await context.repository.cancelAiJob({
+      workspaceId: context.workspaceId,
+      jobId: jobId.data
+    });
     const job = parseJob(result);
 
     if (job === null || !hasCancelledJobInvariants(job, context, jobId.data)) {

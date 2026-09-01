@@ -66,25 +66,26 @@ The repository now contains a strict pnpm/TypeScript workspace, a Next.js 16 App
 
 - Added `POST /api/ask`, `POST /api/items/[id]/ask`, and `POST /api/ai-jobs/[id]/cancel` over the existing persistence contract. Queueing returns `201`; queued-job cancellation returns `200` and remains idempotent.
 - Added an exact-origin mutation boundary with mandatory `Origin` and Fetch Metadata checks, query/media/encoding rejection, a 16 KiB streaming body cap, strict UUID/JSON schemas, and dependency short-circuiting before session or repository work.
-- Derived live user/workspace authority from the verified Google/OAuth session and exactly one RLS-visible personal owner workspace. The caller cannot supply workspace, requester, origin, priority, status, schedule, result, or audit fields.
+- Derived live user/workspace authority from the verified Google/OAuth session and exactly one RLS-visible personal owner workspace. Item Ask and cancellation atomically constrain their database target to that workspace, including for users who hold membership elsewhere. The caller cannot supply workspace, requester, origin, priority, status, schedule, result, or audit fields.
 - Revalidated repository results against request context and returned only a reduced job receipt. Targeted forbidden/missing results collapse to route-specific `404`s, and fixed error envelopes never serialize persistence causes or provider/database details.
+- Added a corrective, additive RPC-signature migration that removes the older unscoped item-Ask/cancel overloads. Eleven new pgTAP assertions model a personal-workspace owner who also belongs to another workspace and prove a mismatched queue/cancel target produces no job, status change, or audit event. The authored database suite now contains 128 assertions.
 - Seeded one process-global mock repository from all seven fixture item UUIDs so local mock API requests can queue and cancel across route bundles without constructing a remote client. Mock mutations return `404` outside loopback development/test and retain at most 256 jobs, so this non-durable state cannot masquerade as deployable persistence.
 - Added handler/boundary/context unit coverage, a real mock-repository integration lifecycle, same-origin mock Playwright queue/cancel coverage, and a synthetic-live no-session test that proves there is no mock fallback.
 
 ## Verification
 
-The Google-auth/database baseline is verified locally and in GitHub Actions. The current Ask/cancel slice is verified locally on 2026-09-01; its first GitHub run is pending this commit:
+The Google-auth/database baseline and initial Ask/cancel commit are verified locally and in GitHub Actions. The corrective workspace-binding follow-up is verified locally on 2026-09-01; its GitHub database run is pending this commit:
 
 | Command | Result |
 |---|---|
 | `pnpm lint` | pass, zero warnings |
 | `pnpm typecheck` | pass across all typed workspace projects |
-| `pnpm test` | pass, 284 unit tests |
+| `pnpm test` | pass, 286 unit tests |
 | `pnpm test:integration` | pass, 4 integration tests |
 | `pnpm test:e2e` | pass, 12 mock/synthetic-live functional and accessibility tests |
 | `pnpm test:visual` | pass, 9 reviewed Chromium baselines |
 | `pnpm build` | pass in default mock and synthetic Supabase modes |
-| Database suite | pass, all 117 pgTAP assertions in disposable Supabase |
+| Database suite | prior 117-assertion suite passes in disposable Supabase; corrected 128-assertion suite pending GitHub Actions because local Docker is unavailable |
 | GitHub CI `33487197362` | pass, TypeScript/web and disposable Supabase jobs for `acbade3` |
 
 Axe reports no serious or critical violations on Today, the external-action approval flow, or desktop/mobile sign-in. Visual baselines cover Today, expanded item, Week, Month, draft review, Mobile Today, Mobile approval, and live sign-in at 1440px and 393px.
@@ -96,8 +97,8 @@ Axe reports no serious or critical violations on Today, the external-action appr
 - The tertiary ink color is slightly darker than the board token to meet WCAG 2.2 AA; see the Deviation section in `docs/architecture-decisions.md`.
 - Local Next.js commands use the supported Webpack path because the managed sandbox blocks Turbopack's PostCSS worker transport.
 - A clean production build needs network access for the two `next/font/google` assets.
-- Git is initialized on `main`, tracks `origin/main` in `eirikfrodev/secondbrain`, and the Google-auth slice is published through commit `acbade3`.
-- The Ask/cancel slice is locally complete and not yet pushed. Its HTTP mock store is process-local; the existing page controls remain browser-memory only until real reads provide live item IDs.
+- Git is initialized on `main`, tracks `origin/main` in `eirikfrodev/secondbrain`, and the Google-auth slice is published through commit `764d277`.
+- The initial Ask/cancel slice is published at `b1c1af8`; its atomic workspace-binding correction is locally complete and not yet pushed. The HTTP mock store is process-local; the existing page controls remain browser-memory only until real reads provide live item IDs.
 - The local machine has Supabase CLI 2.95.4 but no Docker daemon. GitHub Actions successfully applied both migrations to a disposable local database, ran strict database lint, and passed all 117 pgTAP assertions. Nothing has been applied to a hosted Supabase project.
 - Both the default mock production build and a synthetic, public-key-only live-configuration build pass locally. The synthetic browser suite targets an unreachable loopback Supabase origin and performs no remote Auth/database action. No hosted Supabase connection or deployment was attempted.
 

@@ -95,7 +95,9 @@ Current slice: authenticated Ask queueing and queued-job cancellation HTTP bound
 4. Return only Zod-validated AI-job receipts with private no-store and `nosniff` headers. Map persistence failures to stable status/code pairs without leaking database/provider causes.
 5. Prove queue/cancel/idempotent-cancel behavior, session/workspace isolation, invalid-state handling, transport limits, and error redaction with unit, integration, and credential-free browser tests.
 
-Non-goals: no migration, RLS, Auth-provider, GitHub Actions, hosted-service, or deployment changes; no arbitrary tool execution; no external provider effect; no live dashboard reads, Realtime subscription, or fixture-UI wiring. The existing pages stay honest and data-pending in live mode because their mock item IDs are not database identities.
+Non-goals: no table/schema-shape, RLS-policy, Auth-provider, GitHub Actions, hosted-service, or deployment changes; no arbitrary tool execution; no external provider effect; no live dashboard reads, Realtime subscription, or fixture-UI wiring. The existing pages stay honest and data-pending in live mode because their mock item IDs are not database identities.
+
+Corrective follow-up before this slice is considered complete: add a narrow additive RPC-signature migration so item Ask and cancellation receive the API-resolved personal workspace ID and enforce it atomically with the target lookup. Remove execute access from the older unscoped overloads, keep existing RLS/Auth rules unchanged, and prove that a user who belongs to two workspaces cannot mutate the non-resolved workspace. This is a compatibility/security correction to the current slice, not a new product phase.
 
 After this slice is independently green and committed, the next safe Phase 2 increment is authenticated dashboard/item reads, followed by wiring these endpoints to live item identities. Each remains a separate commit and must not widen the external-effect boundary.
 

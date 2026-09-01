@@ -103,7 +103,11 @@ export type CoreDatabase = {
         Returns: ItemRevisionReceiptRow[];
       };
       queue_item_ask: {
-        Args: { target_item_id: string; job_instruction: string };
+        Args: {
+          target_workspace_id: string;
+          target_item_id: string;
+          job_instruction: string;
+        };
         Returns: AiJobRow[];
       };
       queue_global_ask: {
@@ -111,7 +115,7 @@ export type CoreDatabase = {
         Returns: AiJobRow[];
       };
       cancel_ai_job: {
-        Args: { target_job_id: string };
+        Args: { target_workspace_id: string; target_job_id: string };
         Returns: AiJobRow[];
       };
     };

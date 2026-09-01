@@ -284,6 +284,7 @@ describe("AI job API successes", () => {
 
     expect(response.status).toBe(201);
     expect(queueItemAsk).toHaveBeenCalledExactlyOnceWith({
+      workspaceId,
       itemId,
       instruction: "Find another slot"
     });
@@ -326,8 +327,8 @@ describe("AI job API successes", () => {
     expect(second.status).toBe(200);
     expect(await first.json()).toEqual(await second.json());
     expect(cancelAiJob).toHaveBeenCalledTimes(2);
-    expect(cancelAiJob).toHaveBeenNthCalledWith(1, { jobId });
-    expect(cancelAiJob).toHaveBeenNthCalledWith(2, { jobId });
+    expect(cancelAiJob).toHaveBeenNthCalledWith(1, { workspaceId, jobId });
+    expect(cancelAiJob).toHaveBeenNthCalledWith(2, { workspaceId, jobId });
   });
 });
 

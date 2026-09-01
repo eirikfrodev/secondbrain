@@ -9,6 +9,7 @@ import {
   ItemDocumentV1Schema,
   ItemFixtureSchema,
   KnownItemBlockSchema,
+  QueueItemAskInputSchema,
   SourceHealthSchema,
   parseItemBlock
 } from "./schemas";
@@ -112,8 +113,32 @@ describe("persistence boundaries", () => {
     expect(AskInstructionSchema.safeParse("   ").success).toBe(false);
   });
 
-  it("rejects malformed cancellation IDs and oversized evidence lists", () => {
-    expect(CancelAiJobInputSchema.safeParse({ jobId: "not-a-uuid" }).success).toBe(false);
+  it("binds item Ask and cancellation inputs to a workspace", () => {
+    const workspaceId = meetingEmail.item.workspaceId;
+
+    expect(QueueItemAskInputSchema.parse({
+      workspaceId,
+      itemId: meetingEmail.item.id,
+      instruction: "  find another day  "
+    })).toEqual({
+      workspaceId,
+      itemId: meetingEmail.item.id,
+      instruction: "find another day"
+    });
+    expect(QueueItemAskInputSchema.safeParse({
+      itemId: meetingEmail.item.id,
+      instruction: "find another day"
+    }).success).toBe(false);
+    expect(CancelAiJobInputSchema.safeParse({
+      workspaceId,
+      jobId: "not-a-uuid"
+    }).success).toBe(false);
+    expect(CancelAiJobInputSchema.safeParse({
+      jobId: "10101010-1010-4010-8010-101010101010"
+    }).success).toBe(false);
+  });
+
+  it("rejects oversized evidence lists", () => {
     expect(AppendItemRevisionInputSchema.safeParse({
       itemId: meetingEmail.item.id,
       expectedVersion: meetingEmail.item.version,
