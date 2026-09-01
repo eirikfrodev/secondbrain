@@ -74,7 +74,7 @@ The repository now contains a strict pnpm/TypeScript workspace, a Next.js 16 App
 
 ## Verification
 
-The Google-auth/database baseline and initial Ask/cancel commit are verified locally and in GitHub Actions. The corrective workspace-binding follow-up is verified locally on 2026-09-01; its GitHub database run is pending this commit:
+Verified locally and in [GitHub Actions run 33491642541](https://github.com/eirikfrodev/secondbrain/actions/runs/33491642541) on 2026-09-01, including the corrective workspace-binding follow-up:
 
 | Command | Result |
 |---|---|
@@ -85,8 +85,9 @@ The Google-auth/database baseline and initial Ask/cancel commit are verified loc
 | `pnpm test:e2e` | pass, 12 mock/synthetic-live functional and accessibility tests |
 | `pnpm test:visual` | pass, 9 reviewed Chromium baselines |
 | `pnpm build` | pass in default mock and synthetic Supabase modes |
-| Database suite | prior 117-assertion suite passes in disposable Supabase; corrected 128-assertion suite pending GitHub Actions because local Docker is unavailable |
+| Database suite | pass, all three migrations, strict lint, and 128 pgTAP assertions in disposable Supabase |
 | GitHub CI `33487197362` | pass, TypeScript/web and disposable Supabase jobs for `acbade3` |
+| GitHub CI `33491642541` | pass, TypeScript/web and disposable Supabase jobs for `ccfe72c` |
 
 Axe reports no serious or critical violations on Today, the external-action approval flow, or desktop/mobile sign-in. Visual baselines cover Today, expanded item, Week, Month, draft review, Mobile Today, Mobile approval, and live sign-in at 1440px and 393px.
 
@@ -98,8 +99,8 @@ Axe reports no serious or critical violations on Today, the external-action appr
 - Local Next.js commands use the supported Webpack path because the managed sandbox blocks Turbopack's PostCSS worker transport.
 - A clean production build needs network access for the two `next/font/google` assets.
 - Git is initialized on `main`, tracks `origin/main` in `eirikfrodev/secondbrain`, and the Google-auth slice is published through commit `764d277`.
-- The initial Ask/cancel slice is published at `b1c1af8`; its atomic workspace-binding correction is locally complete and not yet pushed. The HTTP mock store is process-local; the existing page controls remain browser-memory only until real reads provide live item IDs.
-- The local machine has Supabase CLI 2.95.4 but no Docker daemon. GitHub Actions successfully applied both migrations to a disposable local database, ran strict database lint, and passed all 117 pgTAP assertions. Nothing has been applied to a hosted Supabase project.
+- The Ask/cancel slice and its atomic workspace-binding correction are published through `ccfe72c` and verified in GitHub Actions. The HTTP mock store is process-local; the existing page controls remain browser-memory only until real reads provide live item IDs.
+- The local machine has Supabase CLI 2.95.4 but no Docker daemon. GitHub Actions successfully applied all three migrations to a disposable local database, ran strict database lint, and passed all 128 pgTAP assertions. Nothing has been applied to a hosted Supabase project.
 - Both the default mock production build and a synthetic, public-key-only live-configuration build pass locally. The synthetic browser suite targets an unreachable loopback Supabase origin and performs no remote Auth/database action. No hosted Supabase connection or deployment was attempted.
 
 ## Not yet implemented
