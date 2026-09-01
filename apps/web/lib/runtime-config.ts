@@ -1,11 +1,27 @@
 import { z } from "zod";
 
 const ConnectorModeSchema = z.enum(["mock", "supabase"]);
-const SupabaseUrlSchema = z.url().refine((value) => {
-  const protocol = new URL(value).protocol;
-  return protocol === "http:" || protocol === "https:";
-});
 const PublishableKeySchema = z.string().regex(/^sb_publishable_[A-Za-z0-9_-]+$/);
+const OriginInputSchema = z.string().trim().url();
+const LoopbackHostnames = new Set(["localhost", "127.0.0.1", "[::1]"]);
+
+function isSafeHttpOrigin(url: URL): boolean {
+  const hasOriginOnly =
+    url.pathname === "/" &&
+    url.search === "" &&
+    url.hash === "" &&
+    url.username === "" &&
+    url.password === "";
+  const hasAllowedProtocol =
+    url.protocol === "https:" ||
+    (url.protocol === "http:" && LoopbackHostnames.has(url.hostname));
+
+  return hasOriginOnly && hasAllowedProtocol;
+}
+
+const SupabaseUrlSchema = OriginInputSchema
+  .refine((value) => isSafeHttpOrigin(new URL(value)))
+  .transform((value) => new URL(value).origin);
 
 export type RuntimeConfig =
   | { mode: "mock" }
@@ -29,6 +45,23 @@ export class RuntimeConfigurationError extends Error {
   constructor(message: string, cause?: unknown) {
     super(message, cause === undefined ? undefined : { cause });
     this.name = "RuntimeConfigurationError";
+  }
+}
+
+export function resolveAppOrigin(value: string | undefined): string {
+  try {
+    const url = new URL(OriginInputSchema.parse(optionalValue(value)));
+
+    if (!isSafeHttpOrigin(url)) {
+      throw new Error("Invalid application origin.");
+    }
+
+    return url.origin;
+  } catch (cause) {
+    throw new RuntimeConfigurationError(
+      "APP_ORIGIN must be an HTTPS origin or a loopback HTTP origin.",
+      cause
+    );
   }
 }
 

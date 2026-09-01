@@ -5,6 +5,11 @@ const ClaimsResultSchema = z.looseObject({
   error: z.unknown().nullable()
 });
 
+const AuthenticationMethodSchema = z.union([
+  z.string(),
+  z.looseObject({ method: z.string() })
+]);
+
 const VerifiedClaimsSchema = z.looseObject({
   sub: z.string().uuid(),
   iss: z.url(),
@@ -17,7 +22,16 @@ const VerifiedClaimsSchema = z.looseObject({
   role: z.literal("authenticated"),
   aal: z.enum(["aal1", "aal2"]),
   session_id: z.string().uuid(),
-  is_anonymous: z.literal(false).optional()
+  is_anonymous: z.literal(false),
+  app_metadata: z.looseObject({
+    provider: z.literal("google"),
+    providers: z.array(z.string()).refine((providers) => providers.includes("google"))
+  }),
+  amr: z.array(AuthenticationMethodSchema).refine((methods) =>
+    methods.some((method) =>
+      typeof method === "string" ? method === "oauth" : method.method === "oauth"
+    )
+  )
 });
 
 export type VerifiedSession = {

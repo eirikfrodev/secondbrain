@@ -6,10 +6,14 @@ set constraints items_current_revision_fk deferred;
 
 select plan(43);
 
+-- This test exercises synthetic multi-user RLS fixtures as the privileged
+-- migration role. Production Auth inserts remain guarded by the owner trigger.
+alter table auth.users disable trigger auth_users_bootstrap_owner_workspace;
 insert into auth.users (id, email) values
   ('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'owner@example.test'),
   ('bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', 'member@example.test'),
   ('cccccccc-cccc-4ccc-8ccc-cccccccccccc', 'outsider@example.test');
+alter table auth.users enable trigger auth_users_bootstrap_owner_workspace;
 
 insert into public.workspaces (id, owner_user_id, name, kind) values
   ('11111111-1111-4111-8111-111111111111', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'Owner personal', 'personal'),

@@ -1,11 +1,19 @@
 import type { Metadata } from "next";
 
+import { LiveWorkspaceState } from "@/components/live-workspace-state";
 import { SiteHeader } from "@/components/site-header";
+import { requireProductPageAccess } from "@/lib/auth/product-access";
 import { monthWeeks } from "@/lib/mock-dashboard";
 
 export const metadata: Metadata = { title: "Month" };
 
-export default function MonthPage() {
+export default async function MonthPage() {
+  const access = await requireProductPageAccess();
+
+  if (access.mode === "supabase") {
+    return <LiveWorkspaceState active="month" viewLabel="Month" />;
+  }
+
   return (
     <div className="app-frame month-view">
       <SiteHeader active="month" />

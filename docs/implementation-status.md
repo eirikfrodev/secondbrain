@@ -1,6 +1,6 @@
 # Utsikt implementation status
 
-Last updated: 2026-08-31.
+Last updated: 2026-09-01.
 
 `HANDOFF.md` remains canonical. This document records implemented and verified behavior, not future intent.
 
@@ -8,7 +8,7 @@ Last updated: 2026-08-31.
 
 Phase 0 (Foundation) and Phase 1 (Pixel-faithful dynamic UI) are complete. Phase 2 (Persistence and interaction) is in progress.
 
-The repository now contains a strict pnpm/TypeScript workspace, a Next.js 16 App Router application, shared Zod domain contracts, a generic stock-block renderer, deterministic mock scenarios, reviewed desktop/mobile screens, Supabase SSR/session plumbing, live and mock persistence adapters, and automated unit, integration, end-to-end, accessibility, and visual-regression coverage.
+The repository now contains a strict pnpm/TypeScript workspace, a Next.js 16 App Router application, shared Zod domain contracts, a generic stock-block renderer, deterministic mock scenarios, reviewed desktop/mobile screens, Supabase SSR/session plumbing, Google-only single-owner admission, live and mock persistence adapters, and automated unit, integration, end-to-end, accessibility, and visual-regression coverage.
 
 ## Delivered
 
@@ -50,22 +50,34 @@ The repository now contains a strict pnpm/TypeScript workspace, a Next.js 16 App
 - Added a Zod-validated Supabase repository for revision append, inline/global Ask queue, queued-job cancellation, and source-health reads. Inputs, database rows, and domain outputs are validated; database failures map to stable non-leaking domain errors while retaining HTTP status for classification.
 - Added an explicit process-local mock repository behind the same contract. It constructs no remote client and models workspace isolation, stale revisions, trusted queue receipts, durable cancellation state, and source-health reads.
 
+### Google-only single-owner access
+
+- Added an empty-by-default private owner identity singleton and a Supabase Before User Created SQL hook that admits only one exact privately configured Google email. The address is never seeded or committed.
+- Added an independent `auth.users` trigger that rechecks Google-only admission, immutably binds the first Supabase UUID, and atomically provisions exactly one personal workspace, owner membership, source health, and a non-PII audit event.
+- Added 46 new pgTAP assertions, bringing the authored database suite to 117 assertions. Coverage includes empty-deny admission, exact email/provider checks, anonymous rejection, hook-bypass defense, duplicate UUID rejection, atomic provisioning, immutable binding, grants, and RLS visibility.
+- Added fixed Google identity PKCE routes for start/callback plus POST-only local sign-out. Destinations, scopes, prompt, and callback are code-owned; no caller-selected redirect is accepted.
+- Correlated concurrent tabs through bounded Supabase flow IDs, explicitly marked HTTPS cookies `Secure`, and reconstructed exchanged sessions so Google `provider_token` and `provider_refresh_token` fields never reach the final cookie response.
+- Required live access tokens to prove a non-anonymous Google identity and an OAuth authentication-method reference before checking the one RLS-visible personal owner workspace.
+- Protected Today, Week, Month, Activity, and item routes in live mode. Until authenticated reads are implemented, verified live users see an honest data-pending state instead of fixture data or successful-looking browser-memory actions.
+- Added the editorial `/sign-in` interface, accessible pending state, and live-only POST sign-out control while preserving credential-free mock entry.
+- Added a synthetic-live Playwright harness with no real credentials or remote calls. It verifies live route wiring, unauthenticated redirects, real installed-SDK PKCE cookies, fixed callback failures, axe results, and desktop/mobile sign-in baselines.
+
 ## Verification
 
-Verified locally and in GitHub Actions on 2026-08-31:
+Verified locally on 2026-09-01; GitHub Actions verification for this slice is pending the first push:
 
 | Command | Result |
 |---|---|
 | `pnpm lint` | pass, zero warnings |
 | `pnpm typecheck` | pass across all typed workspace projects |
-| `pnpm test` | pass, 80 unit tests |
+| `pnpm test` | pass, 169 unit tests |
 | `pnpm test:integration` | pass, 3 integration tests |
-| `pnpm test:e2e` | pass, 7 functional/accessibility tests |
-| `pnpm test:visual` | pass, 7 reviewed Chromium baselines |
-| `pnpm build` | pass, production routes compiled and prerendered |
-| GitHub CI `33362243462` | pass, TypeScript/web and disposable Supabase jobs for `c53e272` |
+| `pnpm test:e2e` | pass, 10 mock/synthetic-live functional and accessibility tests |
+| `pnpm test:visual` | pass, 9 reviewed Chromium baselines |
+| `pnpm build` | pass in default mock and synthetic Supabase modes |
+| Database suite | 117 pgTAP assertions authored; disposable execution pending GitHub CI because local Docker is unavailable |
 
-Axe reports no serious or critical violations on Today or the external-action approval flow. Visual baselines cover Today, expanded item, Week, Month, draft review, Mobile Today, and Mobile approval at the specified viewports.
+Axe reports no serious or critical violations on Today, the external-action approval flow, or desktop/mobile sign-in. Visual baselines cover Today, expanded item, Week, Month, draft review, Mobile Today, Mobile approval, and live sign-in at 1440px and 393px.
 
 ## Intentional implementation notes
 
@@ -74,15 +86,16 @@ Axe reports no serious or critical violations on Today or the external-action ap
 - The tertiary ink color is slightly darker than the board token to meet WCAG 2.2 AA; see the Deviation section in `docs/architecture-decisions.md`.
 - Local Next.js commands use the supported Webpack path because the managed sandbox blocks Turbopack's PostCSS worker transport.
 - A clean production build needs network access for the two `next/font/google` assets.
-- Git is initialized on `main`, tracks `origin/main` in `eirikfrodev/secondbrain`, and the session-and-adapter slice is published through commit `c53e272`.
+- Git is initialized on `main`, tracks `origin/main` in `eirikfrodev/secondbrain`, and the previous session-and-adapter slice is published through commit `c53e272`. The Google-auth slice is locally complete and not yet pushed.
 - The local machine has Supabase CLI 2.95.4 but no Docker daemon. GitHub Actions successfully applied the migration to a disposable local database, ran strict database lint, and passed all 71 pgTAP assertions. Nothing has been applied to a hosted Supabase project.
-- Both the default mock production build and a synthetic, public-key-only live-configuration build pass locally. No hosted Supabase connection or deployment was attempted.
+- Both the default mock production build and a synthetic, public-key-only live-configuration build pass locally. The synthetic browser suite targets an unreachable loopback Supabase origin and performs no remote Auth/database action. No hosted Supabase connection or deployment was attempted.
 
 ## Not yet implemented
 
-- A chosen sign-in method, response-aware auth mutation client, workspace provisioning/selection, authenticated browser APIs, live dashboard reads, browser Realtime subscriptions, persisted UI state, and full browser lifecycle verification.
+- Hosted activation: applying the migration, privately setting the owner email, enabling the Before User Created hook, enabling Google, disabling the hosted Email/other providers, adding the narrow callback pattern, and manually exercising the approved and rejected real Google accounts.
+- Authenticated browser interaction APIs, live dashboard/item reads, browser Realtime subscriptions, persisted UI state, and the real hosted session lifecycle.
 - Remote operator MCP and plugin packaging (Phase 3).
-- Google OAuth, real Gmail/Calendar execution, idempotent worker/saga behavior, and launchd setup (Phase 4).
+- Separate Google Gmail/Calendar execution OAuth, real provider execution, idempotent worker/saga behavior, and launchd setup (Phase 4).
 - Scheduled operator setup, deployment, production observability, and final security/manual acceptance (Phase 5).
 
-The next isolated Phase 2 task is to choose the user-facing sign-in method and design workspace provisioning/selection before creating users or wiring authenticated browser APIs.
+The next isolated Phase 2 task is a narrow authenticated HTTP boundary for inline/global Ask queueing and queued-job cancellation over the existing repository. Live dashboard reads must follow before those APIs are connected to the current fixture-driven interface.

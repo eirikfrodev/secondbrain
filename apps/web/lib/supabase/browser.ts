@@ -5,6 +5,10 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { CoreDatabase } from "@utsikt/db";
 
 import { getBrowserRuntimeConfig } from "../runtime-config.browser";
+import {
+  createSupabaseCookieOptions,
+  getBrowserApplicationOrigin
+} from "./cookie-policy";
 
 export type BrowserDataClient =
   | { mode: "mock" }
@@ -21,7 +25,12 @@ export function createBrowserDataClient(): BrowserDataClient {
     mode: "supabase",
     client: createBrowserClient<CoreDatabase>(
       config.supabaseUrl,
-      config.publishableKey
+      config.publishableKey,
+      {
+        cookieOptions: createSupabaseCookieOptions(
+          getBrowserApplicationOrigin(config.supabaseUrl)
+        )
+      }
     )
   };
 }

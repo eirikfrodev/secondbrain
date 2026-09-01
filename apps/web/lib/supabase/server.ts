@@ -6,7 +6,11 @@ import type { CoreDatabase } from "@utsikt/db";
 import { cookies } from "next/headers";
 
 import { RuntimeConfigurationError } from "../runtime-config";
-import { getServerRuntimeConfig } from "../runtime-config.server";
+import {
+  getServerAppOrigin,
+  getServerRuntimeConfig
+} from "../runtime-config.server";
+import { createSupabaseCookieOptions } from "./cookie-policy";
 
 export async function createReadOnlyServerSupabaseClient(): Promise<SupabaseClient<CoreDatabase>> {
   const config = getServerRuntimeConfig();
@@ -20,6 +24,7 @@ export async function createReadOnlyServerSupabaseClient(): Promise<SupabaseClie
   const cookieStore = await cookies();
 
   return createServerClient<CoreDatabase>(config.supabaseUrl, config.publishableKey, {
+    cookieOptions: createSupabaseCookieOptions(getServerAppOrigin()),
     cookies: {
       getAll() {
         return cookieStore.getAll();

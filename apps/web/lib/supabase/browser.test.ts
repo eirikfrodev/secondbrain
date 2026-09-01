@@ -26,6 +26,7 @@ function restoreEnvironment(name: string, value: string | undefined) {
 
 afterEach(() => {
   createBrowserClientMock.mockReset();
+  vi.unstubAllGlobals();
   restoreEnvironment("NEXT_PUBLIC_CONNECTOR_MODE", originalEnvironment.mode);
   restoreEnvironment("NEXT_PUBLIC_SUPABASE_URL", originalEnvironment.url);
   restoreEnvironment("NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY", originalEnvironment.key);
@@ -39,5 +40,21 @@ describe("browser data client", () => {
 
     expect(createBrowserDataClient()).toEqual({ mode: "mock" });
     expect(createBrowserClientMock).not.toHaveBeenCalled();
+  });
+
+  it("uses Secure cookies for an HTTPS browser origin in live mode", () => {
+    process.env.NEXT_PUBLIC_CONNECTOR_MODE = "supabase";
+    process.env.NEXT_PUBLIC_SUPABASE_URL = "https://project.supabase.co";
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_test";
+    vi.stubGlobal("location", { origin: "https://utsikt.example" });
+    const client = { auth: {} };
+    createBrowserClientMock.mockReturnValue(client);
+
+    expect(createBrowserDataClient()).toEqual({ mode: "supabase", client });
+    expect(createBrowserClientMock).toHaveBeenCalledWith(
+      "https://project.supabase.co",
+      "sb_publishable_test",
+      { cookieOptions: { secure: true } }
+    );
   });
 });

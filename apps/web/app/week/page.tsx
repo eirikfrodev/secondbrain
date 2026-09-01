@@ -1,11 +1,19 @@
 import type { Metadata } from "next";
 
+import { LiveWorkspaceState } from "@/components/live-workspace-state";
 import { SiteHeader } from "@/components/site-header";
+import { requireProductPageAccess } from "@/lib/auth/product-access";
 import { weekDays } from "@/lib/mock-dashboard";
 
 export const metadata: Metadata = { title: "Week" };
 
-export default function WeekPage() {
+export default async function WeekPage() {
+  const access = await requireProductPageAccess();
+
+  if (access.mode === "supabase") {
+    return <LiveWorkspaceState active="week" viewLabel="Week" />;
+  }
+
   return (
     <div className="app-frame week-view">
       <SiteHeader active="week" />

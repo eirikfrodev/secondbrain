@@ -1,6 +1,6 @@
 import "server-only";
 
-import { resolveServerRuntimeConfig } from "./runtime-config";
+import { resolveAppOrigin, resolveServerRuntimeConfig } from "./runtime-config";
 
 export function getServerRuntimeConfig() {
   return resolveServerRuntimeConfig({
@@ -9,4 +9,8 @@ export function getServerRuntimeConfig() {
     supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
     publishableKey: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
   });
+}
+
+export function getServerAppOrigin(): string {
+  return resolveAppOrigin(process.env.APP_ORIGIN);
 }

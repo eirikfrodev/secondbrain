@@ -2,11 +2,19 @@ import type { Metadata } from "next";
 
 import { StateMarker } from "@utsikt/ui";
 
+import { LiveWorkspaceState } from "@/components/live-workspace-state";
 import { SiteHeader } from "@/components/site-header";
+import { requireProductPageAccess } from "@/lib/auth/product-access";
 
 export const metadata: Metadata = { title: "Activity" };
 
-export default function ActivityPage() {
+export default async function ActivityPage() {
+  const access = await requireProductPageAccess();
+
+  if (access.mode === "supabase") {
+    return <LiveWorkspaceState viewLabel="Activity" />;
+  }
+
   return (
     <div className="app-frame activity-view">
       <SiteHeader />

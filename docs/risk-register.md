@@ -27,9 +27,12 @@ Likelihood and impact use low / medium / high. Owners are implementation areas r
 | R-21 | Framework or dependency churn breaks the scaffold. | medium | medium | Pin compatible major versions, commit lockfile, strict CI-equivalent local commands, isolate framework code from domain contracts. | Foundation, Phase 0 |
 | R-22 | Google-hosted fonts are unavailable during build. | low | medium | Framework-managed fonts with system fallbacks; document build-network requirement; never copy unlicensed binaries. | Web/build, Phase 0–1 |
 | R-23 | Production is deployed before security and credential setup are reviewed. | low | high | No production deployment without the repository's exact approval phrase; mock mode remains default. | Release, Phase 5 |
+| R-24 | A second or wrong Google identity creates an account or gains application access through provider/configuration drift. | low | high | Empty-by-default exact-email Auth hook, independent `auth.users` trigger recheck, immutable UUID binding, atomic personal-workspace membership, fixed Google-only callback, Google/OAuth access-token claims, hosted Email-provider shutdown, and RLS-visible owner-workspace gate. pgTAP and transport tests cover bypass/failure paths. | Auth/DB, Phase 2 |
+| R-25 | Login cookies leak or retain an upstream Google credential, or concurrent PKCE tabs consume the wrong verifier. | low | high | HTTPS cookies are explicitly `Secure`; each bounded flow ID selects one verifier; exchanged sessions are reconstructed from Supabase tokens only and rejected if provider-token fields remain. SDK-contract, cookie-bridge, and callback tests cover these boundaries. | Auth/web, Phase 2 |
 
 ## Current watch list
 
 - R-04/R-05: prove asymmetric parsing—lenient visual fallback, strict executable actions—before UI work expands.
 - R-06/R-07/R-09: assess together during Playwright screenshot and axe passes.
 - R-21/R-22: verify the first clean install/build before declaring Phase 0 complete.
+- R-24/R-25: hosted Google/Email provider settings, the narrow flow-selector redirect, owner row, Auth-hook selection, and final cookie behavior still require a manual acceptance check before live use.

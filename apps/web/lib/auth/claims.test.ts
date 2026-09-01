@@ -14,7 +14,9 @@ const validClaims = {
   role: "authenticated",
   aal: "aal1",
   session_id: sessionId,
-  is_anonymous: false
+  is_anonymous: false,
+  app_metadata: { provider: "google", providers: ["google"] },
+  amr: [{ method: "oauth", timestamp: 1_700_000_000 }]
 };
 
 describe("verified Supabase claims", () => {
@@ -31,13 +33,9 @@ describe("verified Supabase claims", () => {
     }, supabaseUrl)).toEqual({ userId });
   });
 
-  it("accepts an authenticated session when the optional anonymous flag is absent", () => {
-    const claims = Object.fromEntries(
-      Object.entries(validClaims).filter(([name]) => name !== "is_anonymous")
-    );
-
+  it("accepts the RFC-style string form of the OAuth authentication method", () => {
     expect(parseVerifiedSession({
-      data: { claims },
+      data: { claims: { ...validClaims, amr: ["oauth"] } },
       error: null
     }, supabaseUrl)).toEqual({ userId });
   });
@@ -57,7 +55,14 @@ describe("verified Supabase claims", () => {
     { ...validClaims, aud: "anon" },
     { ...validClaims, role: "service_role" },
     { ...validClaims, session_id: "not-a-uuid" },
-    { ...validClaims, is_anonymous: true }
+    { ...validClaims, is_anonymous: true },
+    { ...validClaims, is_anonymous: undefined },
+    {
+      ...validClaims,
+      app_metadata: { provider: "email", providers: ["email", "google"] }
+    },
+    { ...validClaims, amr: [{ method: "password", timestamp: 1_700_000_000 }] },
+    { ...validClaims, amr: undefined }
   ])("rejects claims that are not an authenticated project session", (claims) => {
     expect(parseVerifiedSession({
       data: { claims },

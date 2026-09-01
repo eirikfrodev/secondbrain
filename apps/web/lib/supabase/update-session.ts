@@ -2,8 +2,12 @@ import { createServerClient } from "@supabase/ssr";
 import type { CoreDatabase } from "@utsikt/db";
 import { type NextRequest, NextResponse } from "next/server";
 
-import { getServerRuntimeConfig } from "../runtime-config.server";
+import {
+  getServerAppOrigin,
+  getServerRuntimeConfig
+} from "../runtime-config.server";
 import { createProxyCookieBridge } from "./proxy-cookie-bridge";
+import { createSupabaseCookieOptions } from "./cookie-policy";
 
 export async function updateSession(request: NextRequest): Promise<NextResponse> {
   const config = getServerRuntimeConfig();
@@ -16,7 +20,10 @@ export async function updateSession(request: NextRequest): Promise<NextResponse>
   const client = createServerClient<CoreDatabase>(
     config.supabaseUrl,
     config.publishableKey,
-    { cookies: bridge.cookies }
+    {
+      cookieOptions: createSupabaseCookieOptions(getServerAppOrigin()),
+      cookies: bridge.cookies
+    }
   );
 
   await client.auth.getClaims();

@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set local search_path = public, extensions;
 
-select plan(28);
+select plan(47);
 
 select has_extension('pg_jsonschema', 'database JSON Schema validation is enabled');
 
@@ -19,6 +19,37 @@ select has_table('public', 'ai_jobs', 'AI jobs exist');
 select has_table('public', 'audit_events', 'audit events exist');
 select has_table('public', 'source_health', 'source health exists');
 select has_table('private', 'item_revision_sources', 'normalized revision evidence edges exist');
+select has_table('private', 'auth_owner_identity', 'private single-owner identity exists');
+select ok(
+  to_regprocedure('private.before_user_created(jsonb)') is not null,
+  'the before-user-created Auth hook exists'
+);
+select ok(
+  exists (
+    select 1
+    from pg_trigger trigger
+    join pg_class relation on relation.oid = trigger.tgrelid
+    join pg_namespace namespace on namespace.oid = relation.relnamespace
+    where namespace.nspname = 'auth'
+      and relation.relname = 'users'
+      and trigger.tgname = 'auth_users_bootstrap_owner_workspace'
+      and not trigger.tgisinternal
+  ),
+  'Auth user creation has an owner-workspace bootstrap trigger'
+);
+select ok(
+  exists (
+    select 1
+    from pg_trigger trigger
+    join pg_class relation on relation.oid = trigger.tgrelid
+    join pg_namespace namespace on namespace.oid = relation.relnamespace
+    where namespace.nspname = 'private'
+      and relation.relname = 'auth_owner_identity'
+      and trigger.tgname = 'auth_owner_identity_protect_binding'
+      and not trigger.tgisinternal
+  ),
+  'the bound owner identity has a database immutability guard'
+);
 
 select is(
   (
@@ -63,6 +94,66 @@ select ok(
 select ok(
   has_function_privilege('authenticated', 'public.queue_item_ask(uuid,text)', 'execute'),
   'authenticated callers can use the narrow inline Ask function'
+);
+select ok(
+  not has_table_privilege('anon', 'private.auth_owner_identity', 'select'),
+  'anonymous callers cannot read the owner identity'
+);
+select ok(
+  not has_table_privilege('authenticated', 'private.auth_owner_identity', 'select'),
+  'authenticated callers cannot read the owner identity'
+);
+select ok(
+  not has_table_privilege('service_role', 'private.auth_owner_identity', 'select'),
+  'the general service API role cannot read the owner identity'
+);
+select ok(
+  has_table_privilege('supabase_auth_admin', 'private.auth_owner_identity', 'select'),
+  'Supabase Auth can read the owner identity for the signup hook'
+);
+select ok(
+  not has_table_privilege('supabase_auth_admin', 'private.auth_owner_identity', 'insert'),
+  'Supabase Auth cannot insert owner identity configuration'
+);
+select ok(
+  not has_table_privilege('supabase_auth_admin', 'private.auth_owner_identity', 'update'),
+  'Supabase Auth cannot update owner identity configuration'
+);
+select ok(
+  not has_table_privilege('supabase_auth_admin', 'private.auth_owner_identity', 'delete'),
+  'Supabase Auth cannot delete owner identity configuration'
+);
+select ok(
+  not has_function_privilege('anon', 'private.before_user_created(jsonb)', 'execute'),
+  'anonymous callers cannot execute the signup hook'
+);
+select ok(
+  not has_function_privilege('authenticated', 'private.before_user_created(jsonb)', 'execute'),
+  'authenticated callers cannot execute the signup hook'
+);
+select ok(
+  not has_function_privilege('service_role', 'private.before_user_created(jsonb)', 'execute'),
+  'the general service API role cannot execute the signup hook'
+);
+select ok(
+  has_function_privilege('supabase_auth_admin', 'private.before_user_created(jsonb)', 'execute'),
+  'Supabase Auth can execute the signup hook'
+);
+select ok(
+  not has_function_privilege('supabase_auth_admin', 'private.bootstrap_owner_workspace()', 'execute'),
+  'the Auth trigger function cannot be invoked directly'
+);
+select ok(
+  not has_function_privilege('supabase_auth_admin', 'private.protect_auth_owner_identity()', 'execute'),
+  'the owner-identity guard cannot be invoked directly'
+);
+select ok(
+  not has_table_privilege('authenticated', 'public.workspaces', 'insert'),
+  'authenticated callers cannot create arbitrary workspaces directly'
+);
+select ok(
+  not has_table_privilege('authenticated', 'public.workspace_memberships', 'insert'),
+  'authenticated callers cannot create arbitrary memberships directly'
 );
 
 select is(

@@ -167,6 +167,92 @@ time,
   text-decoration: none;
 }
 
+.site-sign-out {
+  margin: 0;
+}
+
+.site-sign-out button {
+  background: transparent;
+  border: 0;
+  color: var(--ink-3);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  min-height: 44px;
+  padding: 0;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+}
+
+.site-sign-out button:hover {
+  color: var(--ink);
+  text-decoration-color: currentColor;
+}
+
+/* Authenticated shell before live item reads are available */
+.live-workspace-main {
+  min-height: calc(100vh - 56px);
+  padding: clamp(68px, 11vw, 148px) 40px 64px;
+}
+
+.live-workspace-state {
+  max-width: 760px;
+}
+
+.live-workspace-state h1 {
+  font-size: clamp(42px, 6vw, 68px);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+  margin: 16px 0 24px;
+}
+
+.live-workspace-intro {
+  color: var(--ink-2);
+  font-size: 17px;
+  line-height: 1.55;
+  margin: 0;
+  max-width: 620px;
+}
+
+.live-workspace-checks {
+  border-top: 1px solid var(--ink);
+  margin: 42px 0 0;
+  max-width: 680px;
+}
+
+.live-workspace-checks > div {
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 130px minmax(0, 1fr);
+  padding: 13px 0;
+}
+
+.live-workspace-checks dt,
+.live-workspace-note {
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+}
+
+.live-workspace-checks dt {
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.live-workspace-checks dd {
+  color: var(--ink-2);
+  font-size: 14px;
+  margin: 0;
+}
+
+.live-workspace-note {
+  line-height: 1.5;
+  margin: 20px 0 0;
+}
+
 .today-hero,
 .view-hero {
   align-items: end;
@@ -1653,6 +1739,124 @@ time,
   color: var(--danger);
 }
 
+/* Sign in */
+.sign-in-shell {
+  min-height: 100vh;
+}
+
+.sign-in-masthead {
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  height: 56px;
+  justify-content: space-between;
+  padding: 0 40px;
+}
+
+.sign-in-masthead > span {
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sign-in-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 30vw);
+  min-height: calc(100vh - 56px);
+}
+
+.sign-in-panel {
+  align-self: center;
+  border-right: 1px solid var(--line);
+  padding: 72px max(40px, 10vw);
+}
+
+.sign-in-panel h1 {
+  font-size: clamp(44px, 6vw, 76px);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+  margin: 16px 0 24px;
+  max-width: 720px;
+}
+
+.sign-in-intro {
+  color: var(--ink-2);
+  font-size: 17px;
+  line-height: 1.55;
+  margin: 0 0 34px;
+  max-width: 520px;
+}
+
+.sign-in-error {
+  border-left: 3px solid var(--danger);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.45;
+  margin: 0 0 22px;
+  max-width: 520px;
+  padding: 10px 14px;
+}
+
+.sign-in-action {
+  align-items: center;
+  background: var(--fjord);
+  color: var(--paper);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 14px;
+  font-weight: 600;
+  gap: 40px;
+  justify-content: space-between;
+  min-height: 52px;
+  min-width: min(100%, 310px);
+  padding: 12px 16px;
+  text-decoration: none;
+}
+
+.sign-in-action:hover {
+  background: var(--ink);
+}
+
+.sign-in-action[aria-disabled="true"] {
+  background: var(--ink-2);
+  cursor: wait;
+}
+
+.sign-in-trust {
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.5;
+  margin: 18px 0 0;
+  max-width: 390px;
+}
+
+.sign-in-notes {
+  align-content: end;
+  display: grid;
+  padding: 40px;
+}
+
+.sign-in-notes p {
+  border-top: 1px solid var(--line);
+  color: var(--ink-2);
+  font-size: 13px;
+  line-height: 1.45;
+  margin: 0;
+  padding: 16px 0;
+}
+
+.sign-in-notes span {
+  color: var(--ink-3);
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  width: 38px;
+}
+
 .simple-state {
   margin: 12vh auto;
   max-width: 600px;
@@ -1695,11 +1899,54 @@ time,
   }
 
   .masthead-right {
-    gap: 0;
+    gap: 14px;
   }
 
   .sync-status {
     max-width: 72px;
+  }
+
+  .live-workspace-main {
+    min-height: calc(100vh - 74px);
+    padding: 46px 20px 40px;
+  }
+
+  .live-workspace-state h1 {
+    font-size: 42px;
+  }
+
+  .live-workspace-checks > div {
+    gap: 8px;
+    grid-template-columns: 1fr;
+  }
+
+  .sign-in-masthead {
+    border-bottom: 0;
+    height: 74px;
+    padding: 0 20px;
+  }
+
+  .sign-in-main {
+    display: block;
+    min-height: calc(100vh - 74px);
+  }
+
+  .sign-in-panel {
+    border-right: 0;
+    padding: 42px 20px 28px;
+  }
+
+  .sign-in-panel h1 {
+    font-size: 42px;
+    max-width: 420px;
+  }
+
+  .sign-in-action {
+    width: 100%;
+  }
+
+  .sign-in-notes {
+    padding: 20px;
   }
 
   .today-hero,

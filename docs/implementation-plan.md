@@ -64,7 +64,7 @@ Status: in progress as of 2026-08-31. The schema, RLS, and migration design was 
 7. Add project/activity/source-health reads and visible recovery states.
 8. Prove the complete lifecycle, workspace isolation, stale revisions, cancellation, and append-only history in integration and browser tests.
 
-Current slice: complete and verified locally and in GitHub Actions on 2026-08-31. It covers step 4 and the repository-adapter boundary needed by step 5.
+Previous slice: complete and verified locally and in GitHub Actions on 2026-08-31. It covers step 4 and the repository-adapter boundary needed by step 5.
 
 1. Validate connector mode and browser-safe Supabase configuration without requiring credentials in the default mock mode.
 2. Add request-scoped browser/server Supabase clients, Next.js 16 cookie refresh through `proxy.ts`, and a verified-session data-access helper. Proxy refresh is not an authorization boundary; authenticated repository calls and RLS remain authoritative.
@@ -72,7 +72,22 @@ Current slice: complete and verified locally and in GitHub Actions on 2026-08-31
 4. Add an explicit in-memory mock repository behind the same interface so credential-free development cannot accidentally construct a Supabase client or perform a remote effect.
 5. Cover configuration, session, adapter, response validation, cancellation, and error behavior with unit tests; update architecture, security, and local-development notes.
 
-This slice does not choose a user-facing sign-in method, add browser APIs, replace dashboard state, subscribe to Realtime, change the schema/RLS/migration, link a remote Supabase project, or deploy anything. Those remain separate reviewed steps. The next isolated task is to choose the sign-in method and design workspace provisioning/selection before creating users or wiring authenticated browser APIs.
+That slice did not choose a user-facing sign-in method, add browser APIs, replace dashboard state, subscribe to Realtime, change the schema/RLS/migration, link a remote Supabase project, or deploy anything.
+
+Current slice: Google-only single-owner admission and protected application access.
+
+1. Keep Supabase Google sign-in limited to identity (`openid`, `email`, and `profile`). Future Gmail/Calendar authorization remains a separate Phase 4 consent and token lifecycle.
+2. Add a default-deny PostgreSQL `before-user-created` hook backed by private owner configuration. Admit only the exact configured Google email, bind the first admitted Auth UUID immutably, and never commit the address to the repository.
+3. Provision exactly one personal workspace and its existing owner membership atomically with first-user creation. Add pgTAP coverage for missing configuration, wrong email/provider, duplicate ownership, and idempotent workspace state.
+4. Disable email signup in local Supabase configuration and document the hosted Google provider, narrow flow-selector callback pattern, Auth-hook selection, complete Email-provider shutdown, and private owner configuration steps. Do not link or change a hosted project from this slice.
+5. Add a fixed-destination PKCE start/callback flow, response-owned auth cookie handling, authoritative callback validation, POST-only same-origin local sign-out, and stable non-leaking failure messages.
+6. Protect product routes at the server data-access boundary in Supabase mode while preserving credential-free mock mode. Proxy continues to refresh sessions only; RLS and owner membership remain authoritative.
+7. Cover callback validation, cookie/header preservation, route access, sign-out, and the sign-in interface without real Google credentials.
+8. Keep authenticated live pages explicitly data-pending until real reads exist, and run a separate synthetic-live Playwright harness for route wiring, unauthenticated redirects, Google-start cookie/PKCE behavior, accessibility, and desktop/mobile sign-in baselines.
+
+Non-goals: no password, magic-link, anonymous, or alternate-provider sign-in; no caller-selected callback or post-login URL; no Gmail/Calendar scopes or provider-token persistence; no service-role key in the web app; no hosted Supabase/Google changes, deployment, Realtime wiring, or production data migration.
+
+After this slice is independently green and committed, the next safe Phase 2 increment is authenticated dashboard/item reads and narrow interaction endpoints over the existing persistence repository. It remains a separate commit and must not widen the external-effect boundary.
 
 ## Phase 3 — Operator MCP and plugin
 
@@ -88,7 +103,7 @@ Status: planned.
 Status: planned; credentials will be needed for manual acceptance.
 
 - Explain OAuth, provider data, and any persistence changes before implementation.
-- Implement connector interfaces, Google OAuth, encrypted tokens, Gmail draft lifecycle, Calendar availability/events, execution queue, 30-second grace period, idempotency, saga recovery, and the polling worker.
+- Implement connector interfaces, separate Google execution OAuth, encrypted tokens, Gmail draft lifecycle, Calendar availability/events, execution queue, 30-second grace period, idempotency, saga recovery, and the polling worker.
 - Keep real accounts opt-in; automated tests use connector fakes.
 
 ## Phase 5 — Scheduled operator and hardening

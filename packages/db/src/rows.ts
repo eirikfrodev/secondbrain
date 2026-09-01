@@ -2,6 +2,12 @@ import { z } from "zod";
 
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
+export const WorkspaceAccessRowSchema = z.strictObject({
+  id: z.string().uuid(),
+  owner_user_id: z.string().uuid(),
+  kind: z.enum(["personal", "work"])
+});
+
 export const AiJobRowSchema = z.strictObject({
   id: z.string().uuid(),
   workspace_id: z.string().uuid(),
@@ -57,6 +63,7 @@ export const ItemRevisionReceiptRowSchema = z.strictObject({
 });
 
 export type AiJobRow = z.infer<typeof AiJobRowSchema>;
+export type WorkspaceAccessRow = z.infer<typeof WorkspaceAccessRowSchema>;
 export type SourceHealthRow = z.infer<typeof SourceHealthRowSchema>;
 export type SourceHealthProjection = z.infer<typeof SourceHealthProjectionSchema>;
 export type ItemRevisionReceiptRow = z.infer<typeof ItemRevisionReceiptRowSchema>;
@@ -64,6 +71,12 @@ export type ItemRevisionReceiptRow = z.infer<typeof ItemRevisionReceiptRowSchema
 export type CoreDatabase = {
   public: {
     Tables: {
+      workspaces: {
+        Row: WorkspaceAccessRow;
+        Insert: never;
+        Update: never;
+        Relationships: [];
+      };
       ai_jobs: {
         Row: AiJobRow;
         Insert: Pick<AiJobRow, "workspace_id" | "instruction" | "origin" | "queued_for"> & Partial<AiJobRow>;

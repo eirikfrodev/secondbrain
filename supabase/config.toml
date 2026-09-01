@@ -40,7 +40,10 @@ enabled = false
 [auth]
 enabled = true
 site_url = "http://127.0.0.1:3000"
-additional_redirect_urls = ["http://localhost:3000"]
+additional_redirect_urls = [
+  "http://127.0.0.1:3000/auth/callback?sb_flow_id=*",
+  "http://localhost:3000/auth/callback?sb_flow_id=*",
+]
 jwt_expiry = 3600
 enable_refresh_token_rotation = true
 refresh_token_reuse_interval = 10
@@ -49,13 +52,25 @@ enable_anonymous_sign_ins = false
 minimum_password_length = 8
 
 [auth.email]
-enable_signup = true
+enable_signup = false
 double_confirm_changes = true
 enable_confirmations = false
 secure_password_change = true
 max_frequency = "1s"
 otp_length = 6
 otp_expiry = 3600
+
+# Google remains disabled in the credential-free local baseline. Enable it only
+# in an uncommitted local configuration or the reviewed hosted Auth settings.
+[auth.external.google]
+enabled = false
+client_id = ""
+secret = ""
+skip_nonce_check = false
+
+[auth.hook.before_user_created]
+enabled = true
+uri = "pg-functions://postgres/private/before_user_created"
 
 [auth.sms]
 enable_signup = false

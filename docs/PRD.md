@@ -20,6 +20,15 @@ ChatGPT interprets source context, recommends, drafts, and prepares narrow actio
 - Deterministic scenarios for Anders, Copenhagen hotels, the architect, passport renewal, Athens research, protected PDF failure, and the drifting water-filter project.
 - Visual and accessibility verification against boards `1a`–`1g`.
 
+## Phase 2 current outcome
+
+- Preserve the credential-free mock application while adding a fail-closed Supabase live mode.
+- Use Google for application identity only. Admit exactly one privately configured owner; do not offer email/password, magic-link, anonymous, phone, or alternate social sign-in.
+- Bind the admitted owner to one immutable Supabase user UUID and provision one personal workspace/membership atomically before product access.
+- Require a verified session plus RLS-visible owner workspace at every live product-page and interaction boundary.
+- Keep later Gmail/Calendar execution consent, credentials, scopes, tokens, and provider effects separate from sign-in.
+- Never commit the owner's address or Google credentials, and never require them for automated tests.
+
 ## Acceptance
 
 The detailed product, visual, security, API, data, and phase acceptance criteria are in `HANDOFF.md`, `design/reference/README.md`, `specs/`, and `codex/REVIEW_CHECKLIST.md` in that order of authority.

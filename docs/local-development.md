@@ -23,20 +23,41 @@ Open `http://127.0.0.1:3000/today`. The root route redirects to Today.
 
 Phase 2 also includes a typed in-memory persistence repository behind the same contract as the live adapter. It is process-local, is not presented as durable storage, and never constructs a Supabase client in mock mode.
 
-## Supabase plumbing (incomplete live flow)
+## Supabase and single-owner Google sign-in
 
-To exercise the client/session boundary against a separately prepared Supabase project, set all four values in `apps/web/.env.local`:
+To exercise the implemented live Auth/session boundary against a separately prepared Supabase project, set all five values in `apps/web/.env.local`:
 
 ```env
 CONNECTOR_MODE=supabase
 NEXT_PUBLIC_CONNECTOR_MODE=supabase
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_replace_me
+APP_ORIGIN=http://127.0.0.1:3000
 ```
 
-The browser and server use only the public caller-scoped client. The key must use the low-privilege `sb_publishable_` format; secret, service-role, and legacy JWT-shaped keys are rejected before browser compilation. `SUPABASE_SERVICE_ROLE_KEY` is not read by the web persistence path. Never commit `.env.local`.
+`APP_ORIGIN` must be one exact HTTPS origin, or a loopback HTTP origin during local development. It cannot contain a path, query, fragment, or credentials. The browser and server use only the public caller-scoped client. The key must use the low-privilege `sb_publishable_` format; secret, service-role, and legacy JWT-shaped keys are rejected before browser compilation. `SUPABASE_SERVICE_ROLE_KEY` is not read by the web persistence or Auth path. Never commit `.env.local`.
 
-Live mode currently provides a browser client, a read-only server data client, response-safe proxy cookie refresh, strict verified-session checks, and the `PersistenceRepository` adapter. It intentionally has no chosen sign-in UI, response-aware auth mutation client, workspace provisioning, seeded application records, browser API wiring, or Realtime subscriptions yet. Missing or inconsistent live configuration fails closed instead of falling back to mock. No hosted migration is applied by these steps.
+Live mode provides Google-only PKCE sign-in, response-safe cookie mutation, local sign-out, strict verified-session checks, single-owner personal-workspace access, and the `PersistenceRepository` adapter. Until authenticated reads are implemented, protected live pages show an explicit data-pending state and never claim that fixture-only actions were persisted. Browser interaction APIs and Realtime subscriptions are not wired yet. Missing or inconsistent live configuration fails closed instead of falling back to mock.
+
+The repository does not activate a hosted project or contain the real owner address. Before the first live login, complete these reviewed manual steps:
+
+1. Apply the committed migrations to the intended Supabase project through the normal reviewed database workflow. If `auth.users` already contains a user, stop and design a reconciliation procedure; the bootstrap is intentionally for first admission.
+2. In the Supabase SQL editor, configure the exact Google account privately. Do not add the address to a migration, seed, issue, log, or committed environment file:
+
+   ```sql
+   insert into private.auth_owner_identity (email_normalized)
+   values (lower(btrim('<EXACT_GOOGLE_ACCOUNT_EMAIL>')));
+   ```
+
+   The empty table rejects every signup. The address can be corrected while unbound; after the first successful login, the address and Supabase user UUID are database-immutable.
+3. In Supabase Authentication URL configuration, set the Site URL to the deployed application origin and add the narrow `<APP_ORIGIN>/auth/callback?sb_flow_id=*` redirect pattern. The wildcard is limited to the validated PKCE flow selector; never wildcard the production host or path.
+4. In Supabase Authentication Hooks, enable the SQL **Before User Created** hook and select `private.before_user_created`.
+5. Configure the Google provider in Supabase Auth. The Google OAuth client's authorized redirect URI is Supabase's provider callback (`https://<project-ref>.supabase.co/auth/v1/callback`), not the application callback from step 3. Keep global signup enabled so the approved Google identity can be created, while the hosted **Email provider**, phone, anonymous, and every other provider remain disabled. Turning off email signup alone is not sufficient for an existing user.
+6. Keep Google login consent to identity (`openid`, `email`, `profile`). Do not add offline access, Gmail/Calendar scopes, or provider-token persistence. Phase 4 execution uses separate server/worker credentials and a separate consent lifecycle.
+
+`supabase/config.toml` mirrors the safe local policy: email/anonymous signup and Google are disabled by default, the SQL hook is enabled, and only loopback callback paths with the PKCE flow-selector query are allowlisted. The application additionally requires Google app metadata and an OAuth authentication-method reference in every verified live access token. A developer who performs a manual local Google acceptance test must supply provider credentials only through an uncommitted local configuration. The credential-free automated suite does not call Google.
+
+No hosted migration, Auth setting, owner row, Google credential, or deployment is changed by running the application or its tests.
 
 ## Verification
 
@@ -80,6 +101,10 @@ PLAYWRIGHT_BROWSERS_PATH=.playwright-browsers pnpm exec playwright install chrom
 - `/item/meeting` — prepared Gmail/Calendar approval review in mock mode.
 - `/item/unknown` — safe unknown-block fallback demonstration.
 - `/activity` — Ask and operator-state demonstration.
+- `/sign-in` — single-owner entry; mock mode links back to the credential-free Today preview.
+- `/api/auth/google/start` — fixed Google identity OAuth start in live mode.
+- `/auth/callback` — fixed PKCE callback in live mode.
+- `/auth/sign-out` — POST-only local-session sign-out in live mode.
 
 ## Remaining phase placeholders
 

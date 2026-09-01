@@ -72,6 +72,24 @@ test("Week, Month, activity, and unknown fallback render", async ({ page }) => {
   await expect(page.locator("[data-original-block='interactive_map_v2']")).toBeVisible();
 });
 
+test("mock sign-in stays credential-free and does not expose live Auth", async ({ page }) => {
+  await page.goto("/sign-in?error=untrusted-provider-detail");
+  await expect(
+    page.getByRole("heading", { name: "Your day, with the noise removed." })
+  ).toBeVisible();
+  await expect(page.getByRole("link", { name: /Open the mock workspace/ })).toHaveAttribute(
+    "href",
+    "/today"
+  );
+  await expect(page.getByRole("link", { name: /Continue with Google/ })).toHaveCount(0);
+  await expect(page.locator(".sign-in-error")).toHaveCount(0);
+  await expectNoSeriousAxeViolations(page);
+
+  const authStart = await page.request.get("/api/auth/google/start");
+  expect(authStart.status()).toBe(404);
+  expect(authStart.headers()["cache-control"]).toContain("no-store");
+});
+
 test("Today and approval have no serious axe violations", async ({ page }) => {
   await page.goto("/today");
   await expectNoSeriousAxeViolations(page);
