@@ -6,14 +6,16 @@ set constraints items_current_revision_fk deferred;
 
 select plan(43);
 
--- This test exercises synthetic multi-user RLS fixtures as the privileged
--- migration role. Production Auth inserts remain guarded by the owner trigger.
-alter table auth.users disable trigger auth_users_bootstrap_owner_workspace;
-insert into auth.users (id, email) values
-  ('aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'owner@example.test'),
-  ('bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', 'member@example.test'),
-  ('cccccccc-cccc-4ccc-8ccc-cccccccccccc', 'outsider@example.test');
-alter table auth.users enable trigger auth_users_bootstrap_owner_workspace;
+-- This rollback-only test uses synthetic JWT subjects to exercise multi-user
+-- RLS. The pgTAP role does not own Supabase's auth.users table, so remove the
+-- application-table Auth foreign keys inside this transaction instead of
+-- weakening or disabling the production owner-admission trigger.
+alter table public.workspaces
+  drop constraint workspaces_owner_user_id_fkey;
+alter table public.workspace_memberships
+  drop constraint workspace_memberships_user_id_fkey;
+alter table public.ai_jobs
+  drop constraint ai_jobs_requested_by_user_id_fkey;
 
 insert into public.workspaces (id, owner_user_id, name, kind) values
   ('11111111-1111-4111-8111-111111111111', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 'Owner personal', 'personal'),

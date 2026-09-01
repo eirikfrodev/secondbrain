@@ -5,7 +5,6 @@ set local search_path = public, extensions;
 
 select plan(27);
 
-set local role supabase_auth_admin;
 select is(
   private.before_user_created(
     '{"metadata":{"name":"before-user-created"},"user":{"id":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","email":"owner@example.test","app_metadata":{"provider":"google"},"is_anonymous":false}}'::jsonb
@@ -13,7 +12,6 @@ select is(
   '{"error":{"http_code":403,"message":"Sign-in is not available for this account."}}'::jsonb,
   'an empty owner identity fails closed'
 );
-reset role;
 
 insert into private.auth_owner_identity (email_normalized)
 values ('owner@example.test');
@@ -28,7 +26,6 @@ update private.auth_owner_identity
 set email_normalized = 'owner@example.test'
 where singleton;
 
-set local role supabase_auth_admin;
 select is(
   private.before_user_created(
     '{"metadata":{"name":"before-user-created"},"user":{"id":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","email":"OWNER@example.test","app_metadata":{"provider":"google"},"is_anonymous":false}}'::jsonb
@@ -64,7 +61,6 @@ select is(
   '{"error":{"http_code":403,"message":"Sign-in is not available for this account."}}'::jsonb,
   'an anonymous identity cannot claim the owner account'
 );
-reset role;
 
 select throws_ok(
   $$
@@ -170,7 +166,6 @@ select is(
   'bootstrap emits one non-PII audit event'
 );
 
-set local role supabase_auth_admin;
 select is(
   private.before_user_created(
     '{"metadata":{"name":"before-user-created"},"user":{"id":"bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb","email":"owner@example.test","app_metadata":{"provider":"google"},"is_anonymous":false}}'::jsonb
@@ -178,7 +173,6 @@ select is(
   '{"error":{"http_code":403,"message":"Sign-in is not available for this account."}}'::jsonb,
   'the bound email cannot claim a second Supabase user ID'
 );
-reset role;
 
 select throws_ok(
   $$
