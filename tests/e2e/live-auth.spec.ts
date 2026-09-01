@@ -59,6 +59,35 @@ test("synthetic live Auth routes emit correlated PKCE and stable failures", asyn
   expect(failed.headers()["cache-control"]).toContain("no-store");
 });
 
+test("synthetic live mutations require a verified session and never use mock state", async ({
+  page
+}) => {
+  await page.goto("/sign-in");
+
+  const result = await page.evaluate(async () => {
+    const response = await fetch("/api/ask", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ instruction: "Do not queue this without a session" })
+    });
+
+    return {
+      status: response.status,
+      cacheControl: response.headers.get("cache-control"),
+      body: await response.json() as unknown
+    };
+  });
+
+  expect(result.status).toBe(401);
+  expect(result.cacheControl).toContain("no-store");
+  expect(result.body).toEqual({
+    error: {
+      code: "not_authenticated",
+      message: "Authentication is required."
+    }
+  });
+});
+
 test("@visual live sign-in desktop", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/sign-in");

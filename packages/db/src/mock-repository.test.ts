@@ -176,6 +176,31 @@ describe("mock persistence repository", () => {
     await expect(repository.listSourceHealth(otherWorkspaceId)).resolves.toEqual([]);
   });
 
+  it("bounds process-local job retention even after cancellation", async () => {
+    const repository = createMockPersistenceRepository({
+      workspaceId,
+      userId,
+      maxJobs: 1,
+      nextId: idSequence(firstGeneratedId),
+      items: [{
+        id: itemId,
+        workspaceId,
+        version: 2,
+        currentRevisionId: revisionId
+      }]
+    });
+    const queued = await repository.queueItemAsk({
+      itemId,
+      instruction: "Keep this bounded"
+    });
+
+    await repository.cancelAiJob({ jobId: queued.id });
+    await expect(repository.queueGlobalAsk({
+      workspaceId,
+      instruction: "Do not retain another job"
+    })).rejects.toMatchObject({ code: "unavailable" });
+  });
+
   it("rejects source-health fixtures from another workspace", () => {
     expect(() => createMockPersistenceRepository({
       workspaceId,

@@ -62,17 +62,26 @@ The repository now contains a strict pnpm/TypeScript workspace, a Next.js 16 App
 - Added the editorial `/sign-in` interface, accessible pending state, and live-only POST sign-out control while preserving credential-free mock entry.
 - Added a synthetic-live Playwright harness with no real credentials or remote calls. It verifies live route wiring, unauthenticated redirects, real installed-SDK PKCE cookies, fixed callback failures, axe results, and desktop/mobile sign-in baselines.
 
+### Browser Ask queue and cancellation boundary
+
+- Added `POST /api/ask`, `POST /api/items/[id]/ask`, and `POST /api/ai-jobs/[id]/cancel` over the existing persistence contract. Queueing returns `201`; queued-job cancellation returns `200` and remains idempotent.
+- Added an exact-origin mutation boundary with mandatory `Origin` and Fetch Metadata checks, query/media/encoding rejection, a 16 KiB streaming body cap, strict UUID/JSON schemas, and dependency short-circuiting before session or repository work.
+- Derived live user/workspace authority from the verified Google/OAuth session and exactly one RLS-visible personal owner workspace. The caller cannot supply workspace, requester, origin, priority, status, schedule, result, or audit fields.
+- Revalidated repository results against request context and returned only a reduced job receipt. Targeted forbidden/missing results collapse to route-specific `404`s, and fixed error envelopes never serialize persistence causes or provider/database details.
+- Seeded one process-global mock repository from all seven fixture item UUIDs so local mock API requests can queue and cancel across route bundles without constructing a remote client. Mock mutations return `404` outside loopback development/test and retain at most 256 jobs, so this non-durable state cannot masquerade as deployable persistence.
+- Added handler/boundary/context unit coverage, a real mock-repository integration lifecycle, same-origin mock Playwright queue/cancel coverage, and a synthetic-live no-session test that proves there is no mock fallback.
+
 ## Verification
 
-Verified locally and in GitHub Actions on 2026-09-01:
+The Google-auth/database baseline is verified locally and in GitHub Actions. The current Ask/cancel slice is verified locally on 2026-09-01; its first GitHub run is pending this commit:
 
 | Command | Result |
 |---|---|
 | `pnpm lint` | pass, zero warnings |
 | `pnpm typecheck` | pass across all typed workspace projects |
-| `pnpm test` | pass, 169 unit tests |
-| `pnpm test:integration` | pass, 3 integration tests |
-| `pnpm test:e2e` | pass, 10 mock/synthetic-live functional and accessibility tests |
+| `pnpm test` | pass, 284 unit tests |
+| `pnpm test:integration` | pass, 4 integration tests |
+| `pnpm test:e2e` | pass, 12 mock/synthetic-live functional and accessibility tests |
 | `pnpm test:visual` | pass, 9 reviewed Chromium baselines |
 | `pnpm build` | pass in default mock and synthetic Supabase modes |
 | Database suite | pass, all 117 pgTAP assertions in disposable Supabase |
@@ -88,15 +97,16 @@ Axe reports no serious or critical violations on Today, the external-action appr
 - Local Next.js commands use the supported Webpack path because the managed sandbox blocks Turbopack's PostCSS worker transport.
 - A clean production build needs network access for the two `next/font/google` assets.
 - Git is initialized on `main`, tracks `origin/main` in `eirikfrodev/secondbrain`, and the Google-auth slice is published through commit `acbade3`.
+- The Ask/cancel slice is locally complete and not yet pushed. Its HTTP mock store is process-local; the existing page controls remain browser-memory only until real reads provide live item IDs.
 - The local machine has Supabase CLI 2.95.4 but no Docker daemon. GitHub Actions successfully applied both migrations to a disposable local database, ran strict database lint, and passed all 117 pgTAP assertions. Nothing has been applied to a hosted Supabase project.
 - Both the default mock production build and a synthetic, public-key-only live-configuration build pass locally. The synthetic browser suite targets an unreachable loopback Supabase origin and performs no remote Auth/database action. No hosted Supabase connection or deployment was attempted.
 
 ## Not yet implemented
 
 - Hosted activation: applying the migration, privately setting the owner email, enabling the Before User Created hook, enabling Google, disabling the hosted Email/other providers, adding the narrow callback pattern, and manually exercising the approved and rejected real Google accounts.
-- Authenticated browser interaction APIs, live dashboard/item reads, browser Realtime subscriptions, persisted UI state, and the real hosted session lifecycle.
+- Live dashboard/item reads, browser Realtime subscriptions, persisted UI state, UI-to-API wiring, and the real hosted session lifecycle.
 - Remote operator MCP and plugin packaging (Phase 3).
 - Separate Google Gmail/Calendar execution OAuth, real provider execution, idempotent worker/saga behavior, and launchd setup (Phase 4).
 - Scheduled operator setup, deployment, production observability, and final security/manual acceptance (Phase 5).
 
-The next isolated Phase 2 task is a narrow authenticated HTTP boundary for inline/global Ask queueing and queued-job cancellation over the existing repository. Live dashboard reads must follow before those APIs are connected to the current fixture-driven interface.
+The next isolated Phase 2 task is authenticated dashboard/item reads. Those reads must provide real database item IDs before the new mutation routes are connected to the current fixture-driven interface.

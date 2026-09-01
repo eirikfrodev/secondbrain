@@ -90,6 +90,67 @@ test("mock sign-in stays credential-free and does not expose live Auth", async (
   expect(authStart.headers()["cache-control"]).toContain("no-store");
 });
 
+test("same-origin Ask APIs queue and cancel process-local mock jobs", async ({ page }) => {
+  await page.goto("/today");
+
+  const result = await page.evaluate(async () => {
+    async function postJson(pathname: string, body: unknown) {
+      const response = await fetch(pathname, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+      return {
+        status: response.status,
+        body: await response.json() as unknown
+      };
+    }
+
+    async function cancel(jobId: string) {
+      const response = await fetch(`/api/ai-jobs/${jobId}/cancel`, {
+        method: "POST"
+      });
+      return {
+        status: response.status,
+        body: await response.json() as unknown
+      };
+    }
+
+    const inline = await postJson(
+      "/api/items/44444444-4444-4444-8444-444444444441/ask",
+      { instruction: "  Reassess the passport timing  " }
+    );
+    const inlineBody = inline.body as { job?: { id?: string } };
+    const inlineJobId = inlineBody.job?.id ?? "";
+    const cancelled = await cancel(inlineJobId);
+    const repeated = await cancel(inlineJobId);
+    const global = await postJson("/api/ask", {
+      instruction: "Reassess next week"
+    });
+
+    return { inline, cancelled, repeated, global };
+  });
+
+  expect(result.inline.status).toBe(201);
+  expect(result.inline.body).toMatchObject({
+    job: {
+      itemId: "44444444-4444-4444-8444-444444444441",
+      instruction: "Reassess the passport timing",
+      origin: "inline_ask",
+      status: "queued"
+    }
+  });
+  expect(result.inline.body).not.toHaveProperty("job.workspaceId");
+  expect(result.inline.body).not.toHaveProperty("job.requestedByUserId");
+  expect(result.cancelled.status).toBe(200);
+  expect(result.cancelled.body).toMatchObject({ job: { status: "cancelled" } });
+  expect(result.repeated).toEqual(result.cancelled);
+  expect(result.global.status).toBe(201);
+  expect(result.global.body).toMatchObject({
+    job: { itemId: null, origin: "global_ask", status: "queued" }
+  });
+});
+
 test("Today and approval have no serious axe violations", async ({ page }) => {
   await page.goto("/today");
   await expectNoSeriousAxeViolations(page);

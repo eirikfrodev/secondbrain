@@ -14,3 +14,11 @@ export function getServerRuntimeConfig() {
 export function getServerAppOrigin(): string {
   return resolveAppOrigin(process.env.APP_ORIGIN);
 }
+
+export function getServerMutationAppOrigin(requestUrl: string): string {
+  const config = getServerRuntimeConfig();
+
+  return config.mode === "supabase"
+    ? getServerAppOrigin()
+    : resolveAppOrigin(new URL(requestUrl).origin);
+}

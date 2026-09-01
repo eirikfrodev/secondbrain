@@ -28,3 +28,38 @@ Rules:
 - Approval verifies current item revision, expiry, source resolution, provider scope and idempotency.
 - Long-running external execution belongs to the Mac worker, not a Vercel request lifecycle.
 - Errors return stable codes plus plain-language recovery information.
+
+## Implemented Phase 2 mutation boundary
+
+The first browser mutation slice implements:
+
+```text
+POST   /api/items/:id/ask
+POST   /api/ask
+POST   /api/ai-jobs/:id/cancel
+```
+
+Ask accepts only a strict JSON object containing `instruction` (trimmed, 1–2,000 characters). Item/job IDs are UUID path parameters. Workspace ID, requester, origin, priority, status, schedule, result, and audit data are always server/database owned. Cancellation accepts no request body and is idempotent after a queued job reaches `cancelled`.
+
+Every live request must use the exact configured application origin and path; local mock requests use the exact loopback development origin. Requests contain no query string, include matching `Origin` and `Sec-Fetch-Site: same-origin` headers, and stay within the 16 KiB streaming body limit. Ask accepts only `application/json` with an optional UTF-8 charset. Content encoding, unknown object keys, caller-supplied authority fields, and non-empty cancellation bodies are rejected before session or repository construction.
+
+Queue success is `201`; cancellation success is `200`. Responses expose only this validated receipt:
+
+```json
+{
+  "job": {
+    "id": "00000000-0000-4000-8000-000000000000",
+    "itemId": null,
+    "instruction": "Reassess next week",
+    "origin": "global_ask",
+    "status": "queued",
+    "queuedFor": "2026-09-01T12:00:00.000Z",
+    "createdAt": "2026-09-01T11:55:00.000Z",
+    "completedAt": null
+  }
+}
+```
+
+Errors use a fixed `{ "error": { "code", "message" } }` envelope. Implemented codes are `invalid_request`, `payload_too_large`, `unsupported_media_type`, `not_authenticated`, `forbidden`, `item_not_found`, `job_not_found`, `operator_schedule_unavailable`, `job_not_cancellable`, `temporarily_unavailable`, and `internal_error`. Database/provider causes, Zod issue details, user instructions, and identifiers are never reflected in an error.
+
+Supabase mode derives the user and personal workspace from the verified Google/OAuth session, then relies on caller-scoped RPCs and RLS. Mock mutation routes are disabled with `404` outside loopback development/test, use one process-local seeded repository capped at 256 retained jobs, and call no remote service. They are never a deployable persistence substitute. Neither mode can execute an external provider action; Ask only creates a queued internal AI job.

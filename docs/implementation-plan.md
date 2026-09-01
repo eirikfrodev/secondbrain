@@ -74,7 +74,7 @@ Previous slice: complete and verified locally and in GitHub Actions on 2026-08-3
 
 That slice did not choose a user-facing sign-in method, add browser APIs, replace dashboard state, subscribe to Realtime, change the schema/RLS/migration, link a remote Supabase project, or deploy anything.
 
-Current slice: Google-only single-owner admission and protected application access.
+Previous slice: Google-only single-owner admission and protected application access, complete and verified locally and in GitHub Actions on 2026-09-01.
 
 1. Keep Supabase Google sign-in limited to identity (`openid`, `email`, and `profile`). Future Gmail/Calendar authorization remains a separate Phase 4 consent and token lifecycle.
 2. Add a default-deny PostgreSQL `before-user-created` hook backed by private owner configuration. Admit only the exact configured Google email, bind the first admitted Auth UUID immutably, and never commit the address to the repository.
@@ -87,7 +87,17 @@ Current slice: Google-only single-owner admission and protected application acce
 
 Non-goals: no password, magic-link, anonymous, or alternate-provider sign-in; no caller-selected callback or post-login URL; no Gmail/Calendar scopes or provider-token persistence; no service-role key in the web app; no hosted Supabase/Google changes, deployment, Realtime wiring, or production data migration.
 
-After this slice is independently green and committed, the next safe Phase 2 increment is authenticated dashboard/item reads and narrow interaction endpoints over the existing persistence repository. It remains a separate commit and must not widen the external-effect boundary.
+Current slice: authenticated Ask queueing and queued-job cancellation HTTP boundary.
+
+1. Add strict route-owned contracts for `POST /api/ask`, `POST /api/items/[id]/ask`, and `POST /api/ai-jobs/[id]/cancel`. Callers may provide only the bounded instruction or path UUID; workspace, user, origin, status, timing, and result fields remain trusted server/repository data.
+2. Reject non-exact origins, cross-site fetches, query strings, wrong content types, oversized bodies, malformed JSON, unknown keys, and non-UUID path IDs before constructing a live Supabase client or invoking the repository.
+3. In Supabase mode, require the verified Google session and single personal-owner workspace before creating the caller-scoped repository. In mock mode, use one capped process-local seeded repository behind the same interface, enable it only for loopback development/test, and perform no remote call.
+4. Return only Zod-validated AI-job receipts with private no-store and `nosniff` headers. Map persistence failures to stable status/code pairs without leaking database/provider causes.
+5. Prove queue/cancel/idempotent-cancel behavior, session/workspace isolation, invalid-state handling, transport limits, and error redaction with unit, integration, and credential-free browser tests.
+
+Non-goals: no migration, RLS, Auth-provider, GitHub Actions, hosted-service, or deployment changes; no arbitrary tool execution; no external provider effect; no live dashboard reads, Realtime subscription, or fixture-UI wiring. The existing pages stay honest and data-pending in live mode because their mock item IDs are not database identities.
+
+After this slice is independently green and committed, the next safe Phase 2 increment is authenticated dashboard/item reads, followed by wiring these endpoints to live item identities. Each remains a separate commit and must not widen the external-effect boundary.
 
 ## Phase 3 — Operator MCP and plugin
 

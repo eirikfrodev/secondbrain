@@ -29,6 +29,7 @@ Likelihood and impact use low / medium / high. Owners are implementation areas r
 | R-23 | Production is deployed before security and credential setup are reviewed. | low | high | No production deployment without the repository's exact approval phrase; mock mode remains default. | Release, Phase 5 |
 | R-24 | A second or wrong Google identity creates an account or gains application access through provider/configuration drift. | low | high | Empty-by-default exact-email Auth hook, independent `auth.users` trigger recheck, immutable UUID binding, atomic personal-workspace membership, fixed Google-only callback, Google/OAuth access-token claims, hosted Email-provider shutdown, and RLS-visible owner-workspace gate. pgTAP and transport tests cover bypass/failure paths. | Auth/DB, Phase 2 |
 | R-25 | Login cookies leak or retain an upstream Google credential, or concurrent PKCE tabs consume the wrong verifier. | low | high | HTTPS cookies are explicitly `Secure`; each bounded flow ID selects one verifier; exchanged sessions are reconstructed from Supabase tokens only and rejected if provider-token fields remain. SDK-contract, cookie-bridge, and callback tests cover these boundaries. | Auth/web, Phase 2 |
+| R-26 | A browser mutation forges workspace/job authority, crosses workspaces, leaks backend detail, exhausts the request parser, or exposes shared mock state from a deployment. | low | high | Exact same-origin/Fetch Metadata checks, query/media/encoding rejection, 16 KiB streamed body cap, strict Zod inputs, server-derived request context, RLS/RPC validation, output invariants, reduced receipts, collapsed targeted 404s, fixed redacted errors, and mock mutation `404` outside loopback dev/test with a 256-job cap. | API/persistence, Phase 2 |
 
 ## Current watch list
 
@@ -36,3 +37,4 @@ Likelihood and impact use low / medium / high. Owners are implementation areas r
 - R-06/R-07/R-09: assess together during Playwright screenshot and axe passes.
 - R-21/R-22: verify the first clean install/build before declaring Phase 0 complete.
 - R-24/R-25: hosted Google/Email provider settings, the narrow flow-selector redirect, owner row, Auth-hook selection, and final cookie behavior still require a manual acceptance check before live use.
+- R-26: connect UI controls only after live reads provide real database item IDs; fixture IDs must never cross into live mutations.

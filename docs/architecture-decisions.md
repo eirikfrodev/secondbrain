@@ -134,6 +134,16 @@ Why: an email check in UI or callback code happens after Auth user creation and 
 
 Consequences: the repository never contains the real owner email or a Google login secret. A fresh install rejects every signup until an operator configures the owner privately and enables the reviewed hosted provider/hook/redirect settings. The hosted Email provider—not only signup—plus phone, anonymous, and other social paths remain disabled. The login flow never retains a Google provider token or requests Gmail/Calendar scopes. Deleting or replacing the bound owner requires a separately reviewed administrative procedure. Mock mode remains accessible without Auth or credentials, while live pages remain honestly data-pending until authenticated reads replace fixture projections.
 
+## ADR-014 — Browser AI-job mutations expose a reduced, same-origin contract
+
+Status: accepted, 2026-09-01.
+
+Decision: expose inline/global Ask queueing and queued-job cancellation through three POST-only route handlers over the existing `PersistenceRepository`. The HTTP boundary requires the exact application URL and origin, a same-origin Fetch Metadata signal, no query, bounded streaming bodies, strict JSON/media rules, and UUID path parameters before constructing session or persistence dependencies. The verified request context owns workspace and requester identity; repository/RPC results are revalidated against that context and reduced to a small job receipt. Route-specific fixed errors never serialize persistence messages or causes. Mock mode shares one process-local seeded repository; live mode uses one caller-scoped Supabase client, the Google/OAuth claim gate, one personal owner workspace, RPC validation, and RLS.
+
+Why: Ask text and path IDs are untrusted browser input, while job origin, schedule, status, requester, workspace, and results are authority. Returning the complete database job would expose unrelated internal state, and accepting caller-selected workspace or trusted fields would weaken RLS defense in depth. A bounded reader protects the route before JSON parsing, while exact-origin checks prevent these cookie-authenticated POST endpoints from becoming a CSRF surface.
+
+Consequences: the implemented endpoints can only queue or cancel an internal AI job; they cannot execute code, call Google, send messages, create invitations, spend money, or invoke an arbitrary capability. Process-local mock mutation state is restricted to loopback development/test, capped at 256 retained jobs, and unavailable in production/non-loopback mock runtimes; it is not a serverless persistence design. New live workspaces honestly return an operator-schedule conflict until scheduling exists. Fixture-driven page controls remain disconnected until authenticated reads supply real database item UUIDs. Dashboard reads, Realtime, and external execution remain later reviewed slices.
+
 ## Deviations
 
 - Accessibility correction, 2026-08-30: `--ink-3` is implemented as `#52657E` rather than the board value `#5E7089`. The board value measures below WCAG AA on both paper tones (approximately 4.39:1 on paper and 4.05:1 on paper-2). The corrected value is approximately 5.19:1 and 4.78:1 respectively while preserving the intended tertiary-blue hierarchy.

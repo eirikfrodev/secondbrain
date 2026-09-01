@@ -17,11 +17,13 @@ cp .env.example apps/web/.env.local
 pnpm dev
 ```
 
-Open `http://127.0.0.1:3000/today`. The root route redirects to Today.
+Open `http://localhost:3000/today`. The root route redirects to Today. Use one loopback hostname consistently for the page and mutation requests; `localhost` matches Next.js development URL normalization.
 
 `CONNECTOR_MODE=mock` is the safe default. Browser interactions are intentionally ephemeral and reset on reload. External and hybrid actions show review/staging states but make no provider call.
 
 Phase 2 also includes a typed in-memory persistence repository behind the same contract as the live adapter. It is process-local, is not presented as durable storage, and never constructs a Supabase client in mock mode.
+
+The Ask/cancel HTTP routes share one process-local seeded repository in mock mode so a queued job can be cancelled by its returned UUID across route requests. Mock mutations are available only from an HTTP loopback origin in development/test, retain at most 256 jobs, and return `404` from production or non-loopback mock runtimes. This state is non-durable and may reset when the development server restarts or reloads its route bundle; it is not suitable for a preview deployment or multiple server instances. The fixture-driven page controls remain a separate browser-memory demonstration; they are not wired to these APIs yet.
 
 ## Supabase and single-owner Google sign-in
 
@@ -32,7 +34,7 @@ CONNECTOR_MODE=supabase
 NEXT_PUBLIC_CONNECTOR_MODE=supabase
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_replace_me
-APP_ORIGIN=http://127.0.0.1:3000
+APP_ORIGIN=http://localhost:3000
 ```
 
 `APP_ORIGIN` must be one exact HTTPS origin, or a loopback HTTP origin during local development. It cannot contain a path, query, fragment, or credentials. The browser and server use only the public caller-scoped client. The key must use the low-privilege `sb_publishable_` format; secret, service-role, and legacy JWT-shaped keys are rejected before browser compilation. `SUPABASE_SERVICE_ROLE_KEY` is not read by the web persistence or Auth path. Never commit `.env.local`.
@@ -105,6 +107,9 @@ PLAYWRIGHT_BROWSERS_PATH=.playwright-browsers pnpm exec playwright install chrom
 - `/api/auth/google/start` — fixed Google identity OAuth start in live mode.
 - `/auth/callback` — fixed PKCE callback in live mode.
 - `/auth/sign-out` — POST-only local-session sign-out in live mode.
+- `/api/ask` — strict same-origin global Ask queue (`POST`).
+- `/api/items/[id]/ask` — strict same-origin item Ask queue for a UUID item (`POST`).
+- `/api/ai-jobs/[id]/cancel` — strict same-origin idempotent queued-job cancellation (`POST`, empty body).
 
 ## Remaining phase placeholders
 

@@ -35,6 +35,7 @@ export type MockPersistenceRepositoryOptions = {
   now?: () => Date;
   nextId?: () => string;
   nextOperatorSync?: (now: Date) => Date;
+  maxJobs?: number;
   items?: readonly z.input<typeof MockItemSchema>[];
   sourceHealth?: readonly SourceHealth[];
 };
@@ -55,6 +56,9 @@ export function createMockPersistenceRepository(
   const now = options.now ?? (() => new Date());
   const nextId = options.nextId ?? randomUUID;
   const nextOperatorSync = options.nextOperatorSync ?? ((current) => new Date(current.getTime() + 5 * 60_000));
+  const maxJobs = z.number().int().positive().max(10_000).parse(
+    options.maxJobs ?? 1_000
+  );
   const items = z.array(MockItemSchema).parse(options.items ?? []);
   const sourceHealth = z.array(SourceHealthSchema).parse(options.sourceHealth ?? []);
   const jobs = new Map<string, AiJob>();
@@ -90,6 +94,13 @@ export function createMockPersistenceRepository(
     instruction: string;
     origin: "inline_ask" | "global_ask";
   }): AiJob {
+    if (jobs.size >= maxJobs) {
+      throw new PersistenceError(
+        "unavailable",
+        "The process-local mock queue has reached its capacity."
+      );
+    }
+
     const createdAt = now();
     const job = AiJobSchema.parse({
       id: UuidSchema.parse(nextId()),
