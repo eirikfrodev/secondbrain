@@ -100,7 +100,7 @@ select throws_ok(
     insert into auth.users (id, email, raw_app_meta_data, is_anonymous)
     values (
       'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb',
-      'owner@example.test',
+      'owner@example.test ',
       '{"provider":"google","providers":["google"]}'::jsonb,
       false
     )
